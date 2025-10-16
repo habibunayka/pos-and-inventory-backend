@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon src/index.js",
     "build:schema": "node prisma/build-schema.js",
     "prisma:generate": "npm run build:schema && npx prisma generate",
     "prisma:migrate": "npm run build:schema && npx prisma migrate dev",
     "prisma:seed": "node prisma/seed.js",
-    "api-service": "nodemon index.js"
+    "api-service": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
