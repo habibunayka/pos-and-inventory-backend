@@ -1,19 +1,15 @@
-export default class OutletPresenter {
-  present(outlet) {
-    if (!outlet) {
-      return null;
-    }
-
+export default class WarehousePresenter {
+  present(warehouse) {
+    if (!warehouse) return null;
     return {
-      id: outlet.id,
-      name: outlet.name,
-      address: outlet.address,
-      phone: outlet.phone,
-      isActive: outlet.isActive,
+      id: warehouse.id,
+      name: warehouse.name,
+      location: warehouse.address ?? null,
+      phone: warehouse.phone ?? null,
     };
   }
 
-  presentCollection(outlets) {
-    return outlets.map((outlet) => this.present(outlet));
+  presentCollection(warehouses) {
+    return warehouses.map((w) => this.present(w));
   }
 }

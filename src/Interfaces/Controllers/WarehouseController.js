@@ -1,37 +1,32 @@
-import HttpStatus from '../../Commons/Constants/HttpStatus.js';
+import HttpStatus from "../../Commons/Constants/HttpStatus.js";
 
 export default class WarehouseController {
-  constructor({
-    warehousePresenter,
-    listWarehousesUsecase,
-    getWarehouseStocksUsecase,
-    transferStockUsecase,
-    createStockAdjustmentUsecase,
-    receivePurchaseUsecase,
-  }) {
+  constructor({ warehousePresenter, listWarehousesUsecase, getWarehouseUsecase, getWarehouseStocksUsecase, transferStockUsecase, receivePurchaseUsecase, createStockAdjustmentUsecase } = {}) {
     if (!warehousePresenter) {
-      throw new Error('WarehouseController requires a presenter');
+      throw new Error("WarehouseController requires warehousePresenter");
     }
 
-    const requiredUsecases = [
-      ['listWarehousesUsecase', listWarehousesUsecase],
-      ['getWarehouseStocksUsecase', getWarehouseStocksUsecase],
-      ['transferStockUsecase', transferStockUsecase],
-      ['createStockAdjustmentUsecase', createStockAdjustmentUsecase],
-      ['receivePurchaseUsecase', receivePurchaseUsecase],
+    const required = [
+      ["listWarehousesUsecase", listWarehousesUsecase],
+      ["getWarehouseUsecase", getWarehouseUsecase],
+      ["getWarehouseStocksUsecase", getWarehouseStocksUsecase],
+      ["transferStockUsecase", transferStockUsecase],
+      ["receivePurchaseUsecase", receivePurchaseUsecase],
+      ["createStockAdjustmentUsecase", createStockAdjustmentUsecase],
     ];
 
-    const missing = requiredUsecases.find(([, usecase]) => !usecase);
+    const missing = required.find(([name, usecase]) => !usecase);
     if (missing) {
       throw new Error(`WarehouseController requires ${missing[0]}`);
     }
 
     this.warehousePresenter = warehousePresenter;
     this.listWarehousesUsecase = listWarehousesUsecase;
+    this.getWarehouseUsecase = getWarehouseUsecase;
     this.getWarehouseStocksUsecase = getWarehouseStocksUsecase;
     this.transferStockUsecase = transferStockUsecase;
-    this.createStockAdjustmentUsecase = createStockAdjustmentUsecase;
     this.receivePurchaseUsecase = receivePurchaseUsecase;
+    this.createStockAdjustmentUsecase = createStockAdjustmentUsecase;
   }
 
   async listWarehouses() {
@@ -39,6 +34,14 @@ export default class WarehouseController {
     return {
       status: HttpStatus.OK,
       data: this.warehousePresenter.presentCollection(warehouses),
+    };
+  }
+
+  async getWarehouse({ params }) {
+    const warehouse = await this.getWarehouseUsecase.execute(params.id);
+    return {
+      status: HttpStatus.OK,
+      data: this.warehousePresenter.present(warehouse),
     };
   }
 
@@ -54,26 +57,23 @@ export default class WarehouseController {
     const result = await this.transferStockUsecase.execute(body);
     return {
       status: HttpStatus.OK,
-      message: 'Transfer stok berhasil',
-      data: this.warehousePresenter.present(result),
-    };
-  }
-
-  async createStockAdjustment({ body }) {
-    const result = await this.createStockAdjustmentUsecase.execute(body);
-    return {
-      status: HttpStatus.CREATED,
-      message: 'Penyesuaian stok berhasil',
-      data: this.warehousePresenter.present(result),
+      data: result,
     };
   }
 
   async receivePurchase({ body }) {
     const result = await this.receivePurchaseUsecase.execute(body);
     return {
-      status: HttpStatus.CREATED,
-      message: 'Penerimaan pembelian berhasil',
-      data: this.warehousePresenter.present(result),
+      status: HttpStatus.OK,
+      data: result,
+    };
+  }
+
+  async adjustStock({ body }) {
+    const result = await this.createStockAdjustmentUsecase.execute(body);
+    return {
+      status: HttpStatus.OK,
+      data: result,
     };
   }
 }

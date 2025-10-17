@@ -1,6 +1,10 @@
+
 export default class CreateStockAdjustmentUsecase {
   constructor({ warehouseRepository }) {
-    if (!warehouseRepository) throw new Error('CreateStockAdjustmentUsecase requires warehouseRepository');
+    if (!warehouseRepository)
+      throw new Error(
+        'CreateStockAdjustmentUsecase requires warehouseRepository'
+      );
     this.repo = warehouseRepository;
   }
 
@@ -16,7 +20,7 @@ export default class CreateStockAdjustmentUsecase {
     return this.repo.createStockAdjustment({
       warehouseId: Number(warehouseId),
       productId: Number(productId),
-      difference: Number(difference), 
+      difference: Number(difference),
       reason: reason.trim(),
     });
   }
