@@ -78,40 +78,50 @@ export function createExpressApp({ container } = {}) {
   const promotionRuleController = diContainer.resolve('promotionRuleController');
   const authController = diContainer.resolve('authController');
   const optionalAuth = diContainer.resolve('optionalAuth');
+  const requireAuth = diContainer.resolve('requireAuth');
+  const authorize = diContainer.resolve('authorize');
 
-  registerUserRoutes(app, { controller: userController });
-  registerRoleRoutes(app, { controller: roleController });
-  registerPlaceRoutes(app, { controller: placeController });
-  registerPermissionRoutes(app, { controller: permissionController });
-  registerUnitRoutes(app, { controller: unitController });
-  registerTableRoutes(app, { controller: tableController });
-  registerIngredientRoutes(app, { controller: ingredientController });
-  registerPackageRoutes(app, { controller: packageController });
-  registerCategoryRoutes(app, { controller: categoryController });
-  registerMenuRoutes(app, { controller: menuController });
-  registerMenuPriceRoutes(app, { controller: menuPriceController });
-  registerMenuVariantRoutes(app, { controller: menuVariantController });
-  registerMenuVariantItemRoutes(app, { controller: menuVariantItemController });
-  registerRecipeRoutes(app, { controller: recipeController });
-  registerPaymentMethodRoutes(app, { controller: paymentMethodController });
-  registerDeliveryIntegrationRoutes(app, { controller: deliveryIntegrationController });
-  registerReportFileRoutes(app, { controller: reportFileController });
-  registerActivityLogRoutes(app, { controller: activityLogController });
-  registerSystemLogRoutes(app, { controller: systemLogController });
-  registerIngredientPackageRoutes(app, { controller: ingredientPackageController });
-  registerSupplierRoutes(app, { controller: supplierController });
-  registerSupplierProductRoutes(app, { controller: supplierProductController });
-  registerTransactionRoutes(app, { controller: transactionController });
-  registerTransactionItemRoutes(app, { controller: transactionController });
-  registerTransactionItemVariantRoutes(app, { controller: transactionController });
-  registerKitchenOrderRoutes(app, { controller: transactionController });
-  registerPlaceStockRoutes(app, { controller: placeStockController });
-  registerInventoryStockDailyRoutes(app, { controller: inventoryStockDailyController });
-  registerStockTransferRoutes(app, { controller: stockTransferController });
-  registerWasteRoutes(app, { controller: wasteController });
-  registerCashierShiftRoutes(app, { controller: cashierShiftController });
-  registerPromotionRoutes(app, { controller: promotionController });
-  registerPromotionRuleRoutes(app, { controller: promotionRuleController });
+  const middlewareDeps = { requireAuth, authorize };
+
+  registerUserRoutes(app, { controller: userController, ...middlewareDeps });
+  registerRoleRoutes(app, { controller: roleController, ...middlewareDeps });
+  registerPlaceRoutes(app, { controller: placeController, ...middlewareDeps });
+  registerPermissionRoutes(app, { controller: permissionController, ...middlewareDeps });
+  registerUnitRoutes(app, { controller: unitController, ...middlewareDeps });
+  registerTableRoutes(app, { controller: tableController, ...middlewareDeps });
+  registerIngredientRoutes(app, { controller: ingredientController, ...middlewareDeps });
+  registerPackageRoutes(app, { controller: packageController, ...middlewareDeps });
+  registerCategoryRoutes(app, { controller: categoryController, ...middlewareDeps });
+  registerMenuRoutes(app, { controller: menuController, ...middlewareDeps });
+  registerMenuPriceRoutes(app, { controller: menuPriceController, ...middlewareDeps });
+  registerMenuVariantRoutes(app, { controller: menuVariantController, ...middlewareDeps });
+  registerMenuVariantItemRoutes(app, { controller: menuVariantItemController, ...middlewareDeps });
+  registerRecipeRoutes(app, { controller: recipeController, ...middlewareDeps });
+  registerPaymentMethodRoutes(app, { controller: paymentMethodController, ...middlewareDeps });
+  registerDeliveryIntegrationRoutes(app, {
+    controller: deliveryIntegrationController,
+    ...middlewareDeps,
+  });
+  registerReportFileRoutes(app, { controller: reportFileController, ...middlewareDeps });
+  registerActivityLogRoutes(app, { controller: activityLogController, ...middlewareDeps });
+  registerSystemLogRoutes(app, { controller: systemLogController, ...middlewareDeps });
+  registerIngredientPackageRoutes(app, { controller: ingredientPackageController, ...middlewareDeps });
+  registerSupplierRoutes(app, { controller: supplierController, ...middlewareDeps });
+  registerSupplierProductRoutes(app, { controller: supplierProductController, ...middlewareDeps });
+  registerTransactionRoutes(app, { controller: transactionController, ...middlewareDeps });
+  registerTransactionItemRoutes(app, { controller: transactionController, ...middlewareDeps });
+  registerTransactionItemVariantRoutes(app, { controller: transactionController, ...middlewareDeps });
+  registerKitchenOrderRoutes(app, { controller: transactionController, ...middlewareDeps });
+  registerPlaceStockRoutes(app, { controller: placeStockController, ...middlewareDeps });
+  registerInventoryStockDailyRoutes(app, {
+    controller: inventoryStockDailyController,
+    ...middlewareDeps,
+  });
+  registerStockTransferRoutes(app, { controller: stockTransferController, ...middlewareDeps });
+  registerWasteRoutes(app, { controller: wasteController, ...middlewareDeps });
+  registerCashierShiftRoutes(app, { controller: cashierShiftController, ...middlewareDeps });
+  registerPromotionRoutes(app, { controller: promotionController, ...middlewareDeps });
+  registerPromotionRuleRoutes(app, { controller: promotionRuleController, ...middlewareDeps });
   registerAuthRoutes(app, { controller: authController, optionalAuth });
 
   app.get('/api/docs.json', (req, res) => {
