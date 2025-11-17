@@ -3,6 +3,7 @@ import HttpStatus from '../../Commons/Constants/HttpStatus.js';
 import { expandPermissionsWithAliases } from '../../Commons/Constants/PermissionMatrix.js';
 import { verifyToken } from '../../Commons/Utils/JwtHelper.js';
 import User from '../../Domains/Users/Entities/User.js';
+import { setRequestContextUser } from '../../Infrastructures/Context/RequestContext.js';
 
 function extractBearerToken(authorizationHeader) {
   if (!authorizationHeader) {
@@ -139,6 +140,8 @@ export function createRequireAuthMiddleware({ userService, tokenVerifier = verif
         token,
         payload: decoded,
       };
+
+      setRequestContextUser(req.user);
 
       next();
     } catch (error) {

@@ -2,6 +2,7 @@ import express from './ExpressShim.js';
 import AppConfig from '../Config/AppConfig.js';
 import logger from '../Logger/WinstonLogger.js';
 import { disconnectPrisma } from '../DatabaseConfig.js';
+import requestContextMiddleware from '../../Interfaces/Middlewares/RequestContextMiddleware.js';
 import registerUserRoutes from '../../Interfaces/Http/routes/userRoutes.js';
 import registerRoleRoutes from '../../Interfaces/Http/routes/roleRoutes.js';
 import registerPlaceRoutes from '../../Interfaces/Http/routes/placeRoutes.js';
@@ -43,6 +44,7 @@ import { createOpenApiDocument, createSwaggerHtml } from '../../Interfaces/Http/
 export function createExpressApp({ container } = {}) {
   const app = express();
 
+  app.use(requestContextMiddleware);
   app.use(express.json());
 
   const diContainer = container ?? createContainer();
