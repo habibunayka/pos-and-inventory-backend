@@ -1,28 +1,28 @@
-import fs from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import fs from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const prismaDir = dirname(__filename);
-const basePath = join(prismaDir, 'base.prisma');
-const entitiesDir = join(prismaDir, 'entities');
-const schemaPath = join(prismaDir, 'schema.prisma');
+const basePath = join(prismaDir, "base.prisma");
+const entitiesDir = join(prismaDir, "entities");
+const schemaPath = join(prismaDir, "schema.prisma");
 
 if (!fs.existsSync(basePath)) {
-  throw new Error('❌ Missing prisma/base.prisma file.');
+	throw new Error("❌ Missing prisma/base.prisma file.");
 }
 
 if (!fs.existsSync(entitiesDir)) {
-  throw new Error('❌ Missing prisma/entities directory.');
+	throw new Error("❌ Missing prisma/entities directory.");
 }
 
 const entityFiles = fs
-  .readdirSync(entitiesDir)
-  .filter((file) => file.endsWith('.prisma'))
-  .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+	.readdirSync(entitiesDir)
+	.filter((file) => file.endsWith(".prisma"))
+	.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
 if (entityFiles.length === 0) {
-  throw new Error('❌ No entity schema files found in prisma/entities.');
+	throw new Error("❌ No entity schema files found in prisma/entities.");
 }
 
 const header = `// ============================================================
@@ -35,12 +35,12 @@ const header = `// ============================================================
 let schemaContent = header;
 
 // Tambah base.prisma
-schemaContent += fs.readFileSync(basePath, 'utf-8');
+schemaContent += fs.readFileSync(basePath, "utf-8");
 
 // Tambah setiap entity file
 for (const file of entityFiles) {
-  const content = fs.readFileSync(join(entitiesDir, file), 'utf-8');
-  schemaContent += `\n\n// ===== ${file} =====\n` + content.trim() + '\n';
+	const content = fs.readFileSync(join(entitiesDir, file), "utf-8");
+	schemaContent += `\n\n// ===== ${file} =====\n` + content.trim() + "\n";
 }
 
 fs.writeFileSync(schemaPath, schemaContent);

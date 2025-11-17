@@ -115,12 +115,14 @@ export function createOpenApiDocument({ serverUrl = "http://localhost:3000" } = 
       { name: "TransactionItemVariants", description: "Varian item transaksi" },
       { name: "KitchenOrders", description: "Antrian produksi dapur" },
     ],
+    security: [{ bearerAuth: [] }],
     paths: {
       "/api/auth/login": {
         post: {
           tags: ["Auth"],
           summary: "Login pengguna",
           operationId: "loginUser",
+          security: [],
           requestBody: {
             required: true,
             content: {
@@ -1309,6 +1311,14 @@ export function createOpenApiDocument({ serverUrl = "http://localhost:3000" } = 
       },
     },
     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "Gunakan token JWT dari endpoint login.",
+        },
+      },
       schemas: {
         PlaceStock: { type: "object", required: ["id","placeId","ingredientId","qty","unitId"], properties: { id: { type: "integer", example: 1 }, placeId: { type: "integer", example: 1 }, ingredientId: { type: "integer", example: 2 }, qty: { type: "number", example: 100 }, unitId: { type: "integer", example: 1 } } },
         CreatePlaceStockRequest: { type: "object", required: ["placeId","ingredientId","qty","unitId"], properties: { placeId: { type: "integer", example: 1 }, ingredientId: { type: "integer", example: 2 }, qty: { type: "number", example: 100 }, unitId: { type: "integer", example: 1 } } },
@@ -2097,6 +2107,7 @@ export function createSwaggerHtml({ title = "POS Backend API Docs", specUrl = "/
           url: '${specUrl}',
           dom_id: '#swagger-ui',
           presets: [SwaggerUIBundle.presets.apis],
+          persistAuthorization: true,
           layout: 'BaseLayout',
         });
       };

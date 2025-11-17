@@ -1,8 +1,8 @@
-import BaseTableUsecase from './BaseTableUsecase.js';
+import BaseTableUsecase from "./BaseTableUsecase.js";
 
 export default class ListTablesUsecase extends BaseTableUsecase {
-  async execute() {
-    return this.tableService.listTables();
-  }
+	async execute() {
+		return this.tableService.listTables();
+	}
 }
 

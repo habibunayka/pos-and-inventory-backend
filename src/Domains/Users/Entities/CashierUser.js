@@ -1,58 +1,58 @@
-import ValidationError from '../../../Commons/Errors/ValidationError.js';
+import ValidationError from "../../../Commons/Errors/ValidationError.js";
 
 export default class CashierUser {
-  constructor(payload) {
-    this._verifyPayload(payload);
+	constructor(payload) {
+		this._verifyPayload(payload);
 
-    const { name, pin, status = 'active', placeId = null } = payload;
+		const { name, pin, status = "active", placeId = null } = payload;
 
-    this.name = name.trim();
-    this.pin = String(pin).trim();
-    this.status = status;
-    this.placeId = CashierUser.normalizePlaceId(placeId);
-  }
+		this.name = name.trim();
+		this.pin = String(pin).trim();
+		this.status = status;
+		this.placeId = CashierUser.normalizePlaceId(placeId);
+	}
 
-  _verifyPayload(payload) {
-    if (!payload || typeof payload !== 'object') {
-      throw new ValidationError('CASHIER_USER.PAYLOAD_NOT_OBJECT');
-    }
+	_verifyPayload(payload) {
+		if (!payload || typeof payload !== "object") {
+			throw new ValidationError("CASHIER_USER.PAYLOAD_NOT_OBJECT");
+		}
 
-    const { name, pin, status, placeId } = payload;
+		const { name, pin, status, placeId } = payload;
 
-    if (!name || pin === undefined || pin === null) {
-      throw new ValidationError('CASHIER_USER.NOT_CONTAIN_NEEDED_PROPERTY');
-    }
+		if (!name || pin === undefined || pin === null) {
+			throw new ValidationError("CASHIER_USER.NOT_CONTAIN_NEEDED_PROPERTY");
+		}
 
-    if (typeof name !== 'string') {
-      throw new ValidationError('CASHIER_USER.NAME_NOT_STRING');
-    }
+		if (typeof name !== "string") {
+			throw new ValidationError("CASHIER_USER.NAME_NOT_STRING");
+		}
 
-    if (typeof pin !== 'string' && typeof pin !== 'number') {
-      throw new ValidationError('CASHIER_USER.PIN_NOT_VALID_TYPE');
-    }
+		if (typeof pin !== "string" && typeof pin !== "number") {
+			throw new ValidationError("CASHIER_USER.PIN_NOT_VALID_TYPE");
+		}
 
-    if (status !== undefined && typeof status !== 'string') {
-      throw new ValidationError('CASHIER_USER.STATUS_NOT_STRING');
-    }
+		if (status !== undefined && typeof status !== "string") {
+			throw new ValidationError("CASHIER_USER.STATUS_NOT_STRING");
+		}
 
-    CashierUser.normalizePlaceId(placeId);
+		CashierUser.normalizePlaceId(placeId);
 
-    if (!name.trim()) {
-      throw new ValidationError('CASHIER_USER.NAME_EMPTY');
-    }
-  }
+		if (!name.trim()) {
+			throw new ValidationError("CASHIER_USER.NAME_EMPTY");
+		}
+	}
 
-  static normalizePlaceId(placeId) {
-    if (placeId === undefined || placeId === null || placeId === '') {
-      return null;
-    }
+	static normalizePlaceId(placeId) {
+		if (placeId === undefined || placeId === null || placeId === "") {
+			return null;
+		}
 
-    const numeric = Number(placeId);
+		const numeric = Number(placeId);
 
-    if (Number.isNaN(numeric)) {
-      throw new ValidationError('CASHIER_USER.PLACE_ID_NOT_NUMBER');
-    }
+		if (Number.isNaN(numeric)) {
+			throw new ValidationError("CASHIER_USER.PLACE_ID_NOT_NUMBER");
+		}
 
-    return numeric;
-  }
+		return numeric;
+	}
 }

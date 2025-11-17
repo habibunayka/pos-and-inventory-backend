@@ -1,30 +1,30 @@
 class Logger {
-  info(message, meta = undefined) {
-    if (meta) {
-      console.log(`[INFO] ${message}`, meta);
-      return;
-    }
+	info(message, meta = undefined) {
+		if (meta) {
+			console.log(`[INFO] ${message}`, meta);
+			return;
+		}
 
-    console.log(`[INFO] ${message}`);
-  }
+		console.log(`[INFO] ${message}`);
+	}
 
-  warn(message, meta = undefined) {
-    if (meta) {
-      console.warn(`[WARN] ${message}`, meta);
-      return;
-    }
+	warn(message, meta = undefined) {
+		if (meta) {
+			console.warn(`[WARN] ${message}`, meta);
+			return;
+		}
 
-    console.warn(`[WARN] ${message}`);
-  }
+		console.warn(`[WARN] ${message}`);
+	}
 
-  error(message, meta = undefined) {
-    if (meta) {
-      console.error(`[ERROR] ${message}`, meta);
-      return;
-    }
+	error(message, meta = undefined) {
+		if (meta) {
+			console.error(`[ERROR] ${message}`, meta);
+			return;
+		}
 
-    console.error(`[ERROR] ${message}`);
-  }
+		console.error(`[ERROR] ${message}`);
+	}
 }
 
 const logger = new Logger();

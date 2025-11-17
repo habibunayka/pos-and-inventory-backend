@@ -1,6 +1,6 @@
-import BaseMenuVariantUsecase from './BaseMenuVariantUsecase.js';
+import BaseMenuVariantUsecase from "./BaseMenuVariantUsecase.js";
 
 export default class ListMenuVariantsUsecase extends BaseMenuVariantUsecase {
-  async execute(){ return this.menuVariantService.listMenuVariants(); }
+	async execute() { return this.menuVariantService.listMenuVariants(); }
 }
 
