@@ -19,7 +19,7 @@ export default class Role {
 			id: record.id,
 			name: record.name,
 			description: record.description,
-			permissions,
+			permissions
 		});
 	}
 

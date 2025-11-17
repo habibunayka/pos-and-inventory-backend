@@ -10,4 +10,3 @@ export default class GetSupplierProductUsecase extends BaseSupplierProductUsecas
 		return record;
 	}
 }
-

@@ -7,9 +7,10 @@ export default class MenuPresenter {
 			name: model.name,
 			categoryId: model.categoryId ?? null,
 			description: model.description ?? null,
-			isActive: model.isActive,
+			isActive: model.isActive
 		};
 	}
-	presentCollection(records = []) { return records.map((r) => this.present(r)); }
+	presentCollection(records = []) {
+		return records.map((r) => this.present(r));
+	}
 }
-

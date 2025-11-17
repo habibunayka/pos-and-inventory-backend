@@ -19,27 +19,26 @@ export default function registerIngredientRoutes(app, { controller, requireAuth,
 		"/",
 		...canCreateIngredients,
 		validateRequest({ body: ingredientSchemas.create }),
-		adapt(controller.createIngredient.bind(controller)),
+		adapt(controller.createIngredient.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewIngredients,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getIngredient.bind(controller)),
+		adapt(controller.getIngredient.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateIngredients,
 		validateRequest({ params: commonSchemas.idParam, body: ingredientSchemas.update }),
-		adapt(controller.updateIngredient.bind(controller)),
+		adapt(controller.updateIngredient.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteIngredients,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteIngredient.bind(controller)),
+		adapt(controller.deleteIngredient.bind(controller))
 	);
 
 	app.use("/api/ingredients", router);
 }
-

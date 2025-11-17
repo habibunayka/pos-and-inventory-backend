@@ -11,10 +11,19 @@ export default class TransactionItemService {
 		this._repo = transactionItemRepository;
 	}
 
-	listItems() { return this._repo.findAll(); }
-	getItem(id) { return this._repo.findById(id); }
-	createItem(data) { return this._repo.createItem(data); }
-	updateItem({ id, data }) { return this._repo.updateItem({ id, data }); }
-	deleteItem(id) { return this._repo.deleteItem(id); }
+	listItems() {
+		return this._repo.findAll();
+	}
+	getItem(id) {
+		return this._repo.findById(id);
+	}
+	createItem(data) {
+		return this._repo.createItem(data);
+	}
+	updateItem({ id, data }) {
+		return this._repo.updateItem({ id, data });
+	}
+	deleteItem(id) {
+		return this._repo.deleteItem(id);
+	}
 }
-

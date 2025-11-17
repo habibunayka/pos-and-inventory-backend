@@ -5,4 +5,3 @@ export default class ListTablesUsecase extends BaseTableUsecase {
 		return this.tableService.listTables();
 	}
 }
-

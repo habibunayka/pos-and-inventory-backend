@@ -10,4 +10,3 @@ export default class GetSupplierUsecase extends BaseSupplierUsecase {
 		return record;
 	}
 }
-

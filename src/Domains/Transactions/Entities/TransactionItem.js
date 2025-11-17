@@ -1,12 +1,5 @@
 export default class TransactionItem {
-	constructor({
-		id = null,
-		transactionId,
-		menuId,
-		qty,
-		price,
-		discount = null,
-	}) {
+	constructor({ id = null, transactionId, menuId, qty, price, discount = null }) {
 		this.id = id;
 		this.transactionId = transactionId;
 		this.menuId = menuId;
@@ -23,7 +16,7 @@ export default class TransactionItem {
 			menuId: record.menuId,
 			qty: record.qty,
 			price: record.price,
-			discount: record.discount ?? null,
+			discount: record.discount ?? null
 		});
 	}
 }

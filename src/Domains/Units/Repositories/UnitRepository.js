@@ -23,4 +23,3 @@ export default class UnitRepository {
 		throw new Error("UNIT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
 }
-

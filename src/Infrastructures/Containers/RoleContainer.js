@@ -5,37 +5,33 @@ import {
 	GetRoleUsecase,
 	CreateRoleUsecase,
 	UpdateRoleUsecase,
-	DeleteRoleUsecase,
+	DeleteRoleUsecase
 } from "../../Applications/Roles/UseCases/index.js";
 import RolePresenter from "../../Interfaces/Presenters/RolePresenter.js";
 import RoleController from "../../Interfaces/Controllers/RoleController.js";
 
 export default function registerRoleContainer({ container, overrides = {}, prisma }) {
-	const roleRepository =
-    overrides.roleRepository ?? new PrismaRoleRepository({ prisma });
+	const roleRepository = overrides.roleRepository ?? new PrismaRoleRepository({ prisma });
 
 	const roleService = overrides.roleService ?? new RoleService({ roleRepository });
 
 	const listRolesUsecase = overrides.listRolesUsecase ?? new ListRolesUsecase({ roleService });
 	const getRoleUsecase = overrides.getRoleUsecase ?? new GetRoleUsecase({ roleService });
-	const createRoleUsecase =
-    overrides.createRoleUsecase ?? new CreateRoleUsecase({ roleService });
-	const updateRoleUsecase =
-    overrides.updateRoleUsecase ?? new UpdateRoleUsecase({ roleService });
-	const deleteRoleUsecase =
-    overrides.deleteRoleUsecase ?? new DeleteRoleUsecase({ roleService });
+	const createRoleUsecase = overrides.createRoleUsecase ?? new CreateRoleUsecase({ roleService });
+	const updateRoleUsecase = overrides.updateRoleUsecase ?? new UpdateRoleUsecase({ roleService });
+	const deleteRoleUsecase = overrides.deleteRoleUsecase ?? new DeleteRoleUsecase({ roleService });
 
 	const rolePresenter = overrides.rolePresenter ?? new RolePresenter();
 	const roleController =
-    overrides.roleController ??
-    new RoleController({
-    	rolePresenter,
-    	listRolesUsecase,
-    	getRoleUsecase,
-    	createRoleUsecase,
-    	updateRoleUsecase,
-    	deleteRoleUsecase,
-    });
+		overrides.roleController ??
+		new RoleController({
+			rolePresenter,
+			listRolesUsecase,
+			getRoleUsecase,
+			createRoleUsecase,
+			updateRoleUsecase,
+			deleteRoleUsecase
+		});
 
 	container.set("roleRepository", roleRepository);
 	container.set("roleService", roleService);

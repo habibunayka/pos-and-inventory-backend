@@ -5,7 +5,11 @@ export default class BaseCategoryUsecase {
 		if (!categoryService) throw new Error("CATEGORY_USECASE.MISSING_SERVICE");
 		this.categoryService = categoryService;
 	}
-	_normalize(text) { return String(text ?? "").trim().toLowerCase(); }
+	_normalize(text) {
+		return String(text ?? "")
+			.trim()
+			.toLowerCase();
+	}
 	async _assertNameAvailable(name, ignoreId = null) {
 		const normalized = this._normalize(name);
 		if (!normalized) throw new ValidationError("Category name is required");
@@ -16,4 +20,3 @@ export default class BaseCategoryUsecase {
 		return normalized;
 	}
 }
-

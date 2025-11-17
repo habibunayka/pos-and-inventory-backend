@@ -7,7 +7,7 @@ export default class ReportFile {
 		placeId = null,
 		fileName,
 		filePath,
-		createdAt,
+		createdAt
 	}) {
 		this.id = id;
 		this.reportType = reportType;
@@ -29,7 +29,7 @@ export default class ReportFile {
 			placeId: record.placeId ?? null,
 			fileName: record.fileName,
 			filePath: record.filePath,
-			createdAt: record.createdAt,
+			createdAt: record.createdAt
 		});
 	}
 }

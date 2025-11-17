@@ -10,9 +10,16 @@ export default class StockTransferService {
 		}
 		this._repo = stockTransferRepository;
 	}
-	list() { return this._repo.findAll(); }
-	get(id) { return this._repo.findById(id); }
-	create(data) { return this._repo.createTransfer(data); }
-	delete(id) { return this._repo.deleteTransfer(id); }
+	list() {
+		return this._repo.findAll();
+	}
+	get(id) {
+		return this._repo.findById(id);
+	}
+	create(data) {
+		return this._repo.createTransfer(data);
+	}
+	delete(id) {
+		return this._repo.deleteTransfer(id);
+	}
 }
-

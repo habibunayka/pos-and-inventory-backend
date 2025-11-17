@@ -19,27 +19,26 @@ export default function registerPlaceStockRoutes(app, { controller, requireAuth,
 		"/",
 		...canCreatePlaceStocks,
 		validateRequest({ body: psSchemas.create }),
-		adapt(controller.createPlaceStock.bind(controller)),
+		adapt(controller.createPlaceStock.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewPlaceStocks,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getPlaceStock.bind(controller)),
+		adapt(controller.getPlaceStock.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdatePlaceStocks,
 		validateRequest({ params: commonSchemas.idParam, body: psSchemas.update }),
-		adapt(controller.updatePlaceStock.bind(controller)),
+		adapt(controller.updatePlaceStock.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeletePlaceStocks,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deletePlaceStock.bind(controller)),
+		adapt(controller.deletePlaceStock.bind(controller))
 	);
 
 	app.use("/api/place-stocks", router);
 }
-

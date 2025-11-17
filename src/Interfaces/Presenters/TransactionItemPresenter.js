@@ -7,10 +7,11 @@ export default class TransactionItemPresenter {
 			menuId: record.menuId,
 			qty: record.qty,
 			price: Number(record.price),
-			discount: record.discount == null ? null : Number(record.discount),
+			discount: record.discount == null ? null : Number(record.discount)
 		};
 	}
 
-	presentCollection(records) { return records.map((r) => this.present(r)); }
+	presentCollection(records) {
+		return records.map((r) => this.present(r));
+	}
 }
-

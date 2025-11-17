@@ -12,7 +12,7 @@ export default class PromotionRule {
 			id: record.id ?? null,
 			promotionId: record.promotionId,
 			ruleType: record.ruleType ?? null,
-			value: record.value ?? null,
+			value: record.value ?? null
 		});
 	}
 }

@@ -10,10 +10,19 @@ export default class PromotionService {
 		}
 		this._repo = promotionRepository;
 	}
-	list() { return this._repo.findAll(); }
-	get(id) { return this._repo.findById(id); }
-	create(data) { return this._repo.createPromotion(data); }
-	update({ id, data }) { return this._repo.updatePromotion({ id, data }); }
-	delete(id) { return this._repo.deletePromotion(id); }
+	list() {
+		return this._repo.findAll();
+	}
+	get(id) {
+		return this._repo.findById(id);
+	}
+	create(data) {
+		return this._repo.createPromotion(data);
+	}
+	update({ id, data }) {
+		return this._repo.updatePromotion({ id, data });
+	}
+	delete(id) {
+		return this._repo.deletePromotion(id);
+	}
 }
-

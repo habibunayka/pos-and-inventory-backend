@@ -24,4 +24,3 @@ export default class UpdateTableUsecase extends BaseTableUsecase {
 		return this.tableService.updateTable({ id: numericId, tableData: update });
 	}
 }
-

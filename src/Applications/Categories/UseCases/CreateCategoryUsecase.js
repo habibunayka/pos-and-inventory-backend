@@ -6,4 +6,3 @@ export default class CreateCategoryUsecase extends BaseCategoryUsecase {
 		return this.categoryService.createCategory({ name });
 	}
 }
-

@@ -7,10 +7,11 @@ export default class SupplierPresenter {
 			contactName: record.contactName,
 			phone: record.phone,
 			email: record.email,
-			address: record.address,
+			address: record.address
 		};
 	}
 
-	presentCollection(records) { return records.map((r) => this.present(r)); }
+	presentCollection(records) {
+		return records.map((r) => this.present(r));
+	}
 }
-

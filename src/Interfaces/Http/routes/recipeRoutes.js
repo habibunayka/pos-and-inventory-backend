@@ -19,27 +19,26 @@ export default function registerRecipeRoutes(app, { controller, requireAuth, aut
 		"/",
 		...canCreateRecipes,
 		validateRequest({ body: recipeSchemas.create }),
-		adapt(controller.createRecipe.bind(controller)),
+		adapt(controller.createRecipe.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewRecipes,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getRecipe.bind(controller)),
+		adapt(controller.getRecipe.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateRecipes,
 		validateRequest({ params: commonSchemas.idParam, body: recipeSchemas.update }),
-		adapt(controller.updateRecipe.bind(controller)),
+		adapt(controller.updateRecipe.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteRecipes,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteRecipe.bind(controller)),
+		adapt(controller.deleteRecipe.bind(controller))
 	);
 
 	app.use("/api/recipes", router);
 }
-

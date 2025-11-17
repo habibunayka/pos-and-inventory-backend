@@ -7,7 +7,7 @@ export default class IngredientController {
 		getIngredientUsecase,
 		createIngredientUsecase,
 		updateIngredientUsecase,
-		deleteIngredientUsecase,
+		deleteIngredientUsecase
 	}) {
 		if (!ingredientPresenter) throw new Error("IngredientController requires a presenter");
 		const reqs = [
@@ -15,7 +15,7 @@ export default class IngredientController {
 			["getIngredientUsecase", getIngredientUsecase],
 			["createIngredientUsecase", createIngredientUsecase],
 			["updateIngredientUsecase", updateIngredientUsecase],
-			["deleteIngredientUsecase", deleteIngredientUsecase],
+			["deleteIngredientUsecase", deleteIngredientUsecase]
 		];
 		const miss = reqs.find(([, v]) => !v);
 		if (miss) throw new Error(`IngredientController requires ${miss[0]}`);
@@ -49,4 +49,3 @@ export default class IngredientController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 }
-

@@ -12,7 +12,7 @@ export default class Table {
 			id: record.id ?? null,
 			placeId: record.placeId,
 			name: record.name,
-			status: record.status ?? null,
+			status: record.status ?? null
 		});
 	}
 }

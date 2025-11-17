@@ -19,4 +19,3 @@ export default class IngredientRepository {
 		throw new Error("INGREDIENT_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
 }
-

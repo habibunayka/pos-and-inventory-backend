@@ -11,9 +11,16 @@ export default class TransactionItemVariantService {
 		this._repo = transactionItemVariantRepository;
 	}
 
-	listVariants() { return this._repo.findAll(); }
-	getVariant(id) { return this._repo.findById(id); }
-	createVariant(data) { return this._repo.createVariant(data); }
-	deleteVariant(id) { return this._repo.deleteVariant(id); }
+	listVariants() {
+		return this._repo.findAll();
+	}
+	getVariant(id) {
+		return this._repo.findById(id);
+	}
+	createVariant(data) {
+		return this._repo.createVariant(data);
+	}
+	deleteVariant(id) {
+		return this._repo.deleteVariant(id);
+	}
 }
-

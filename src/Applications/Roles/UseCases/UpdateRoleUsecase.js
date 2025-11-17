@@ -57,9 +57,9 @@ export default class UpdateRoleUsecase extends BaseRoleUsecase {
 			id: numericId,
 			roleData: {
 				name: normalizedName,
-				description,
+				description
 			},
-			permissionIds,
+			permissionIds
 		});
 
 		return Role.fromPersistence(updated);

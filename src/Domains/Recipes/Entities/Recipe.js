@@ -12,7 +12,7 @@ export default class Recipe {
 			id: record.id ?? null,
 			menuId: record.menuId,
 			ingredientId: record.ingredientId,
-			qty: record.qty,
+			qty: record.qty
 		});
 	}
 }

@@ -27,7 +27,7 @@ import {
 	GetKitchenOrderUsecase,
 	CreateKitchenOrderUsecase,
 	UpdateKitchenOrderUsecase,
-	DeleteKitchenOrderUsecase,
+	DeleteKitchenOrderUsecase
 } from "../../Applications/Transactions/UseCases/index.js";
 
 import TransactionPresenter from "../../Interfaces/Presenters/TransactionPresenter.js";
@@ -38,68 +38,98 @@ import TransactionController from "../../Interfaces/Controllers/TransactionContr
 
 export default function registerTransactionContainer({ container, overrides = {}, prisma }) {
 	const transactionRepository = overrides.transactionRepository ?? new PrismaTransactionRepository({ prisma });
-	const transactionItemRepository = overrides.transactionItemRepository ?? new PrismaTransactionItemRepository({ prisma });
-	const transactionItemVariantRepository = overrides.transactionItemVariantRepository ?? new PrismaTransactionItemVariantRepository({ prisma });
+	const transactionItemRepository =
+		overrides.transactionItemRepository ?? new PrismaTransactionItemRepository({ prisma });
+	const transactionItemVariantRepository =
+		overrides.transactionItemVariantRepository ?? new PrismaTransactionItemVariantRepository({ prisma });
 	const kitchenOrderRepository = overrides.kitchenOrderRepository ?? new PrismaKitchenOrderRepository({ prisma });
 
 	const transactionService = overrides.transactionService ?? new TransactionService({ transactionRepository });
-	const transactionItemService = overrides.transactionItemService ?? new TransactionItemService({ transactionItemRepository });
-	const transactionItemVariantService = overrides.transactionItemVariantService ?? new TransactionItemVariantService({ transactionItemVariantRepository });
+	const transactionItemService =
+		overrides.transactionItemService ?? new TransactionItemService({ transactionItemRepository });
+	const transactionItemVariantService =
+		overrides.transactionItemVariantService ??
+		new TransactionItemVariantService({ transactionItemVariantRepository });
 	const kitchenOrderService = overrides.kitchenOrderService ?? new KitchenOrderService({ kitchenOrderRepository });
 
-	const listTransactionsUsecase = overrides.listTransactionsUsecase ?? new ListTransactionsUsecase({ transactionService });
+	const listTransactionsUsecase =
+		overrides.listTransactionsUsecase ?? new ListTransactionsUsecase({ transactionService });
 	const getTransactionUsecase = overrides.getTransactionUsecase ?? new GetTransactionUsecase({ transactionService });
-	const createTransactionUsecase = overrides.createTransactionUsecase ?? new CreateTransactionUsecase({ transactionService });
-	const updateTransactionUsecase = overrides.updateTransactionUsecase ?? new UpdateTransactionUsecase({ transactionService });
-	const deleteTransactionUsecase = overrides.deleteTransactionUsecase ?? new DeleteTransactionUsecase({ transactionService });
+	const createTransactionUsecase =
+		overrides.createTransactionUsecase ?? new CreateTransactionUsecase({ transactionService });
+	const updateTransactionUsecase =
+		overrides.updateTransactionUsecase ?? new UpdateTransactionUsecase({ transactionService });
+	const deleteTransactionUsecase =
+		overrides.deleteTransactionUsecase ?? new DeleteTransactionUsecase({ transactionService });
 
-	const listTransactionItemsUsecase = overrides.listTransactionItemsUsecase ?? new ListTransactionItemsUsecase({ transactionItemService });
-	const getTransactionItemUsecase = overrides.getTransactionItemUsecase ?? new GetTransactionItemUsecase({ transactionItemService });
-	const createTransactionItemUsecase = overrides.createTransactionItemUsecase ?? new CreateTransactionItemUsecase({ transactionItemService });
-	const updateTransactionItemUsecase = overrides.updateTransactionItemUsecase ?? new UpdateTransactionItemUsecase({ transactionItemService });
-	const deleteTransactionItemUsecase = overrides.deleteTransactionItemUsecase ?? new DeleteTransactionItemUsecase({ transactionItemService });
+	const listTransactionItemsUsecase =
+		overrides.listTransactionItemsUsecase ?? new ListTransactionItemsUsecase({ transactionItemService });
+	const getTransactionItemUsecase =
+		overrides.getTransactionItemUsecase ?? new GetTransactionItemUsecase({ transactionItemService });
+	const createTransactionItemUsecase =
+		overrides.createTransactionItemUsecase ?? new CreateTransactionItemUsecase({ transactionItemService });
+	const updateTransactionItemUsecase =
+		overrides.updateTransactionItemUsecase ?? new UpdateTransactionItemUsecase({ transactionItemService });
+	const deleteTransactionItemUsecase =
+		overrides.deleteTransactionItemUsecase ?? new DeleteTransactionItemUsecase({ transactionItemService });
 
-	const listTransactionItemVariantsUsecase = overrides.listTransactionItemVariantsUsecase ?? new ListTransactionItemVariantsUsecase({ transactionItemVariantService });
-	const getTransactionItemVariantUsecase = overrides.getTransactionItemVariantUsecase ?? new GetTransactionItemVariantUsecase({ transactionItemVariantService });
-	const createTransactionItemVariantUsecase = overrides.createTransactionItemVariantUsecase ?? new CreateTransactionItemVariantUsecase({ transactionItemVariantService });
-	const deleteTransactionItemVariantUsecase = overrides.deleteTransactionItemVariantUsecase ?? new DeleteTransactionItemVariantUsecase({ transactionItemVariantService });
+	const listTransactionItemVariantsUsecase =
+		overrides.listTransactionItemVariantsUsecase ??
+		new ListTransactionItemVariantsUsecase({ transactionItemVariantService });
+	const getTransactionItemVariantUsecase =
+		overrides.getTransactionItemVariantUsecase ??
+		new GetTransactionItemVariantUsecase({ transactionItemVariantService });
+	const createTransactionItemVariantUsecase =
+		overrides.createTransactionItemVariantUsecase ??
+		new CreateTransactionItemVariantUsecase({ transactionItemVariantService });
+	const deleteTransactionItemVariantUsecase =
+		overrides.deleteTransactionItemVariantUsecase ??
+		new DeleteTransactionItemVariantUsecase({ transactionItemVariantService });
 
-	const listKitchenOrdersUsecase = overrides.listKitchenOrdersUsecase ?? new ListKitchenOrdersUsecase({ kitchenOrderService });
-	const getKitchenOrderUsecase = overrides.getKitchenOrderUsecase ?? new GetKitchenOrderUsecase({ kitchenOrderService });
-	const createKitchenOrderUsecase = overrides.createKitchenOrderUsecase ?? new CreateKitchenOrderUsecase({ kitchenOrderService });
-	const updateKitchenOrderUsecase = overrides.updateKitchenOrderUsecase ?? new UpdateKitchenOrderUsecase({ kitchenOrderService });
-	const deleteKitchenOrderUsecase = overrides.deleteKitchenOrderUsecase ?? new DeleteKitchenOrderUsecase({ kitchenOrderService });
+	const listKitchenOrdersUsecase =
+		overrides.listKitchenOrdersUsecase ?? new ListKitchenOrdersUsecase({ kitchenOrderService });
+	const getKitchenOrderUsecase =
+		overrides.getKitchenOrderUsecase ?? new GetKitchenOrderUsecase({ kitchenOrderService });
+	const createKitchenOrderUsecase =
+		overrides.createKitchenOrderUsecase ?? new CreateKitchenOrderUsecase({ kitchenOrderService });
+	const updateKitchenOrderUsecase =
+		overrides.updateKitchenOrderUsecase ?? new UpdateKitchenOrderUsecase({ kitchenOrderService });
+	const deleteKitchenOrderUsecase =
+		overrides.deleteKitchenOrderUsecase ?? new DeleteKitchenOrderUsecase({ kitchenOrderService });
 
 	const transactionPresenter = overrides.transactionPresenter ?? new TransactionPresenter();
 	const transactionItemPresenter = overrides.transactionItemPresenter ?? new TransactionItemPresenter();
-	const transactionItemVariantPresenter = overrides.transactionItemVariantPresenter ?? new TransactionItemVariantPresenter();
+	const transactionItemVariantPresenter =
+		overrides.transactionItemVariantPresenter ?? new TransactionItemVariantPresenter();
 	const kitchenOrderPresenter = overrides.kitchenOrderPresenter ?? new KitchenOrderPresenter();
 
-	const transactionController = overrides.transactionController ?? new TransactionController({
-		transactionPresenter,
-		transactionItemPresenter,
-		transactionItemVariantPresenter,
-		kitchenOrderPresenter,
-		listTransactionsUsecase,
-		getTransactionUsecase,
-		createTransactionUsecase,
-		updateTransactionUsecase,
-		deleteTransactionUsecase,
-		listTransactionItemsUsecase,
-		getTransactionItemUsecase,
-		createTransactionItemUsecase,
-		updateTransactionItemUsecase,
-		deleteTransactionItemUsecase,
-		listTransactionItemVariantsUsecase,
-		getTransactionItemVariantUsecase,
-		createTransactionItemVariantUsecase,
-		deleteTransactionItemVariantUsecase,
-		listKitchenOrdersUsecase,
-		getKitchenOrderUsecase,
-		createKitchenOrderUsecase,
-		updateKitchenOrderUsecase,
-		deleteKitchenOrderUsecase,
-	});
+	const transactionController =
+		overrides.transactionController ??
+		new TransactionController({
+			transactionPresenter,
+			transactionItemPresenter,
+			transactionItemVariantPresenter,
+			kitchenOrderPresenter,
+			listTransactionsUsecase,
+			getTransactionUsecase,
+			createTransactionUsecase,
+			updateTransactionUsecase,
+			deleteTransactionUsecase,
+			listTransactionItemsUsecase,
+			getTransactionItemUsecase,
+			createTransactionItemUsecase,
+			updateTransactionItemUsecase,
+			deleteTransactionItemUsecase,
+			listTransactionItemVariantsUsecase,
+			getTransactionItemVariantUsecase,
+			createTransactionItemVariantUsecase,
+			deleteTransactionItemVariantUsecase,
+			listKitchenOrdersUsecase,
+			getKitchenOrderUsecase,
+			createKitchenOrderUsecase,
+			updateKitchenOrderUsecase,
+			deleteKitchenOrderUsecase
+		});
 
 	container.set("transactionRepository", transactionRepository);
 	container.set("transactionItemRepository", transactionItemRepository);
@@ -139,4 +169,3 @@ export default function registerTransactionContainer({ container, overrides = {}
 	container.set("kitchenOrderPresenter", kitchenOrderPresenter);
 	container.set("transactionController", transactionController);
 }
-

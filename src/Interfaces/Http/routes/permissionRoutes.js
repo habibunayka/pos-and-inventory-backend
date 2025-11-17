@@ -14,12 +14,12 @@ export default function registerPermissionRoutes(app, { controller, requireAuth,
 	const canViewPermissions = requirePermission("view_permissions", { requireAuth, authorize });
 	const canCreatePermissions = requirePermission("add_permissions", {
 		requireAuth,
-		authorize,
+		authorize
 	});
 	const canUpdatePermissions = requirePermission("edit_permissions", { requireAuth, authorize });
 	const canDeletePermissions = requirePermission("delete_permissions", {
 		requireAuth,
-		authorize,
+		authorize
 	});
 
 	router.get("/", ...canViewPermissions, adapt(controller.listPermissions.bind(controller)));
@@ -27,27 +27,26 @@ export default function registerPermissionRoutes(app, { controller, requireAuth,
 		"/",
 		...canCreatePermissions,
 		validateRequest({ body: permissionSchemas.create }),
-		adapt(controller.createPermission.bind(controller)),
+		adapt(controller.createPermission.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewPermissions,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getPermission.bind(controller)),
+		adapt(controller.getPermission.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdatePermissions,
 		validateRequest({ params: commonSchemas.idParam, body: permissionSchemas.update }),
-		adapt(controller.updatePermission.bind(controller)),
+		adapt(controller.updatePermission.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeletePermissions,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deletePermission.bind(controller)),
+		adapt(controller.deletePermission.bind(controller))
 	);
 
 	app.use("/api/permissions", router);
 }
-

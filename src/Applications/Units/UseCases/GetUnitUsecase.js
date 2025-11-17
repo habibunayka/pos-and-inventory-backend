@@ -10,4 +10,3 @@ export default class GetUnitUsecase extends BaseUnitUsecase {
 		return record;
 	}
 }
-

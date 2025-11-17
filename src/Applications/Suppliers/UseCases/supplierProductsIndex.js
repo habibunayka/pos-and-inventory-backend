@@ -3,4 +3,3 @@ export { default as GetSupplierProductUsecase } from "./GetSupplierProductUsecas
 export { default as CreateSupplierProductUsecase } from "./CreateSupplierProductUsecase.js";
 export { default as UpdateSupplierProductUsecase } from "./UpdateSupplierProductUsecase.js";
 export { default as DeleteSupplierProductUsecase } from "./DeleteSupplierProductUsecase.js";
-

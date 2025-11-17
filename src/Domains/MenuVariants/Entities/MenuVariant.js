@@ -10,7 +10,7 @@ export default class MenuVariant {
 		return new MenuVariant({
 			id: record.id ?? null,
 			menuId: record.menuId,
-			name: record.name,
+			name: record.name
 		});
 	}
 }

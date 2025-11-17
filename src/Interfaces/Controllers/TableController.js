@@ -7,7 +7,7 @@ export default class TableController {
 		getTableUsecase,
 		createTableUsecase,
 		updateTableUsecase,
-		deleteTableUsecase,
+		deleteTableUsecase
 	}) {
 		if (!tablePresenter) throw new Error("TableController requires a presenter");
 		const reqs = [
@@ -15,7 +15,7 @@ export default class TableController {
 			["getTableUsecase", getTableUsecase],
 			["createTableUsecase", createTableUsecase],
 			["updateTableUsecase", updateTableUsecase],
-			["deleteTableUsecase", deleteTableUsecase],
+			["deleteTableUsecase", deleteTableUsecase]
 		];
 		const miss = reqs.find(([, v]) => !v);
 		if (miss) throw new Error(`TableController requires ${miss[0]}`);
@@ -49,4 +49,3 @@ export default class TableController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 }
-

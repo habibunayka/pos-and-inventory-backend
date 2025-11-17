@@ -22,7 +22,7 @@ function normalizeAccountSeed(account) {
 
 	const normalized = {
 		name: account.name,
-		role: account.role ? String(account.role).trim().toLowerCase() : undefined,
+		role: account.role ? String(account.role).trim().toLowerCase() : undefined
 	};
 
 	if (!normalized.name || !normalized.role) {
@@ -65,8 +65,7 @@ function normalizePlaceSeed(place) {
 
 	const normalized = {
 		name: normalizedName,
-		isActive:
-      typeof place.isActive === "boolean" ? place.isActive : place.isActive !== false,
+		isActive: typeof place.isActive === "boolean" ? place.isActive : place.isActive !== false
 	};
 
 	const address = normalizeNullableString(place.address ?? "");
@@ -96,7 +95,7 @@ function normalizePlaceSeed(place) {
 function buildPlacePersistenceData(place) {
 	const data = {
 		name: place.name,
-		isActive: typeof place.isActive === "boolean" ? place.isActive : true,
+		isActive: typeof place.isActive === "boolean" ? place.isActive : true
 	};
 
 	if (Object.prototype.hasOwnProperty.call(place, "address")) {
@@ -128,14 +127,12 @@ function parseAdditionalAccountSeeds() {
 	try {
 		const parsed = JSON.parse(raw);
 		if (!Array.isArray(parsed)) {
-			 
 			console.warn("SEED_ADDITIONAL_ACCOUNTS must be a JSON array of account objects");
 			return [];
 		}
 
 		return parsed.map(normalizeAccountSeed).filter(Boolean);
 	} catch (error) {
-		 
 		console.warn("Failed to parse SEED_ADDITIONAL_ACCOUNTS JSON:", error.message);
 		return [];
 	}
@@ -151,14 +148,12 @@ function parseAdditionalPlaceSeeds() {
 	try {
 		const parsed = JSON.parse(raw);
 		if (!Array.isArray(parsed)) {
-			 
 			console.warn("SEED_ADDITIONAL_PLACES must be a JSON array of place objects");
 			return [];
 		}
 
 		return parsed.map(normalizePlaceSeed).filter(Boolean);
 	} catch (error) {
-		 
 		console.warn("Failed to parse SEED_ADDITIONAL_PLACES JSON:", error.message);
 		return [];
 	}
@@ -170,7 +165,7 @@ const roleDefinitions = [
 	{
 		name: "brand_owner",
 		description: "Brand owner with complete system access.",
-		permissions: permissionCatalog.map((permission) => permission.name),
+		permissions: permissionCatalog.map((permission) => permission.name)
 	},
 	{
 		name: "location_owner",
@@ -190,8 +185,8 @@ const roleDefinitions = [
 			"manage_reports",
 			"manage_kitchen_operations",
 			"manage_customer_data",
-			"manage_roles_permissions",
-		],
+			"manage_roles_permissions"
+		]
 	},
 	{
 		name: "admin",
@@ -205,8 +200,8 @@ const roleDefinitions = [
 			"manage_promotions",
 			"manage_reports",
 			"manage_roles_permissions",
-			"manage_customer_data",
-		],
+			"manage_customer_data"
+		]
 	},
 	{
 		name: "store_manager",
@@ -220,90 +215,53 @@ const roleDefinitions = [
 			"manage_inventory",
 			"manage_suppliers",
 			"manage_customer_data",
-			"manage_reports",
-		],
+			"manage_reports"
+		]
 	},
 	{
 		name: "cashier",
 		description: "Point of sale operator using PIN authentication.",
-		permissions: [
-			"manage_orders",
-			"manage_payments",
-			"manage_customer_data",
-		],
+		permissions: ["manage_orders", "manage_payments", "manage_customer_data"]
 	},
 	{
 		name: "chef",
 		description: "Kitchen staff focused on production queue.",
-		permissions: [
-			"manage_kitchen_operations",
-			"manage_orders",
-		],
+		permissions: ["manage_kitchen_operations", "manage_orders"]
 	},
 	{
 		name: "purchaising",
 		description: "Staff responsible for procurement and stock replenishment.",
-		permissions: [
-			"manage_inventory",
-			"manage_suppliers",
-			"manage_promotions",
-			"manage_reports",
-		],
+		permissions: ["manage_inventory", "manage_suppliers", "manage_promotions", "manage_reports"]
 	},
 	{
 		name: "waiters",
 		description: "Front-of-house staff managing tables and customer service.",
-		permissions: [
-			"manage_orders",
-			"manage_tables",
-			"manage_customer_data",
-		],
-	},
+		permissions: ["manage_orders", "manage_tables", "manage_customer_data"]
+	}
 ];
 
 const defaultPlaceSeeds = [
 	normalizePlaceSeed({
-		name: envOrDefault(
-			"SEED_PLACE_NAME",
-			envOrDefault("SEED_OUTLET_NAME", "Main Outlet")
-		),
-		address: envOrDefault(
-			"SEED_PLACE_ADDRESS",
-			envOrDefault("SEED_OUTLET_ADDRESS", "")
-		),
-		phone: envOrDefault(
-			"SEED_PLACE_PHONE",
-			envOrDefault("SEED_OUTLET_PHONE", "")
-		),
+		name: envOrDefault("SEED_PLACE_NAME", envOrDefault("SEED_OUTLET_NAME", "Main Outlet")),
+		address: envOrDefault("SEED_PLACE_ADDRESS", envOrDefault("SEED_OUTLET_ADDRESS", "")),
+		phone: envOrDefault("SEED_PLACE_PHONE", envOrDefault("SEED_OUTLET_PHONE", "")),
 		logoPath: envOrDefault("SEED_PLACE_LOGO", ""),
 		type: envOrDefault("SEED_PLACE_TYPE", "outlet"),
-		isActive: true,
-	}),
+		isActive: true
+	})
 ].filter(Boolean);
 
 const placeSeeds = [...defaultPlaceSeeds, ...parseAdditionalPlaceSeeds()];
 
 const defaultAccountSeeds = [
 	normalizeAccountSeed({
-		name: envOrDefault(
-			"SEED_BRAND_OWNER_NAME",
-			envOrDefault("SEED_OWNER_NAME", "Brand Owner")
-		),
+		name: envOrDefault("SEED_BRAND_OWNER_NAME", envOrDefault("SEED_OWNER_NAME", "Brand Owner")),
 		role: "brand_owner",
-		email: envOrDefault(
-			"SEED_BRAND_OWNER_EMAIL",
-			envOrDefault("SEED_OWNER_EMAIL", "brand.owner@example.com")
-		),
-		password: envOrDefault(
-			"SEED_BRAND_OWNER_PASSWORD",
-			envOrDefault("SEED_OWNER_PASSWORD", "BrandOwnerPass123!")
-		),
+		email: envOrDefault("SEED_BRAND_OWNER_EMAIL", envOrDefault("SEED_OWNER_EMAIL", "brand.owner@example.com")),
+		password: envOrDefault("SEED_BRAND_OWNER_PASSWORD", envOrDefault("SEED_OWNER_PASSWORD", "BrandOwnerPass123!"))
 	}),
 	normalizeAccountSeed({
-		name: envOrDefault(
-			"SEED_LOCATION_OWNER_NAME",
-			envOrDefault("SEED_MANAGER_NAME", "Location Owner")
-		),
+		name: envOrDefault("SEED_LOCATION_OWNER_NAME", envOrDefault("SEED_MANAGER_NAME", "Location Owner")),
 		role: "location_owner",
 		email: envOrDefault(
 			"SEED_LOCATION_OWNER_EMAIL",
@@ -312,43 +270,43 @@ const defaultAccountSeeds = [
 		password: envOrDefault(
 			"SEED_LOCATION_OWNER_PASSWORD",
 			envOrDefault("SEED_MANAGER_PASSWORD", "LocationOwnerPass123!")
-		),
+		)
 	}),
 	normalizeAccountSeed({
 		name: envOrDefault("SEED_ADMIN_NAME", "Administrator"),
 		role: "admin",
 		email: envOrDefault("SEED_ADMIN_EMAIL", "admin@example.com"),
-		password: envOrDefault("SEED_ADMIN_PASSWORD", "AdminPass123!"),
+		password: envOrDefault("SEED_ADMIN_PASSWORD", "AdminPass123!")
 	}),
 	normalizeAccountSeed({
 		name: envOrDefault("SEED_STORE_MANAGER_NAME", "Store Manager"),
 		role: "store_manager",
 		email: envOrDefault("SEED_STORE_MANAGER_EMAIL", "store.manager@example.com"),
-		password: envOrDefault("SEED_STORE_MANAGER_PASSWORD", "StoreManagerPass123!"),
+		password: envOrDefault("SEED_STORE_MANAGER_PASSWORD", "StoreManagerPass123!")
 	}),
 	normalizeAccountSeed({
 		name: envOrDefault("SEED_CASHIER_NAME", "Cashier A"),
 		role: "cashier",
-		pin: envOrDefault("SEED_CASHIER_PIN", "123456"),
+		pin: envOrDefault("SEED_CASHIER_PIN", "123456")
 	}),
 	normalizeAccountSeed({
 		name: envOrDefault("SEED_CHEF_NAME", "Kitchen Chef"),
 		role: "chef",
 		email: envOrDefault("SEED_CHEF_EMAIL", "chef@example.com"),
-		password: envOrDefault("SEED_CHEF_PASSWORD", "ChefPass123!"),
+		password: envOrDefault("SEED_CHEF_PASSWORD", "ChefPass123!")
 	}),
 	normalizeAccountSeed({
 		name: envOrDefault("SEED_PURCHAISING_NAME", "Purchaising Staff"),
 		role: "purchaising",
 		email: envOrDefault("SEED_PURCHAISING_EMAIL", "purchaising@example.com"),
-		password: envOrDefault("SEED_PURCHAISING_PASSWORD", "PurchaisingPass123!"),
+		password: envOrDefault("SEED_PURCHAISING_PASSWORD", "PurchaisingPass123!")
 	}),
 	normalizeAccountSeed({
 		name: envOrDefault("SEED_WAITERS_NAME", "Head Waiter"),
 		role: "waiters",
 		email: envOrDefault("SEED_WAITERS_EMAIL", "waiters@example.com"),
-		password: envOrDefault("SEED_WAITERS_PASSWORD", "WaitersPass123!"),
-	}),
+		password: envOrDefault("SEED_WAITERS_PASSWORD", "WaitersPass123!")
+	})
 ].filter(Boolean);
 
 const accountSeeds = [...defaultAccountSeeds, ...parseAdditionalAccountSeeds()];
@@ -356,14 +314,14 @@ const accountSeeds = [...defaultAccountSeeds, ...parseAdditionalAccountSeeds()];
 async function main() {
 	for (const place of placeSeeds) {
 		const existing = await prisma.place.findFirst({
-			where: { name: place.name },
+			where: { name: place.name }
 		});
 
 		if (existing) {
 			const updateData = buildPlacePersistenceData({ ...existing, ...place });
 			await prisma.place.update({
 				where: { id: existing.id },
-				data: updateData,
+				data: updateData
 			});
 		} else {
 			const createData = buildPlacePersistenceData(place);
@@ -377,7 +335,7 @@ async function main() {
 		const record = await prisma.permission.upsert({
 			where: { name: permission.name },
 			update: { description: permission.description },
-			create: permission,
+			create: permission
 		});
 		permissionRecords[permission.name] = record;
 	}
@@ -389,8 +347,8 @@ async function main() {
 			update: { description: roleDefinition.description },
 			create: {
 				name: roleDefinition.name,
-				description: roleDefinition.description,
-			},
+				description: roleDefinition.description
+			}
 		});
 
 		roleRecords[roleDefinition.name] = record;
@@ -400,9 +358,9 @@ async function main() {
 			await prisma.rolePermission.createMany({
 				data: roleDefinition.permissions.map((permissionName) => ({
 					roleId: record.id,
-					permissionId: permissionRecords[permissionName].id,
+					permissionId: permissionRecords[permissionName].id
 				})),
-				skipDuplicates: true,
+				skipDuplicates: true
 			});
 		}
 	}
@@ -410,7 +368,6 @@ async function main() {
 	for (const account of accountSeeds) {
 		const role = roleRecords[account.role];
 		if (!role) {
-			 
 			continue;
 		}
 
@@ -419,7 +376,7 @@ async function main() {
 			status: "active",
 			email: account.email ? account.email.toLowerCase() : null,
 			passwordHash: account.password ? await hashSecret(account.password) : null,
-			pinCodeHash: account.pin ? await hashSecret(account.pin) : null,
+			pinCodeHash: account.pin ? await hashSecret(account.pin) : null
 		};
 
 		let user;
@@ -427,20 +384,20 @@ async function main() {
 			user = await prisma.user.upsert({
 				where: { email: userData.email },
 				update: userData,
-				create: userData,
+				create: userData
 			});
 		} else {
 			const existingCashier = await prisma.user.findFirst({
 				where: {
 					name: userData.name,
-					email: null,
-				},
+					email: null
+				}
 			});
 
 			if (existingCashier) {
 				user = await prisma.user.update({
 					where: { id: existingCashier.id },
-					data: userData,
+					data: userData
 				});
 			} else {
 				user = await prisma.user.create({ data: userData });
@@ -451,8 +408,8 @@ async function main() {
 			where: {
 				userId: user.id,
 				roleId: role.id,
-				placeId: null,
-			},
+				placeId: null
+			}
 		});
 
 		if (!existingUserRole) {
@@ -460,8 +417,8 @@ async function main() {
 				data: {
 					userId: user.id,
 					roleId: role.id,
-					placeId: null,
-				},
+					placeId: null
+				}
 			});
 		}
 	}
@@ -472,7 +429,7 @@ async function main() {
 		{ name: "gram", abbreviation: "g" },
 		{ name: "kilogram", abbreviation: "kg" },
 		{ name: "liter", abbreviation: "l" },
-		{ name: "piece", abbreviation: "pc" },
+		{ name: "piece", abbreviation: "pc" }
 	];
 
 	const unitRecords = {};
@@ -480,7 +437,7 @@ async function main() {
 		const rec = await prisma.unit.upsert({
 			where: { name: u.name },
 			update: { abbreviation: u.abbreviation },
-			create: u,
+			create: u
 		});
 		unitRecords[u.name] = rec;
 	}
@@ -490,7 +447,7 @@ async function main() {
 		{ name: "Gula", unitName: "gram" },
 		{ name: "Tepung", unitName: "gram" },
 		{ name: "Minyak", unitName: "liter" },
-		{ name: "Telur", unitName: "piece" },
+		{ name: "Telur", unitName: "piece" }
 	];
 
 	const ingredientRecords = {};
@@ -512,7 +469,7 @@ async function main() {
 	const packageDefs = [
 		{ name: "sachet", description: "Kemasan kecil 10g" },
 		{ name: "pack", description: "Isi 1kg" },
-		{ name: "bottle", description: "Botol 1L" },
+		{ name: "bottle", description: "Botol 1L" }
 	];
 
 	const packageRecords = {};
@@ -520,7 +477,7 @@ async function main() {
 		const rec = await prisma.package.upsert({
 			where: { name: p.name },
 			update: { description: p.description ?? null },
-			create: p,
+			create: p
 		});
 		packageRecords[p.name] = rec;
 	}
@@ -529,7 +486,7 @@ async function main() {
 	const ingredientPackageDefs = [
 		{ ingredientName: "Gula", packageName: "sachet", qty: 10 },
 		{ ingredientName: "Gula", packageName: "pack", qty: 1000 },
-		{ ingredientName: "Minyak", packageName: "bottle", qty: 1 },
+		{ ingredientName: "Minyak", packageName: "bottle", qty: 1 }
 	];
 
 	for (const ip of ingredientPackageDefs) {
@@ -538,17 +495,17 @@ async function main() {
 		if (!ingredient || !pkg) continue;
 
 		const existing = await prisma.ingredientPackage.findFirst({
-			where: { ingredientId: ingredient.id, packageId: pkg.id },
+			where: { ingredientId: ingredient.id, packageId: pkg.id }
 		});
 
 		if (existing) {
 			await prisma.ingredientPackage.update({
 				where: { id: existing.id },
-				data: { qty: ip.qty },
+				data: { qty: ip.qty }
 			});
 		} else {
 			await prisma.ingredientPackage.create({
-				data: { ingredientId: ingredient.id, packageId: pkg.id, qty: ip.qty },
+				data: { ingredientId: ingredient.id, packageId: pkg.id, qty: ip.qty }
 			});
 		}
 	}
@@ -556,7 +513,7 @@ async function main() {
 	// Suppliers
 	const supplierDefs = [
 		{ name: "PT Sumber Rejeki", contactName: "Budi", phone: "+62-812-1111-2222" },
-		{ name: "CV Maju Bersama", contactName: "Siti", phone: "+62-813-3333-4444" },
+		{ name: "CV Maju Bersama", contactName: "Siti", phone: "+62-813-3333-4444" }
 	];
 
 	const supplierRecords = {};
@@ -573,8 +530,22 @@ async function main() {
 
 	// SupplierProducts
 	const supplierProductDefs = [
-		{ supplierName: "PT Sumber Rejeki", ingredientName: "Gula", packageName: "pack", qty: 1, price: 25000, leadTime: 3 },
-		{ supplierName: "CV Maju Bersama", ingredientName: "Minyak", packageName: "bottle", qty: 1, price: 32000, leadTime: 2 },
+		{
+			supplierName: "PT Sumber Rejeki",
+			ingredientName: "Gula",
+			packageName: "pack",
+			qty: 1,
+			price: 25000,
+			leadTime: 3
+		},
+		{
+			supplierName: "CV Maju Bersama",
+			ingredientName: "Minyak",
+			packageName: "bottle",
+			qty: 1,
+			price: 32000,
+			leadTime: 2
+		}
 	];
 
 	for (const sp of supplierProductDefs) {
@@ -587,8 +558,8 @@ async function main() {
 			where: {
 				supplierId: supplier.id,
 				ingredientId: ingredient.id,
-				packageId: pkg.id,
-			},
+				packageId: pkg.id
+			}
 		});
 
 		const payload = {
@@ -598,7 +569,7 @@ async function main() {
 			qty: sp.qty,
 			price: sp.price,
 			leadTime: sp.leadTime,
-			isActive: true,
+			isActive: true
 		};
 
 		if (existing) {
@@ -614,7 +585,7 @@ async function main() {
 		const tableDefs = [
 			{ placeId: mainPlace.id, name: "T-01", status: "available" },
 			{ placeId: mainPlace.id, name: "T-02", status: "available" },
-			{ placeId: mainPlace.id, name: "T-03", status: "available" },
+			{ placeId: mainPlace.id, name: "T-03", status: "available" }
 		];
 
 		for (const t of tableDefs) {
@@ -629,25 +600,34 @@ async function main() {
 
 	// ==== Menu master seeds (Categories, Menus, MenuPrices, MenuVariants, MenuVariantItems, Recipes)
 	// Categories
-	const categoryDefs = [
-		{ name: "beverages" },
-		{ name: "food" },
-	];
+	const categoryDefs = [{ name: "beverages" }, { name: "food" }];
 
 	const categoryRecords = {};
 	for (const c of categoryDefs) {
 		const rec = await prisma.category.upsert({
 			where: { name: c.name },
 			update: {},
-			create: c,
+			create: c
 		});
 		categoryRecords[c.name] = rec;
 	}
 
 	// Menus
 	const menuDefs = [
-		{ name: "Es Teh", placeId: mainPlace?.id ?? null, categoryName: "beverages", description: "Teh manis dingin", isActive: true },
-		{ name: "Nasi Goreng", placeId: mainPlace?.id ?? null, categoryName: "food", description: "Nasi goreng spesial", isActive: true },
+		{
+			name: "Es Teh",
+			placeId: mainPlace?.id ?? null,
+			categoryName: "beverages",
+			description: "Teh manis dingin",
+			isActive: true
+		},
+		{
+			name: "Nasi Goreng",
+			placeId: mainPlace?.id ?? null,
+			categoryName: "food",
+			description: "Nasi goreng spesial",
+			isActive: true
+		}
 	];
 
 	const menuRecords = {};
@@ -658,7 +638,7 @@ async function main() {
 			placeId: m.placeId ?? null,
 			categoryId: category ? category.id : null,
 			description: m.description ?? null,
-			isActive: m.isActive !== false,
+			isActive: m.isActive !== false
 		};
 
 		const existing = await prisma.menu.findFirst({ where: { name: m.name } });
@@ -675,24 +655,28 @@ async function main() {
 	const todayStr = new Date().toISOString().slice(0, 10);
 	const priceDefs = [
 		{ menuName: "Es Teh", price: 8000, effectiveDate: todayStr },
-		{ menuName: "Nasi Goreng", price: 25000, effectiveDate: todayStr },
+		{ menuName: "Nasi Goreng", price: 25000, effectiveDate: todayStr }
 	];
 	for (const p of priceDefs) {
 		const menu = menuRecords[p.menuName];
 		if (!menu) continue;
 		// Upsert by (menuId, effectiveDate) uniqueness not defined, so insert if not exists by same pair
-		const exist = await prisma.menuPrice.findFirst({ where: { menuId: menu.id, effectiveDate: new Date(p.effectiveDate) } });
+		const exist = await prisma.menuPrice.findFirst({
+			where: { menuId: menu.id, effectiveDate: new Date(p.effectiveDate) }
+		});
 		if (exist) {
 			await prisma.menuPrice.update({ where: { id: exist.id }, data: { price: p.price } });
 		} else {
-			await prisma.menuPrice.create({ data: { menuId: menu.id, price: p.price, effectiveDate: new Date(p.effectiveDate) } });
+			await prisma.menuPrice.create({
+				data: { menuId: menu.id, price: p.price, effectiveDate: new Date(p.effectiveDate) }
+			});
 		}
 	}
 
 	// MenuVariants and Items
 	const variantDefs = [
 		{ menuName: "Es Teh", name: "Sugar" },
-		{ menuName: "Nasi Goreng", name: "Spicy" },
+		{ menuName: "Nasi Goreng", name: "Spicy" }
 	];
 
 	const variantRecords = {};
@@ -714,7 +698,7 @@ async function main() {
 		{ variantKey: "Es Teh:Sugar", name: "Less", additionalPrice: 0 },
 		{ variantKey: "Es Teh:Sugar", name: "No Sugar", additionalPrice: 0 },
 		{ variantKey: "Nasi Goreng:Spicy", name: "Normal", additionalPrice: 0 },
-		{ variantKey: "Nasi Goreng:Spicy", name: "Hot", additionalPrice: 3000 },
+		{ variantKey: "Nasi Goreng:Spicy", name: "Hot", additionalPrice: 3000 }
 	];
 
 	for (const vi of variantItemDefs) {
@@ -722,9 +706,14 @@ async function main() {
 		if (!variant) continue;
 		const exist = await prisma.menuVariantItem.findFirst({ where: { menuVariantId: variant.id, name: vi.name } });
 		if (exist) {
-			await prisma.menuVariantItem.update({ where: { id: exist.id }, data: { additionalPrice: vi.additionalPrice } });
+			await prisma.menuVariantItem.update({
+				where: { id: exist.id },
+				data: { additionalPrice: vi.additionalPrice }
+			});
 		} else {
-			await prisma.menuVariantItem.create({ data: { menuVariantId: variant.id, name: vi.name, additionalPrice: vi.additionalPrice } });
+			await prisma.menuVariantItem.create({
+				data: { menuVariantId: variant.id, name: vi.name, additionalPrice: vi.additionalPrice }
+			});
 		}
 	}
 
@@ -732,7 +721,7 @@ async function main() {
 	const recipes = [
 		{ menuName: "Es Teh", ingredientName: "Gula", qty: 10 }, // 10 gram gula
 		{ menuName: "Nasi Goreng", ingredientName: "Minyak", qty: 0.1 }, // 0.1 liter
-		{ menuName: "Nasi Goreng", ingredientName: "Telur", qty: 1 },
+		{ menuName: "Nasi Goreng", ingredientName: "Telur", qty: 1 }
 	];
 
 	for (const r of recipes) {
@@ -750,18 +739,24 @@ async function main() {
 	// ==== Payment methods and Delivery integrations ====
 	const pmDefs = [
 		{ name: "cash", description: "Tunai", isActive: true },
-		{ name: "qris", description: "QRIS", isActive: true },
+		{ name: "qris", description: "QRIS", isActive: true }
 	];
 	for (const pm of pmDefs) {
-		await prisma.paymentMethod.upsert({ where: { name: pm.name }, update: { description: pm.description, isActive: pm.isActive }, create: pm });
+		await prisma.paymentMethod.upsert({
+			where: { name: pm.name },
+			update: { description: pm.description, isActive: pm.isActive },
+			create: pm
+		});
 	}
 
 	if (mainPlace) {
 		const diDefs = [
-			{ placeId: mainPlace.id, platformName: "GoFood", apiKey: "secret", settingsJson: { region: "ID" } },
+			{ placeId: mainPlace.id, platformName: "GoFood", apiKey: "secret", settingsJson: { region: "ID" } }
 		];
 		for (const di of diDefs) {
-			const exist = await prisma.deliveryIntegration.findFirst({ where: { placeId: di.placeId, platformName: di.platformName } });
+			const exist = await prisma.deliveryIntegration.findFirst({
+				where: { placeId: di.placeId, platformName: di.platformName }
+			});
 			if (exist) {
 				await prisma.deliveryIntegration.update({ where: { id: exist.id }, data: di });
 			} else {
@@ -782,7 +777,7 @@ async function main() {
 				reportDate: new Date(baseDate.toISOString().slice(0, 10)),
 				placeId: mainPlace?.id ?? null,
 				fileName: "sales-summary-today.csv",
-				filePath: "/reports/sales/sales-summary-today.csv",
+				filePath: "/reports/sales/sales-summary-today.csv"
 			},
 			{
 				reportType: "inventory_snapshot",
@@ -790,8 +785,8 @@ async function main() {
 				reportDate: new Date(baseDate.toISOString().slice(0, 10)),
 				placeId: mainPlace?.id ?? null,
 				fileName: "inventory-snapshot-today.csv",
-				filePath: "/reports/inventory/inventory-snapshot-today.csv",
-			},
+				filePath: "/reports/inventory/inventory-snapshot-today.csv"
+			}
 		];
 
 		for (const rf of rfSeeds) {
@@ -819,7 +814,13 @@ async function main() {
 		const alSeeds = [
 			{ userId: uid, action: "login", entityType: "auth", entityId: null, contextJson: { ip: "127.0.0.1" } },
 			{ userId: uid, action: "create_menu", entityType: "menu", entityId: null, contextJson: { name: "Es Teh" } },
-			{ userId: uid, action: "update_price", entityType: "menu_price", entityId: null, contextJson: { menu: "Nasi Goreng", price: 25000 } },
+			{
+				userId: uid,
+				action: "update_price",
+				entityType: "menu_price",
+				entityId: null,
+				contextJson: { menu: "Nasi Goreng", price: 25000 }
+			}
 		];
 
 		await prisma.activityLog.createMany({ data: alSeeds });
@@ -831,7 +832,11 @@ async function main() {
 		const slSeeds = [
 			{ level: "info", message: "Server started", contextJson: { env: process.env.NODE_ENV ?? "development" } },
 			{ level: "warn", message: "Low disk space threshold reached", contextJson: { path: "/", percent: 85 } },
-			{ level: "error", message: "Third-party API timeout", contextJson: { service: "DeliveryPlatform", timeoutMs: 5000 } },
+			{
+				level: "error",
+				message: "Third-party API timeout",
+				contextJson: { service: "DeliveryPlatform", timeoutMs: 5000 }
+			}
 		];
 
 		await prisma.systemLog.createMany({ data: slSeeds });
@@ -841,7 +846,9 @@ async function main() {
 	const trxCount = await prisma.transaction.count();
 	if (trxCount === 0) {
 		const anyUser = await prisma.user.findFirst({ orderBy: { id: "asc" } });
-		const table = mainPlace ? await prisma.table.findFirst({ where: { placeId: mainPlace.id }, orderBy: { id: "asc" } }) : null;
+		const table = mainPlace
+			? await prisma.table.findFirst({ where: { placeId: mainPlace.id }, orderBy: { id: "asc" } })
+			: null;
 		const pmCash = await prisma.paymentMethod.findFirst({ where: { name: "cash" } });
 
 		if (anyUser) {
@@ -855,8 +862,8 @@ async function main() {
 					total: 33000,
 					tax: 3000,
 					discount: 0,
-					paymentMethodId: pmCash?.id ?? null,
-				},
+					paymentMethodId: pmCash?.id ?? null
+				}
 			});
 
 			// Items for trx1
@@ -864,32 +871,44 @@ async function main() {
 			const nasiGoreng = menuRecords?.["Nasi Goreng"];
 
 			const item1 = esTeh
-				? await prisma.transactionItem.create({ data: { transactionId: trx1.id, menuId: esTeh.id, qty: 1, price: 8000, discount: 0 } })
+				? await prisma.transactionItem.create({
+					data: { transactionId: trx1.id, menuId: esTeh.id, qty: 1, price: 8000, discount: 0 }
+				})
 				: null;
 			const item2 = nasiGoreng
-				? await prisma.transactionItem.create({ data: { transactionId: trx1.id, menuId: nasiGoreng.id, qty: 1, price: 22000, discount: 0 } })
+				? await prisma.transactionItem.create({
+					data: { transactionId: trx1.id, menuId: nasiGoreng.id, qty: 1, price: 22000, discount: 0 }
+				})
 				: null;
 
 			// Variants (link to MenuVariant)
 			if (item1 && typeof variantRecords !== "undefined") {
 				const sugarVariant = variantRecords["Es Teh:Sugar"];
 				if (sugarVariant) {
-					await prisma.transactionItemVariant.create({ data: { transactionItemId: item1.id, menuVariantId: sugarVariant.id, extraPrice: 0 } });
+					await prisma.transactionItemVariant.create({
+						data: { transactionItemId: item1.id, menuVariantId: sugarVariant.id, extraPrice: 0 }
+					});
 				}
 			}
 			if (item2 && typeof variantRecords !== "undefined") {
 				const spicyVariant = variantRecords["Nasi Goreng:Spicy"];
 				if (spicyVariant) {
-					await prisma.transactionItemVariant.create({ data: { transactionItemId: item2.id, menuVariantId: spicyVariant.id, extraPrice: 3000 } });
+					await prisma.transactionItemVariant.create({
+						data: { transactionItemId: item2.id, menuVariantId: spicyVariant.id, extraPrice: 3000 }
+					});
 				}
 			}
 
 			// Kitchen orders for each item
 			if (item1) {
-				await prisma.kitchenOrder.create({ data: { transactionItemId: item1.id, status: "waiting", note: "Ice please" } });
+				await prisma.kitchenOrder.create({
+					data: { transactionItemId: item1.id, status: "waiting", note: "Ice please" }
+				});
 			}
 			if (item2) {
-				await prisma.kitchenOrder.create({ data: { transactionItemId: item2.id, status: "waiting", note: "Less oil" } });
+				await prisma.kitchenOrder.create({
+					data: { transactionItemId: item2.id, status: "waiting", note: "Less oil" }
+				});
 			}
 
 			// Transaction #2 (takeaway)
@@ -902,12 +921,14 @@ async function main() {
 					total: 8000,
 					tax: 0,
 					discount: 0,
-					paymentMethodId: pmCash?.id ?? null,
-				},
+					paymentMethodId: pmCash?.id ?? null
+				}
 			});
 
 			if (esTeh) {
-				await prisma.transactionItem.create({ data: { transactionId: trx2.id, menuId: esTeh.id, qty: 1, price: 8000, discount: 0 } });
+				await prisma.transactionItem.create({
+					data: { transactionId: trx2.id, menuId: esTeh.id, qty: 1, price: 8000, discount: 0 }
+				});
 			}
 		}
 	}
@@ -918,7 +939,9 @@ async function main() {
 		const targetIngredients = ["Gula", "Minyak", "Telur"].map((n) => ingredientRecords[n]).filter(Boolean);
 		for (const ing of targetIngredients) {
 			const unitId = ing.unitId;
-			const existing = await prisma.placeStock.findFirst({ where: { placeId: mainPlace.id, ingredientId: ing.id, unitId } });
+			const existing = await prisma.placeStock.findFirst({
+				where: { placeId: mainPlace.id, ingredientId: ing.id, unitId }
+			});
 			const data = { placeId: mainPlace.id, ingredientId: ing.id, unitId, qty: 100 };
 			if (existing) {
 				await prisma.placeStock.update({ where: { id: existing.id }, data });
@@ -935,8 +958,17 @@ async function main() {
 		const dateOnly = new Date(today.toISOString().slice(0, 10));
 		const ing = ingredientRecords["Gula"] ?? null;
 		if (ing) {
-			const existing = await prisma.inventoryStockDaily.findFirst({ where: { placeId: mainPlace.id, ingredientId: ing.id, date: dateOnly } });
-			const payload = { placeId: mainPlace.id, ingredientId: ing.id, date: dateOnly, openingQty: 100, closingQty: 90, diffQty: -10 };
+			const existing = await prisma.inventoryStockDaily.findFirst({
+				where: { placeId: mainPlace.id, ingredientId: ing.id, date: dateOnly }
+			});
+			const payload = {
+				placeId: mainPlace.id,
+				ingredientId: ing.id,
+				date: dateOnly,
+				openingQty: 100,
+				closingQty: 90,
+				diffQty: -10
+			};
 			if (existing) {
 				await prisma.inventoryStockDaily.update({ where: { id: existing.id }, data: payload });
 			} else {
@@ -952,7 +984,9 @@ async function main() {
 		if (places.length >= 2) {
 			const ing = ingredientRecords["Minyak"] ?? null;
 			if (ing) {
-				await prisma.stockTransfer.create({ data: { ingredientId: ing.id, fromPlaceId: places[0].id, toPlaceId: places[1].id, qty: 5 } });
+				await prisma.stockTransfer.create({
+					data: { ingredientId: ing.id, fromPlaceId: places[0].id, toPlaceId: places[1].id, qty: 5 }
+				});
 			}
 		}
 	}
@@ -962,7 +996,9 @@ async function main() {
 	if (wasteCount === 0 && mainPlace) {
 		const ing = ingredientRecords["Telur"] ?? null;
 		if (ing) {
-			await prisma.waste.create({ data: { ingredientId: ing.id, placeId: mainPlace.id, qty: 2, reason: "Expired" } });
+			await prisma.waste.create({
+				data: { ingredientId: ing.id, placeId: mainPlace.id, qty: 2, reason: "Expired" }
+			});
 		}
 	}
 
@@ -971,26 +1007,39 @@ async function main() {
 	if (csCount === 0 && mainPlace) {
 		const cashier = await prisma.user.findFirst({ orderBy: { id: "asc" } });
 		if (cashier) {
-			await prisma.cashierShift.create({ data: { placeId: mainPlace.id, cashierId: cashier.id, ipAddress: "127.0.0.1", openingBalance: 0, status: "open" } });
+			await prisma.cashierShift.create({
+				data: {
+					placeId: mainPlace.id,
+					cashierId: cashier.id,
+					ipAddress: "127.0.0.1",
+					openingBalance: 0,
+					status: "open"
+				}
+			});
 		}
 	}
 
 	// ==== Promotions & rules ====
 	const promoCount = await prisma.promotion.count();
 	if (promoCount === 0) {
-		const promo = await prisma.promotion.create({ data: { placeId: mainPlace?.id ?? null, name: "Happy Hour", startAt: new Date(), endAt: new Date(Date.now() + 7 * 24 * 3600 * 1000) } });
-		await prisma.promotionRule.createMany({ data: [
-			{ promotionId: promo.id, ruleType: "percentage_discount", value: "10" },
-		] });
+		const promo = await prisma.promotion.create({
+			data: {
+				placeId: mainPlace?.id ?? null,
+				name: "Happy Hour",
+				startAt: new Date(),
+				endAt: new Date(Date.now() + 7 * 24 * 3600 * 1000)
+			}
+		});
+		await prisma.promotionRule.createMany({
+			data: [{ promotionId: promo.id, ruleType: "percentage_discount", value: "10" }]
+		});
 	}
 
-	 
 	console.log("Database seeding completed successfully.");
 }
 
 main()
 	.catch((error) => {
-		 
 		console.error("Seeding failed", error);
 		process.exit(1);
 	})

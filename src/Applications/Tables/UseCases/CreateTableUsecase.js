@@ -16,4 +16,3 @@ export default class CreateTableUsecase extends BaseTableUsecase {
 		return this.tableService.createTable({ placeId, name, status });
 	}
 }
-

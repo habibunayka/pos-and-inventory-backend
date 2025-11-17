@@ -20,4 +20,3 @@ export { default as GetKitchenOrderUsecase } from "./kitchenOrders/GetKitchenOrd
 export { default as CreateKitchenOrderUsecase } from "./kitchenOrders/CreateKitchenOrderUsecase.js";
 export { default as UpdateKitchenOrderUsecase } from "./kitchenOrders/UpdateKitchenOrderUsecase.js";
 export { default as DeleteKitchenOrderUsecase } from "./kitchenOrders/DeleteKitchenOrderUsecase.js";
-

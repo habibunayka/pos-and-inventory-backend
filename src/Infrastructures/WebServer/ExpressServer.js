@@ -102,7 +102,7 @@ export function createExpressApp({ container } = {}) {
 	registerPaymentMethodRoutes(app, { controller: paymentMethodController, ...middlewareDeps });
 	registerDeliveryIntegrationRoutes(app, {
 		controller: deliveryIntegrationController,
-		...middlewareDeps,
+		...middlewareDeps
 	});
 	registerReportFileRoutes(app, { controller: reportFileController, ...middlewareDeps });
 	registerActivityLogRoutes(app, { controller: activityLogController, ...middlewareDeps });
@@ -117,7 +117,7 @@ export function createExpressApp({ container } = {}) {
 	registerPlaceStockRoutes(app, { controller: placeStockController, ...middlewareDeps });
 	registerInventoryStockDailyRoutes(app, {
 		controller: inventoryStockDailyController,
-		...middlewareDeps,
+		...middlewareDeps
 	});
 	registerStockTransferRoutes(app, { controller: stockTransferController, ...middlewareDeps });
 	registerWasteRoutes(app, { controller: wasteController, ...middlewareDeps });

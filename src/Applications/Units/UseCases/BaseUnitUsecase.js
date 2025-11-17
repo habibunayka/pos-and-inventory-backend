@@ -6,7 +6,11 @@ export default class BaseUnitUsecase {
 		this.unitService = unitService;
 	}
 
-	_normalize(text) { return String(text ?? "").trim().toLowerCase(); }
+	_normalize(text) {
+		return String(text ?? "")
+			.trim()
+			.toLowerCase();
+	}
 
 	async _assertNameAvailable(name, ignoreId = null) {
 		const normalized = this._normalize(name);
@@ -18,4 +22,3 @@ export default class BaseUnitUsecase {
 		return normalized;
 	}
 }
-

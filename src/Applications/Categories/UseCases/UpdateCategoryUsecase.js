@@ -16,4 +16,3 @@ export default class UpdateCategoryUsecase extends BaseCategoryUsecase {
 		return updated;
 	}
 }
-

@@ -14,12 +14,10 @@ export default class RoleService {
 				"findPermissionsByNames",
 				"createRole",
 				"updateRole",
-				"deleteRole",
+				"deleteRole"
 			];
 
-			const missingMethod = requiredMethods.find(
-				(method) => typeof roleRepository[method] !== "function"
-			);
+			const missingMethod = requiredMethods.find((method) => typeof roleRepository[method] !== "function");
 
 			if (missingMethod) {
 				throw new Error(`ROLE_SERVICE.INVALID_REPOSITORY: missing ${missingMethod}`);

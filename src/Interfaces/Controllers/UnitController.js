@@ -7,7 +7,7 @@ export default class UnitController {
 		getUnitUsecase,
 		createUnitUsecase,
 		updateUnitUsecase,
-		deleteUnitUsecase,
+		deleteUnitUsecase
 	}) {
 		if (!unitPresenter) throw new Error("UnitController requires a presenter");
 		const reqs = [
@@ -15,7 +15,7 @@ export default class UnitController {
 			["getUnitUsecase", getUnitUsecase],
 			["createUnitUsecase", createUnitUsecase],
 			["updateUnitUsecase", updateUnitUsecase],
-			["deleteUnitUsecase", deleteUnitUsecase],
+			["deleteUnitUsecase", deleteUnitUsecase]
 		];
 		const miss = reqs.find(([, v]) => !v);
 		if (miss) throw new Error(`UnitController requires ${miss[0]}`);
@@ -49,4 +49,3 @@ export default class UnitController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 }
-

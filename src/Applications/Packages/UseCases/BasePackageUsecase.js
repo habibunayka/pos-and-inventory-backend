@@ -6,7 +6,11 @@ export default class BasePackageUsecase {
 		this.packageService = packageService;
 	}
 
-	_normalize(name) { return String(name ?? "").trim().toLowerCase(); }
+	_normalize(name) {
+		return String(name ?? "")
+			.trim()
+			.toLowerCase();
+	}
 
 	async _assertNameAvailable(name, ignoreId = null) {
 		const normalized = this._normalize(name);
@@ -16,4 +20,3 @@ export default class BasePackageUsecase {
 		return normalized;
 	}
 }
-

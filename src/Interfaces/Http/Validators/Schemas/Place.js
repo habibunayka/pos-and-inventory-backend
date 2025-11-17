@@ -8,7 +8,7 @@ export const createPlaceSchema = Joi.object({
 	phone: nullableText,
 	logoPath: nullableText,
 	type: nullableText,
-	isActive: Joi.boolean(),
+	isActive: Joi.boolean()
 });
 
 export const updatePlaceSchema = Joi.object({
@@ -17,10 +17,10 @@ export const updatePlaceSchema = Joi.object({
 	phone: nullableText,
 	logoPath: nullableText,
 	type: nullableText,
-	isActive: Joi.boolean(),
+	isActive: Joi.boolean()
 }).min(1);
 
 export default {
 	create: createPlaceSchema,
-	update: updatePlaceSchema,
+	update: updatePlaceSchema
 };

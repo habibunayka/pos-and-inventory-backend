@@ -10,4 +10,3 @@ export default class GetCategoryUsecase extends BaseCategoryUsecase {
 		return rec;
 	}
 }
-

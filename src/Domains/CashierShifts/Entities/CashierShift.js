@@ -9,7 +9,7 @@ export default class CashierShift {
 		closingBalance = null,
 		systemBalance = null,
 		ipAddress,
-		status,
+		status
 	}) {
 		this.id = id;
 		this.placeId = placeId;
@@ -35,7 +35,7 @@ export default class CashierShift {
 			closingBalance: record.closingBalance ?? null,
 			systemBalance: record.systemBalance ?? null,
 			ipAddress: record.ipAddress,
-			status: record.status,
+			status: record.status
 		});
 	}
 }

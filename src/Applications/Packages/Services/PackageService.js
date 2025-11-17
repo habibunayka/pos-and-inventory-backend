@@ -11,11 +11,22 @@ export default class PackageService {
 		this._packageRepository = packageRepository;
 	}
 
-	listPackages() { return this._packageRepository.findAll(); }
-	getPackage(id) { return this._packageRepository.findById(id); }
-	getPackageByName(name) { return this._packageRepository.findByName(name); }
-	createPackage(packageData) { return this._packageRepository.createPackage(packageData); }
-	updatePackage(payload) { return this._packageRepository.updatePackage(payload); }
-	deletePackage(id) { return this._packageRepository.deletePackage(id); }
+	listPackages() {
+		return this._packageRepository.findAll();
+	}
+	getPackage(id) {
+		return this._packageRepository.findById(id);
+	}
+	getPackageByName(name) {
+		return this._packageRepository.findByName(name);
+	}
+	createPackage(packageData) {
+		return this._packageRepository.createPackage(packageData);
+	}
+	updatePackage(payload) {
+		return this._packageRepository.updatePackage(payload);
+	}
+	deletePackage(id) {
+		return this._packageRepository.deletePackage(id);
+	}
 }
-

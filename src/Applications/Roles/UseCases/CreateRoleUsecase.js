@@ -8,11 +8,7 @@ export default class CreateRoleUsecase extends BaseRoleUsecase {
 	}
 
 	async execute(payload = {}) {
-		if (
-			typeof payload !== "object" ||
-            payload === null ||
-            Array.isArray(payload)
-		) {
+		if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
 			throw new ValidationError("Payload must be an object");
 		}
 
@@ -33,16 +29,14 @@ export default class CreateRoleUsecase extends BaseRoleUsecase {
 			}
 		}
 
-		const { records } = await this._resolvePermissions(
-			payload.permissions ?? []
-		);
+		const { records } = await this._resolvePermissions(payload.permissions ?? []);
 
 		const created = await this.roleService.createRole({
 			roleData: {
 				name: normalizedName,
-				description,
+				description
 			},
-			permissionIds: records.map((record) => record.id),
+			permissionIds: records.map((record) => record.id)
 		});
 
 		return Role.fromPersistence(created);

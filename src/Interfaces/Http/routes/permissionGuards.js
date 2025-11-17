@@ -30,9 +30,7 @@ export function requirePermissions(permissionNames = [], { requireAuth, authoriz
 	ensureMiddlewareFunction(authorize, "PERMISSION_GUARDS.MISSING_AUTHORIZE");
 
 	const inputs = Array.isArray(permissionNames) ? permissionNames : [permissionNames];
-	const normalizedPermissions = inputs
-		.map((permission) => normalizePermissionName(permission))
-		.filter(Boolean);
+	const normalizedPermissions = inputs.map((permission) => normalizePermissionName(permission)).filter(Boolean);
 
 	if (normalizedPermissions.length === 0) {
 		throw new Error("PERMISSION_GUARDS.INVALID_PERMISSION_NAME");

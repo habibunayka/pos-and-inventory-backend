@@ -7,7 +7,7 @@ export const createSupplierSchema = Joi.object({
 	contactName: nullableText,
 	phone: nullableText,
 	email: nullableText,
-	address: nullableText,
+	address: nullableText
 });
 
 export const updateSupplierSchema = Joi.object({
@@ -15,11 +15,10 @@ export const updateSupplierSchema = Joi.object({
 	contactName: nullableText,
 	phone: nullableText,
 	email: nullableText,
-	address: nullableText,
+	address: nullableText
 }).min(1);
 
 export default {
 	create: createSupplierSchema,
-	update: updateSupplierSchema,
+	update: updateSupplierSchema
 };
-

@@ -23,4 +23,3 @@ export default class CreatePermissionUsecase extends BasePermissionUsecase {
 		return this.permissionService.createPermission({ name, description });
 	}
 }
-

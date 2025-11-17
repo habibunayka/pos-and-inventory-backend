@@ -1,6 +1,12 @@
 import PrismaMenuRepository from "../Repositories/PrismaMenuRepository.js";
 import MenuService from "../../Applications/Menus/Services/MenuService.js";
-import { ListMenusUsecase, GetMenuUsecase, CreateMenuUsecase, UpdateMenuUsecase, DeleteMenuUsecase } from "../../Applications/Menus/UseCases/index.js";
+import {
+	ListMenusUsecase,
+	GetMenuUsecase,
+	CreateMenuUsecase,
+	UpdateMenuUsecase,
+	DeleteMenuUsecase
+} from "../../Applications/Menus/UseCases/index.js";
 import MenuPresenter from "../../Interfaces/Presenters/MenuPresenter.js";
 import MenuController from "../../Interfaces/Controllers/MenuController.js";
 
@@ -13,14 +19,16 @@ export default function registerMenuContainer({ container, overrides = {}, prism
 	const updateMenuUsecase = overrides.updateMenuUsecase ?? new UpdateMenuUsecase({ menuService });
 	const deleteMenuUsecase = overrides.deleteMenuUsecase ?? new DeleteMenuUsecase({ menuService });
 	const menuPresenter = overrides.menuPresenter ?? new MenuPresenter();
-	const menuController = overrides.menuController ?? new MenuController({
-		menuPresenter,
-		listMenusUsecase,
-		getMenuUsecase,
-		createMenuUsecase,
-		updateMenuUsecase,
-		deleteMenuUsecase,
-	});
+	const menuController =
+		overrides.menuController ??
+		new MenuController({
+			menuPresenter,
+			listMenusUsecase,
+			getMenuUsecase,
+			createMenuUsecase,
+			updateMenuUsecase,
+			deleteMenuUsecase
+		});
 
 	container.set("menuRepository", menuRepository);
 	container.set("menuService", menuService);
@@ -32,4 +40,3 @@ export default function registerMenuContainer({ container, overrides = {}, prism
 	container.set("menuPresenter", menuPresenter);
 	container.set("menuController", menuController);
 }
-

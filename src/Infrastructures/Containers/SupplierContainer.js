@@ -5,7 +5,7 @@ import {
 	GetSupplierUsecase,
 	CreateSupplierUsecase,
 	UpdateSupplierUsecase,
-	DeleteSupplierUsecase,
+	DeleteSupplierUsecase
 } from "../../Applications/Suppliers/UseCases/index.js";
 import SupplierPresenter from "../../Interfaces/Presenters/SupplierPresenter.js";
 import SupplierController from "../../Interfaces/Controllers/SupplierController.js";
@@ -19,14 +19,16 @@ export default function registerSupplierContainer({ container, overrides = {}, p
 	const updateSupplierUsecase = overrides.updateSupplierUsecase ?? new UpdateSupplierUsecase({ supplierService });
 	const deleteSupplierUsecase = overrides.deleteSupplierUsecase ?? new DeleteSupplierUsecase({ supplierService });
 	const supplierPresenter = overrides.supplierPresenter ?? new SupplierPresenter();
-	const supplierController = overrides.supplierController ?? new SupplierController({
-		supplierPresenter,
-		listSuppliersUsecase,
-		getSupplierUsecase,
-		createSupplierUsecase,
-		updateSupplierUsecase,
-		deleteSupplierUsecase,
-	});
+	const supplierController =
+		overrides.supplierController ??
+		new SupplierController({
+			supplierPresenter,
+			listSuppliersUsecase,
+			getSupplierUsecase,
+			createSupplierUsecase,
+			updateSupplierUsecase,
+			deleteSupplierUsecase
+		});
 
 	container.set("supplierRepository", supplierRepository);
 	container.set("supplierService", supplierService);
@@ -38,4 +40,3 @@ export default function registerSupplierContainer({ container, overrides = {}, p
 	container.set("supplierPresenter", supplierPresenter);
 	container.set("supplierController", supplierController);
 }
-

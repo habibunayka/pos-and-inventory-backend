@@ -16,7 +16,7 @@ export default class Supplier {
 			contactName: record.contactName ?? null,
 			phone: record.phone ?? null,
 			email: record.email ?? null,
-			address: record.address ?? null,
+			address: record.address ?? null
 		});
 	}
 }

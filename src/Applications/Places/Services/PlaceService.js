@@ -7,17 +7,9 @@ export default class PlaceService {
 		}
 
 		if (!(placeRepository instanceof PlaceRepository)) {
-			const requiredMethods = [
-				"findAll",
-				"findById",
-				"createPlace",
-				"updatePlace",
-				"deletePlace",
-			];
+			const requiredMethods = ["findAll", "findById", "createPlace", "updatePlace", "deletePlace"];
 
-			const missingMethod = requiredMethods.find(
-				(method) => typeof placeRepository[method] !== "function"
-			);
+			const missingMethod = requiredMethods.find((method) => typeof placeRepository[method] !== "function");
 
 			if (missingMethod) {
 				throw new Error(`PLACE_SERVICE.INVALID_REPOSITORY: missing ${missingMethod}`);

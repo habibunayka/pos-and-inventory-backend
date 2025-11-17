@@ -20,22 +20,22 @@ export default function registerUserRoutes(app, { controller, requireAuth, autho
 		"/",
 		...canCreateUsers,
 		validateRequest({ body: userSchemas.create }),
-		adapt(controller.createUser.bind(controller)),
+		adapt(controller.createUser.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewUsers,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getUser.bind(controller)),
+		adapt(controller.getUser.bind(controller))
 	);
 	router.patch(
 		"/:id",
 		...canUpdateUsers,
 		validateRequest({
 			params: commonSchemas.idParam,
-			body: userSchemas.update,
+			body: userSchemas.update
 		}),
-		adapt(controller.updateUser.bind(controller)),
+		adapt(controller.updateUser.bind(controller))
 	);
 
 	app.use("/api/users", router);

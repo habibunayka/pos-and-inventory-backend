@@ -18,21 +18,20 @@ export default function registerActivityLogRoutes(app, { controller, requireAuth
 		"/",
 		...canCreateActivityLogs,
 		validateRequest({ body: alSchemas.create }),
-		adapt(controller.createActivityLog.bind(controller)),
+		adapt(controller.createActivityLog.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewActivityLogs,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getActivityLog.bind(controller)),
+		adapt(controller.getActivityLog.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteActivityLogs,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteActivityLog.bind(controller)),
+		adapt(controller.deleteActivityLog.bind(controller))
 	);
 
 	app.use("/api/activity-logs", router);
 }
-

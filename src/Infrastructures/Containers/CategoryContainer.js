@@ -5,7 +5,7 @@ import {
 	GetCategoryUsecase,
 	CreateCategoryUsecase,
 	UpdateCategoryUsecase,
-	DeleteCategoryUsecase,
+	DeleteCategoryUsecase
 } from "../../Applications/Categories/UseCases/index.js";
 import CategoryPresenter from "../../Interfaces/Presenters/CategoryPresenter.js";
 import CategoryController from "../../Interfaces/Controllers/CategoryController.js";
@@ -19,14 +19,16 @@ export default function registerCategoryContainer({ container, overrides = {}, p
 	const updateCategoryUsecase = overrides.updateCategoryUsecase ?? new UpdateCategoryUsecase({ categoryService });
 	const deleteCategoryUsecase = overrides.deleteCategoryUsecase ?? new DeleteCategoryUsecase({ categoryService });
 	const categoryPresenter = overrides.categoryPresenter ?? new CategoryPresenter();
-	const categoryController = overrides.categoryController ?? new CategoryController({
-		categoryPresenter,
-		listCategoriesUsecase,
-		getCategoryUsecase,
-		createCategoryUsecase,
-		updateCategoryUsecase,
-		deleteCategoryUsecase,
-	});
+	const categoryController =
+		overrides.categoryController ??
+		new CategoryController({
+			categoryPresenter,
+			listCategoriesUsecase,
+			getCategoryUsecase,
+			createCategoryUsecase,
+			updateCategoryUsecase,
+			deleteCategoryUsecase
+		});
 
 	container.set("categoryRepository", categoryRepository);
 	container.set("categoryService", categoryService);
@@ -38,4 +40,3 @@ export default function registerCategoryContainer({ container, overrides = {}, p
 	container.set("categoryPresenter", categoryPresenter);
 	container.set("categoryController", categoryController);
 }
-

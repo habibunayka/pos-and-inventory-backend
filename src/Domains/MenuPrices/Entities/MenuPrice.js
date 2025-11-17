@@ -12,7 +12,7 @@ export default class MenuPrice {
 			id: record.id ?? null,
 			menuId: record.menuId,
 			price: record.price,
-			effectiveDate: record.effectiveDate,
+			effectiveDate: record.effectiveDate
 		});
 	}
 }

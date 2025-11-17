@@ -11,4 +11,3 @@ export default class DeletePermissionUsecase extends BasePermissionUsecase {
 		return true;
 	}
 }
-

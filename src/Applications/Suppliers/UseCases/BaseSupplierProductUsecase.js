@@ -20,7 +20,8 @@ export default class BaseSupplierProductUsecase {
 
 	async _validateIngredientId(id) {
 		const value = Number(id);
-		if (!Number.isInteger(value) || value <= 0) throw new ValidationError("ingredientId must be a positive integer");
+		if (!Number.isInteger(value) || value <= 0)
+			throw new ValidationError("ingredientId must be a positive integer");
 		if (!this.ingredientService) return value;
 		const exists = await this.ingredientService.getIngredient(value);
 		if (!exists) throw new ValidationError("ingredientId not found");
@@ -36,4 +37,3 @@ export default class BaseSupplierProductUsecase {
 		return value;
 	}
 }
-

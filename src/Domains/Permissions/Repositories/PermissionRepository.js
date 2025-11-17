@@ -23,4 +23,3 @@ export default class PermissionRepository {
 		throw new Error("PERMISSION_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
 }
-

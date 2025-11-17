@@ -6,12 +6,12 @@ const userInclude = {
 			role: {
 				include: {
 					rolePermissions: {
-						include: { permission: true },
-					},
-				},
-			},
-		},
-	},
+						include: { permission: true }
+					}
+				}
+			}
+		}
+	}
 };
 
 export default class PrismaUserRepository extends UserRepository {
@@ -28,14 +28,14 @@ export default class PrismaUserRepository extends UserRepository {
 	async findAll() {
 		return this._prisma.user.findMany({
 			include: userInclude,
-			orderBy: { id: "asc" },
+			orderBy: { id: "asc" }
 		});
 	}
 
 	async findById(id) {
 		return this._prisma.user.findUnique({
 			where: { id },
-			include: userInclude,
+			include: userInclude
 		});
 	}
 
@@ -44,9 +44,9 @@ export default class PrismaUserRepository extends UserRepository {
 			where: { name: roleName.toLowerCase() },
 			include: {
 				rolePermissions: {
-					include: { permission: true },
-				},
-			},
+					include: { permission: true }
+				}
+			}
 		});
 	}
 
@@ -57,7 +57,7 @@ export default class PrismaUserRepository extends UserRepository {
 
 		return this._prisma.user.findUnique({
 			where: { email },
-			include: userInclude,
+			include: userInclude
 		});
 	}
 
@@ -69,13 +69,13 @@ export default class PrismaUserRepository extends UserRepository {
 				data: {
 					userId: createdUser.id,
 					roleId,
-					placeId: placeId ?? null,
-				},
+					placeId: placeId ?? null
+				}
 			});
 
 			return tx.user.findUnique({
 				where: { id: createdUser.id },
-				include: userInclude,
+				include: userInclude
 			});
 		});
 	}
@@ -84,11 +84,11 @@ export default class PrismaUserRepository extends UserRepository {
 		return this._prisma.$transaction(async (tx) => {
 			const savedUser = await tx.user.update({
 				where: { id },
-				data: userData,
+				data: userData
 			});
 
 			const assignment = await tx.userRole.findFirst({
-				where: { userId: savedUser.id },
+				where: { userId: savedUser.id }
 			});
 
 			if (assignment) {
@@ -96,22 +96,22 @@ export default class PrismaUserRepository extends UserRepository {
 					where: { id: assignment.id },
 					data: {
 						roleId,
-						placeId: placeId ?? assignment.placeId ?? null,
-					},
+						placeId: placeId ?? assignment.placeId ?? null
+					}
 				});
 			} else {
 				await tx.userRole.create({
 					data: {
 						userId: savedUser.id,
 						roleId,
-						placeId: placeId ?? null,
-					},
+						placeId: placeId ?? null
+					}
 				});
 			}
 
 			return tx.user.findUnique({
 				where: { id: savedUser.id },
-				include: userInclude,
+				include: userInclude
 			});
 		});
 	}

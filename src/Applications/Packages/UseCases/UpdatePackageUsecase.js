@@ -19,4 +19,3 @@ export default class UpdatePackageUsecase extends BasePackageUsecase {
 		return this.packageService.updatePackage({ id: numericId, packageData: update });
 	}
 }
-

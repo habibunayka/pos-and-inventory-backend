@@ -4,7 +4,7 @@ export default class UnitPresenter {
 		return {
 			id: unit.id,
 			name: unit.name,
-			abbreviation: unit.abbreviation,
+			abbreviation: unit.abbreviation
 		};
 	}
 
@@ -12,4 +12,3 @@ export default class UnitPresenter {
 		return records.map((r) => this.present(r));
 	}
 }
-

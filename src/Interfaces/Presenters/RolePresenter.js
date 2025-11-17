@@ -4,7 +4,7 @@ export default class RolePresenter {
 			id: role.id,
 			name: role.name,
 			description: role.description,
-			permissions: role.permissions,
+			permissions: role.permissions
 		};
 	}
 

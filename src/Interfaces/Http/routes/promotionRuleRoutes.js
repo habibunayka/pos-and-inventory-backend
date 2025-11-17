@@ -17,20 +17,19 @@ export default function registerPromotionRuleRoutes(app, { controller, requireAu
 		"/",
 		...canCreatePromotionRules,
 		validateRequest({ body: prSchemas.create }),
-		adapt(controller.create.bind(controller)),
+		adapt(controller.create.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewPromotionRules,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.get.bind(controller)),
+		adapt(controller.get.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeletePromotionRules,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.delete.bind(controller)),
+		adapt(controller.delete.bind(controller))
 	);
 	app.use("/api/promotion-rules", router);
 }
-

@@ -11,10 +11,19 @@ export default class SupplierService {
 		this._supplierRepository = supplierRepository;
 	}
 
-	listSuppliers() { return this._supplierRepository.findAll(); }
-	getSupplier(id) { return this._supplierRepository.findById(id); }
-	createSupplier(data) { return this._supplierRepository.createSupplier(data); }
-	updateSupplier(payload) { return this._supplierRepository.updateSupplier(payload); }
-	deleteSupplier(id) { return this._supplierRepository.deleteSupplier(id); }
+	listSuppliers() {
+		return this._supplierRepository.findAll();
+	}
+	getSupplier(id) {
+		return this._supplierRepository.findById(id);
+	}
+	createSupplier(data) {
+		return this._supplierRepository.createSupplier(data);
+	}
+	updateSupplier(payload) {
+		return this._supplierRepository.updateSupplier(payload);
+	}
+	deleteSupplier(id) {
+		return this._supplierRepository.deleteSupplier(id);
+	}
 }
-

@@ -7,7 +7,7 @@ export default class RoleController {
 		getRoleUsecase,
 		createRoleUsecase,
 		updateRoleUsecase,
-		deleteRoleUsecase,
+		deleteRoleUsecase
 	}) {
 		if (!rolePresenter) {
 			throw new Error("RoleController requires a presenter");
@@ -18,7 +18,7 @@ export default class RoleController {
 			["getRoleUsecase", getRoleUsecase],
 			["createRoleUsecase", createRoleUsecase],
 			["updateRoleUsecase", updateRoleUsecase],
-			["deleteRoleUsecase", deleteRoleUsecase],
+			["deleteRoleUsecase", deleteRoleUsecase]
 		];
 
 		const missing = requiredUsecases.find(([, usecase]) => !usecase);
@@ -38,7 +38,7 @@ export default class RoleController {
 		const roles = await this.listRolesUsecase.execute();
 		return {
 			status: HttpStatus.OK,
-			data: this.rolePresenter.presentCollection(roles),
+			data: this.rolePresenter.presentCollection(roles)
 		};
 	}
 
@@ -46,7 +46,7 @@ export default class RoleController {
 		const role = await this.getRoleUsecase.execute(params.id);
 		return {
 			status: HttpStatus.OK,
-			data: this.rolePresenter.present(role),
+			data: this.rolePresenter.present(role)
 		};
 	}
 
@@ -54,7 +54,7 @@ export default class RoleController {
 		const role = await this.createRoleUsecase.execute(body);
 		return {
 			status: HttpStatus.CREATED,
-			data: this.rolePresenter.present(role),
+			data: this.rolePresenter.present(role)
 		};
 	}
 
@@ -62,14 +62,14 @@ export default class RoleController {
 		const role = await this.updateRoleUsecase.execute(params.id, body);
 		return {
 			status: HttpStatus.OK,
-			data: this.rolePresenter.present(role),
+			data: this.rolePresenter.present(role)
 		};
 	}
 
 	async deleteRole({ params }) {
 		await this.deleteRoleUsecase.execute(params.id);
 		return {
-			status: HttpStatus.NO_CONTENT,
+			status: HttpStatus.NO_CONTENT
 		};
 	}
 }

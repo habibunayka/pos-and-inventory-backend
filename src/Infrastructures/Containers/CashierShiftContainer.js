@@ -11,13 +11,19 @@ import CashierShiftController from "../../Interfaces/Controllers/CashierShiftCon
 export default function registerCashierShiftContainer({ container, overrides = {}, prisma }) {
 	const repository = overrides.cashierShiftRepository ?? new PrismaCashierShiftRepository({ prisma });
 	const service = overrides.cashierShiftService ?? new CashierShiftService({ cashierShiftRepository: repository });
-	const listUsecase = overrides.listCashierShiftsUsecase ?? new ListCashierShiftsUsecase({ cashierShiftService: service });
+	const listUsecase =
+		overrides.listCashierShiftsUsecase ?? new ListCashierShiftsUsecase({ cashierShiftService: service });
 	const getUsecase = overrides.getCashierShiftUsecase ?? new GetCashierShiftUsecase({ cashierShiftService: service });
-	const createUsecase = overrides.createCashierShiftUsecase ?? new CreateCashierShiftUsecase({ cashierShiftService: service });
-	const updateUsecase = overrides.updateCashierShiftUsecase ?? new UpdateCashierShiftUsecase({ cashierShiftService: service });
-	const deleteUsecase = overrides.deleteCashierShiftUsecase ?? new DeleteCashierShiftUsecase({ cashierShiftService: service });
+	const createUsecase =
+		overrides.createCashierShiftUsecase ?? new CreateCashierShiftUsecase({ cashierShiftService: service });
+	const updateUsecase =
+		overrides.updateCashierShiftUsecase ?? new UpdateCashierShiftUsecase({ cashierShiftService: service });
+	const deleteUsecase =
+		overrides.deleteCashierShiftUsecase ?? new DeleteCashierShiftUsecase({ cashierShiftService: service });
 	const presenter = overrides.cashierShiftPresenter ?? new CashierShiftPresenter();
-	const controller = overrides.cashierShiftController ?? new CashierShiftController({ presenter, listUsecase, getUsecase, createUsecase, updateUsecase, deleteUsecase });
+	const controller =
+		overrides.cashierShiftController ??
+		new CashierShiftController({ presenter, listUsecase, getUsecase, createUsecase, updateUsecase, deleteUsecase });
 
 	container.set("cashierShiftRepository", repository);
 	container.set("cashierShiftService", service);
@@ -29,4 +35,3 @@ export default function registerCashierShiftContainer({ container, overrides = {
 	container.set("cashierShiftPresenter", presenter);
 	container.set("cashierShiftController", controller);
 }
-

@@ -3,12 +3,12 @@ import RoleRepository from "../../Domains/Roles/Repositories/RoleRepository.js";
 const roleInclude = {
 	rolePermissions: {
 		include: {
-			permission: true,
-		},
+			permission: true
+		}
 	},
 	userRoles: {
-		select: { id: true },
-	},
+		select: { id: true }
+	}
 };
 
 export default class PrismaRoleRepository extends RoleRepository {
@@ -25,14 +25,14 @@ export default class PrismaRoleRepository extends RoleRepository {
 	async findAll() {
 		return this._prisma.role.findMany({
 			include: roleInclude,
-			orderBy: { id: "asc" },
+			orderBy: { id: "asc" }
 		});
 	}
 
 	async findById(id) {
 		return this._prisma.role.findUnique({
 			where: { id },
-			include: roleInclude,
+			include: roleInclude
 		});
 	}
 
@@ -43,7 +43,7 @@ export default class PrismaRoleRepository extends RoleRepository {
 
 		return this._prisma.role.findUnique({
 			where: { name },
-			include: roleInclude,
+			include: roleInclude
 		});
 	}
 
@@ -54,8 +54,8 @@ export default class PrismaRoleRepository extends RoleRepository {
 
 		return this._prisma.permission.findMany({
 			where: {
-				name: { in: permissionNames },
-			},
+				name: { in: permissionNames }
+			}
 		});
 	}
 
@@ -67,15 +67,15 @@ export default class PrismaRoleRepository extends RoleRepository {
 				await tx.rolePermission.createMany({
 					data: permissionIds.map((permissionId) => ({
 						roleId: created.id,
-						permissionId,
+						permissionId
 					})),
-					skipDuplicates: true,
+					skipDuplicates: true
 				});
 			}
 
 			return tx.role.findUnique({
 				where: { id: created.id },
-				include: roleInclude,
+				include: roleInclude
 			});
 		});
 	}
@@ -84,7 +84,7 @@ export default class PrismaRoleRepository extends RoleRepository {
 		return this._prisma.$transaction(async (tx) => {
 			const updated = await tx.role.update({
 				where: { id },
-				data: roleData,
+				data: roleData
 			});
 
 			await tx.rolePermission.deleteMany({ where: { roleId: id } });
@@ -93,15 +93,15 @@ export default class PrismaRoleRepository extends RoleRepository {
 				await tx.rolePermission.createMany({
 					data: permissionIds.map((permissionId) => ({
 						roleId: id,
-						permissionId,
+						permissionId
 					})),
-					skipDuplicates: true,
+					skipDuplicates: true
 				});
 			}
 
 			return tx.role.findUnique({
 				where: { id: updated.id },
-				include: roleInclude,
+				include: roleInclude
 			});
 		});
 	}

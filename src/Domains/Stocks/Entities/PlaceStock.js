@@ -14,7 +14,7 @@ export default class PlaceStock {
 			placeId: record.placeId,
 			ingredientId: record.ingredientId,
 			qty: record.qty,
-			unitId: record.unitId,
+			unitId: record.unitId
 		});
 	}
 }

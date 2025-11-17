@@ -19,27 +19,26 @@ export default function registerMenuVariantItemRoutes(app, { controller, require
 		"/",
 		...canCreateMenuVariantItems,
 		validateRequest({ body: mviSchemas.create }),
-		adapt(controller.createMenuVariantItem.bind(controller)),
+		adapt(controller.createMenuVariantItem.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewMenuVariantItems,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getMenuVariantItem.bind(controller)),
+		adapt(controller.getMenuVariantItem.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateMenuVariantItems,
 		validateRequest({ params: commonSchemas.idParam, body: mviSchemas.update }),
-		adapt(controller.updateMenuVariantItem.bind(controller)),
+		adapt(controller.updateMenuVariantItem.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteMenuVariantItems,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteMenuVariantItem.bind(controller)),
+		adapt(controller.deleteMenuVariantItem.bind(controller))
 	);
 
 	app.use("/api/menu-variant-items", router);
 }
-

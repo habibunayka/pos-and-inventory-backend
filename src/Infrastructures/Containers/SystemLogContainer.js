@@ -1,6 +1,11 @@
 import PrismaSystemLogRepository from "../Repositories/PrismaSystemLogRepository.js";
 import SystemLogService from "../../Applications/Logs/Services/SystemLogService.js";
-import { ListSystemLogsUsecase, GetSystemLogUsecase, CreateSystemLogUsecase, DeleteSystemLogUsecase } from "../../Applications/Logs/UseCases/index.js";
+import {
+	ListSystemLogsUsecase,
+	GetSystemLogUsecase,
+	CreateSystemLogUsecase,
+	DeleteSystemLogUsecase
+} from "../../Applications/Logs/UseCases/index.js";
 import SystemLogPresenter from "../../Interfaces/Presenters/SystemLogPresenter.js";
 import SystemLogController from "../../Interfaces/Controllers/SystemLogController.js";
 
@@ -12,13 +17,15 @@ export default function registerSystemLogContainer({ container, overrides = {}, 
 	const createSystemLogUsecase = overrides.createSystemLogUsecase ?? new CreateSystemLogUsecase({ systemLogService });
 	const deleteSystemLogUsecase = overrides.deleteSystemLogUsecase ?? new DeleteSystemLogUsecase({ systemLogService });
 	const systemLogPresenter = overrides.systemLogPresenter ?? new SystemLogPresenter();
-	const systemLogController = overrides.systemLogController ?? new SystemLogController({
-		systemLogPresenter,
-		listSystemLogsUsecase,
-		getSystemLogUsecase,
-		createSystemLogUsecase,
-		deleteSystemLogUsecase,
-	});
+	const systemLogController =
+		overrides.systemLogController ??
+		new SystemLogController({
+			systemLogPresenter,
+			listSystemLogsUsecase,
+			getSystemLogUsecase,
+			createSystemLogUsecase,
+			deleteSystemLogUsecase
+		});
 
 	container.set("systemLogRepository", systemLogRepository);
 	container.set("systemLogService", systemLogService);
@@ -29,4 +36,3 @@ export default function registerSystemLogContainer({ container, overrides = {}, 
 	container.set("systemLogPresenter", systemLogPresenter);
 	container.set("systemLogController", systemLogController);
 }
-

@@ -24,4 +24,3 @@ export default class UpdateIngredientPackageUsecase extends BaseIngredientPackag
 		return this.ingredientPackageService.updateIngredientPackage({ id: numericId, data: update });
 	}
 }
-

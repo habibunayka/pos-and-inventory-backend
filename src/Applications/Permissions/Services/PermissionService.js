@@ -13,12 +13,10 @@ export default class PermissionService {
 				"findByName",
 				"createPermission",
 				"updatePermission",
-				"deletePermission",
+				"deletePermission"
 			];
 
-			const missingMethod = requiredMethods.find(
-				(m) => typeof permissionRepository[m] !== "function"
-			);
+			const missingMethod = requiredMethods.find((m) => typeof permissionRepository[m] !== "function");
 
 			if (missingMethod) {
 				throw new Error(`PERMISSION_SERVICE.INVALID_REPOSITORY: missing ${missingMethod}`);
@@ -52,4 +50,3 @@ export default class PermissionService {
 		return this._permissionRepository.deletePermission(id);
 	}
 }
-

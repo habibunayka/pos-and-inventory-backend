@@ -7,10 +7,11 @@ export default class KitchenOrderPresenter {
 			status: record.status,
 			startedAt: record.startedAt,
 			finishedAt: record.finishedAt,
-			note: record.note ?? null,
+			note: record.note ?? null
 		};
 	}
 
-	presentCollection(records) { return records.map((r) => this.present(r)); }
+	presentCollection(records) {
+		return records.map((r) => this.present(r));
+	}
 }
-

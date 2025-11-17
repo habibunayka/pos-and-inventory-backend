@@ -5,7 +5,7 @@ import {
 	GetIngredientUsecase,
 	CreateIngredientUsecase,
 	UpdateIngredientUsecase,
-	DeleteIngredientUsecase,
+	DeleteIngredientUsecase
 } from "../../Applications/Ingredients/UseCases/index.js";
 import IngredientPresenter from "../../Interfaces/Presenters/IngredientPresenter.js";
 import IngredientController from "../../Interfaces/Controllers/IngredientController.js";
@@ -21,21 +21,28 @@ export default function registerIngredientContainer({ container, overrides = {},
 		unitService = new UnitService({ unitRepository: new PrismaUnitRepository({ prisma }) });
 	}
 
-	const listIngredientsUsecase = overrides.listIngredientsUsecase ?? new ListIngredientsUsecase({ ingredientService, unitService });
-	const getIngredientUsecase = overrides.getIngredientUsecase ?? new GetIngredientUsecase({ ingredientService, unitService });
-	const createIngredientUsecase = overrides.createIngredientUsecase ?? new CreateIngredientUsecase({ ingredientService, unitService });
-	const updateIngredientUsecase = overrides.updateIngredientUsecase ?? new UpdateIngredientUsecase({ ingredientService, unitService });
-	const deleteIngredientUsecase = overrides.deleteIngredientUsecase ?? new DeleteIngredientUsecase({ ingredientService, unitService });
+	const listIngredientsUsecase =
+		overrides.listIngredientsUsecase ?? new ListIngredientsUsecase({ ingredientService, unitService });
+	const getIngredientUsecase =
+		overrides.getIngredientUsecase ?? new GetIngredientUsecase({ ingredientService, unitService });
+	const createIngredientUsecase =
+		overrides.createIngredientUsecase ?? new CreateIngredientUsecase({ ingredientService, unitService });
+	const updateIngredientUsecase =
+		overrides.updateIngredientUsecase ?? new UpdateIngredientUsecase({ ingredientService, unitService });
+	const deleteIngredientUsecase =
+		overrides.deleteIngredientUsecase ?? new DeleteIngredientUsecase({ ingredientService, unitService });
 
 	const ingredientPresenter = overrides.ingredientPresenter ?? new IngredientPresenter();
-	const ingredientController = overrides.ingredientController ?? new IngredientController({
-		ingredientPresenter,
-		listIngredientsUsecase,
-		getIngredientUsecase,
-		createIngredientUsecase,
-		updateIngredientUsecase,
-		deleteIngredientUsecase,
-	});
+	const ingredientController =
+		overrides.ingredientController ??
+		new IngredientController({
+			ingredientPresenter,
+			listIngredientsUsecase,
+			getIngredientUsecase,
+			createIngredientUsecase,
+			updateIngredientUsecase,
+			deleteIngredientUsecase
+		});
 
 	container.set("ingredientRepository", ingredientRepository);
 	container.set("ingredientService", ingredientService);
@@ -47,4 +54,3 @@ export default function registerIngredientContainer({ container, overrides = {},
 	container.set("ingredientPresenter", ingredientPresenter);
 	container.set("ingredientController", ingredientController);
 }
-

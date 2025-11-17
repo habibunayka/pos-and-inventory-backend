@@ -10,7 +10,7 @@ function buildInitialContext(overrides = {}) {
 		user: overrides.user ?? null,
 		userId: overrides.user?.id ?? overrides.userId ?? null,
 		skipActivityLogging: overrides.skipActivityLogging ?? false,
-		metadata: {},
+		metadata: {}
 	};
 
 	if (overrides.metadata && typeof overrides.metadata === "object") {

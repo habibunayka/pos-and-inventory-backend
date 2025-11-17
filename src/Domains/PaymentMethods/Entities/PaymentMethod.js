@@ -12,7 +12,7 @@ export default class PaymentMethod {
 			id: record.id ?? null,
 			name: record.name,
 			description: record.description ?? null,
-			isActive: record.isActive ?? true,
+			isActive: record.isActive ?? true
 		});
 	}
 }

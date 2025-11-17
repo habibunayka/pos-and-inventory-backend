@@ -14,7 +14,7 @@ export default class SystemLog {
 			level: record.level ?? null,
 			message: record.message,
 			contextJson: record.contextJson ?? null,
-			createdAt: record.createdAt,
+			createdAt: record.createdAt
 		});
 	}
 }

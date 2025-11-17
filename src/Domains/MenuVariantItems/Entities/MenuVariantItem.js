@@ -12,7 +12,7 @@ export default class MenuVariantItem {
 			id: record.id ?? null,
 			menuVariantId: record.menuVariantId,
 			name: record.name,
-			additionalPrice: record.additionalPrice ?? null,
+			additionalPrice: record.additionalPrice ?? null
 		});
 	}
 }

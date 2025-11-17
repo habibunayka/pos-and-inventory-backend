@@ -19,27 +19,26 @@ export default function registerPackageRoutes(app, { controller, requireAuth, au
 		"/",
 		...canCreatePackages,
 		validateRequest({ body: packageSchemas.create }),
-		adapt(controller.createPackage.bind(controller)),
+		adapt(controller.createPackage.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewPackages,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getPackage.bind(controller)),
+		adapt(controller.getPackage.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdatePackages,
 		validateRequest({ params: commonSchemas.idParam, body: packageSchemas.update }),
-		adapt(controller.updatePackage.bind(controller)),
+		adapt(controller.updatePackage.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeletePackages,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deletePackage.bind(controller)),
+		adapt(controller.deletePackage.bind(controller))
 	);
 
 	app.use("/api/packages", router);
 }
-

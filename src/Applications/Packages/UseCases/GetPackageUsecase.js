@@ -10,4 +10,3 @@ export default class GetPackageUsecase extends BasePackageUsecase {
 		return record;
 	}
 }
-

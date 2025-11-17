@@ -19,27 +19,26 @@ export default function registerMenuPriceRoutes(app, { controller, requireAuth, 
 		"/",
 		...canCreateMenuPrices,
 		validateRequest({ body: menuPriceSchemas.create }),
-		adapt(controller.createMenuPrice.bind(controller)),
+		adapt(controller.createMenuPrice.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewMenuPrices,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getMenuPrice.bind(controller)),
+		adapt(controller.getMenuPrice.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateMenuPrices,
 		validateRequest({ params: commonSchemas.idParam, body: menuPriceSchemas.update }),
-		adapt(controller.updateMenuPrice.bind(controller)),
+		adapt(controller.updateMenuPrice.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteMenuPrices,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteMenuPrice.bind(controller)),
+		adapt(controller.deleteMenuPrice.bind(controller))
 	);
 
 	app.use("/api/menu-prices", router);
 }
-

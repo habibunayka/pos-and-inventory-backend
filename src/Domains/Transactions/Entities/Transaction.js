@@ -9,7 +9,7 @@ export default class Transaction {
 		tax = null,
 		discount = null,
 		paymentMethodId = null,
-		createdAt,
+		createdAt
 	}) {
 		this.id = id;
 		this.cashierId = cashierId;
@@ -35,7 +35,7 @@ export default class Transaction {
 			tax: record.tax ?? null,
 			discount: record.discount ?? null,
 			paymentMethodId: record.paymentMethodId ?? null,
-			createdAt: record.createdAt,
+			createdAt: record.createdAt
 		});
 	}
 }

@@ -12,4 +12,3 @@ export default class CreateMenuUsecase extends BaseMenuUsecase {
 		return this.menuService.createMenu(data);
 	}
 }
-

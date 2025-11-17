@@ -5,7 +5,7 @@ import {
 	GetPackageUsecase,
 	CreatePackageUsecase,
 	UpdatePackageUsecase,
-	DeletePackageUsecase,
+	DeletePackageUsecase
 } from "../../Applications/Packages/UseCases/index.js";
 import PackagePresenter from "../../Interfaces/Presenters/PackagePresenter.js";
 import PackageController from "../../Interfaces/Controllers/PackageController.js";
@@ -19,14 +19,16 @@ export default function registerPackageContainer({ container, overrides = {}, pr
 	const updatePackageUsecase = overrides.updatePackageUsecase ?? new UpdatePackageUsecase({ packageService });
 	const deletePackageUsecase = overrides.deletePackageUsecase ?? new DeletePackageUsecase({ packageService });
 	const packagePresenter = overrides.packagePresenter ?? new PackagePresenter();
-	const packageController = overrides.packageController ?? new PackageController({
-		packagePresenter,
-		listPackagesUsecase,
-		getPackageUsecase,
-		createPackageUsecase,
-		updatePackageUsecase,
-		deletePackageUsecase,
-	});
+	const packageController =
+		overrides.packageController ??
+		new PackageController({
+			packagePresenter,
+			listPackagesUsecase,
+			getPackageUsecase,
+			createPackageUsecase,
+			updatePackageUsecase,
+			deletePackageUsecase
+		});
 
 	container.set("packageRepository", packageRepository);
 	container.set("packageService", packageService);
@@ -38,4 +40,3 @@ export default function registerPackageContainer({ container, overrides = {}, pr
 	container.set("packagePresenter", packagePresenter);
 	container.set("packageController", packageController);
 }
-

@@ -18,26 +18,25 @@ export default function registerTransactionItemRoutes(app, { controller, require
 		"/",
 		...canCreateTransactionItems,
 		validateRequest({ body: tiSchemas.create }),
-		adapt(controller.createTransactionItem.bind(controller)),
+		adapt(controller.createTransactionItem.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewTransactionItems,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getTransactionItem.bind(controller)),
+		adapt(controller.getTransactionItem.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateTransactionItems,
 		validateRequest({ params: commonSchemas.idParam, body: tiSchemas.update }),
-		adapt(controller.updateTransactionItem.bind(controller)),
+		adapt(controller.updateTransactionItem.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteTransactionItems,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteTransactionItem.bind(controller)),
+		adapt(controller.deleteTransactionItem.bind(controller))
 	);
 	app.use("/api/transaction-items", router);
 }
-

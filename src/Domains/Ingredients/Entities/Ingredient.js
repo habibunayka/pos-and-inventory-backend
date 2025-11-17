@@ -10,7 +10,7 @@ export default class Ingredient {
 		return new Ingredient({
 			id: record.id ?? null,
 			name: record.name,
-			unitId: record.unitId,
+			unitId: record.unitId
 		});
 	}
 }

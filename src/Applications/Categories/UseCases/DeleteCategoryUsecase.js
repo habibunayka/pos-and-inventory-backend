@@ -10,4 +10,3 @@ export default class DeleteCategoryUsecase extends BaseCategoryUsecase {
 		return true;
 	}
 }
-

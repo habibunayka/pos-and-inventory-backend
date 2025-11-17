@@ -1,13 +1,5 @@
 export default class Place {
-	constructor({
-		id = null,
-		name,
-		address = null,
-		phone = null,
-		logoPath = null,
-		type = null,
-		isActive = true,
-	}) {
+	constructor({ id = null, name, address = null, phone = null, logoPath = null, type = null, isActive = true }) {
 		this.id = id;
 		this.name = name;
 		this.address = address;
@@ -29,7 +21,7 @@ export default class Place {
 			phone: record.phone ?? null,
 			logoPath: record.logoPath ?? record.logo_path ?? null,
 			type: record.type ?? null,
-			isActive: record.isActive ?? record.is_active ?? true,
+			isActive: record.isActive ?? record.is_active ?? true
 		});
 	}
 }

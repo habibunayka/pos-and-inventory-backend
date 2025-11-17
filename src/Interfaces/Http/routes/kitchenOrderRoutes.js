@@ -10,19 +10,19 @@ export default function registerKitchenOrderRoutes(app, { controller, requireAut
 	const router = express.Router();
 	const canViewKitchenOrders = requirePermission("view_kitchen_operations", {
 		requireAuth,
-		authorize,
+		authorize
 	});
 	const canCreateKitchenOrders = requirePermission("add_kitchen_operations", {
 		requireAuth,
-		authorize,
+		authorize
 	});
 	const canUpdateKitchenOrders = requirePermission("edit_kitchen_operations", {
 		requireAuth,
-		authorize,
+		authorize
 	});
 	const canDeleteKitchenOrders = requirePermission("delete_kitchen_operations", {
 		requireAuth,
-		authorize,
+		authorize
 	});
 
 	router.get("/", ...canViewKitchenOrders, adapt(controller.listKitchenOrders.bind(controller)));
@@ -30,26 +30,25 @@ export default function registerKitchenOrderRoutes(app, { controller, requireAut
 		"/",
 		...canCreateKitchenOrders,
 		validateRequest({ body: koSchemas.create }),
-		adapt(controller.createKitchenOrder.bind(controller)),
+		adapt(controller.createKitchenOrder.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewKitchenOrders,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getKitchenOrder.bind(controller)),
+		adapt(controller.getKitchenOrder.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateKitchenOrders,
 		validateRequest({ params: commonSchemas.idParam, body: koSchemas.update }),
-		adapt(controller.updateKitchenOrder.bind(controller)),
+		adapt(controller.updateKitchenOrder.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteKitchenOrders,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteKitchenOrder.bind(controller)),
+		adapt(controller.deleteKitchenOrder.bind(controller))
 	);
 	app.use("/api/kitchen-orders", router);
 }
-

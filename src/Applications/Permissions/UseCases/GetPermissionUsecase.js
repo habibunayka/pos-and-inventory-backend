@@ -14,4 +14,3 @@ export default class GetPermissionUsecase extends BasePermissionUsecase {
 		return record;
 	}
 }
-

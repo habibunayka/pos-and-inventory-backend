@@ -10,4 +10,3 @@ export default class CreateMenuPriceUsecase extends BaseMenuPriceUsecase {
 		return this.menuPriceService.createMenuPrice({ menuId, price, effectiveDate });
 	}
 }
-

@@ -15,7 +15,7 @@ export default class UpdatePlaceUsecase extends BasePlaceUsecase {
 
 		const updated = await this.placeService.updatePlace({
 			id: placeId,
-			placeData: normalized,
+			placeData: normalized
 		});
 
 		if (!updated) {

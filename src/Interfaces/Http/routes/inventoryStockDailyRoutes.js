@@ -19,27 +19,26 @@ export default function registerInventoryStockDailyRoutes(app, { controller, req
 		"/",
 		...canCreateInventoryStock,
 		validateRequest({ body: isdSchemas.create }),
-		adapt(controller.create.bind(controller)),
+		adapt(controller.create.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewInventoryStock,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.get.bind(controller)),
+		adapt(controller.get.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateInventoryStock,
 		validateRequest({ params: commonSchemas.idParam, body: isdSchemas.update }),
-		adapt(controller.update.bind(controller)),
+		adapt(controller.update.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteInventoryStock,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.delete.bind(controller)),
+		adapt(controller.delete.bind(controller))
 	);
 
 	app.use("/api/inventory-stock-daily", router);
 }
-

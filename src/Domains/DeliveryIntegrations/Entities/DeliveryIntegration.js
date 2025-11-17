@@ -1,11 +1,5 @@
 export default class DeliveryIntegration {
-	constructor({
-		id = null,
-		placeId,
-		platformName,
-		apiKey = null,
-		settingsJson = null,
-	}) {
+	constructor({ id = null, placeId, platformName, apiKey = null, settingsJson = null }) {
 		this.id = id;
 		this.placeId = placeId;
 		this.platformName = platformName;
@@ -20,7 +14,7 @@ export default class DeliveryIntegration {
 			placeId: record.placeId,
 			platformName: record.platformName,
 			apiKey: record.apiKey ?? null,
-			settingsJson: record.settingsJson ?? null,
+			settingsJson: record.settingsJson ?? null
 		});
 	}
 }

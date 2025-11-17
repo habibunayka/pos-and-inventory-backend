@@ -7,7 +7,7 @@ export default class PackageController {
 		getPackageUsecase,
 		createPackageUsecase,
 		updatePackageUsecase,
-		deletePackageUsecase,
+		deletePackageUsecase
 	}) {
 		if (!packagePresenter) throw new Error("PackageController requires a presenter");
 		const reqs = [
@@ -15,7 +15,7 @@ export default class PackageController {
 			["getPackageUsecase", getPackageUsecase],
 			["createPackageUsecase", createPackageUsecase],
 			["updatePackageUsecase", updatePackageUsecase],
-			["deletePackageUsecase", deletePackageUsecase],
+			["deletePackageUsecase", deletePackageUsecase]
 		];
 		const miss = reqs.find(([, v]) => !v);
 		if (miss) throw new Error(`PackageController requires ${miss[0]}`);
@@ -49,4 +49,3 @@ export default class PackageController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 }
-

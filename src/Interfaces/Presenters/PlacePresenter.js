@@ -11,7 +11,7 @@ export default class PlacePresenter {
 			phone: place.phone,
 			logoPath: place.logoPath,
 			type: place.type,
-			isActive: place.isActive,
+			isActive: place.isActive
 		};
 	}
 

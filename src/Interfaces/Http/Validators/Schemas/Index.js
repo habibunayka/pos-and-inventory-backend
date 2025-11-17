@@ -69,5 +69,5 @@ export default {
 	transactionItems,
 	transactionItemVariants,
 	kitchenOrders,
-	common,
+	common
 };

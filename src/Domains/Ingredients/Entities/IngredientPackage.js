@@ -12,7 +12,7 @@ export default class IngredientPackage {
 			id: record.id ?? null,
 			ingredientId: record.ingredientId,
 			packageId: record.packageId,
-			qty: record.qty,
+			qty: record.qty
 		});
 	}
 }

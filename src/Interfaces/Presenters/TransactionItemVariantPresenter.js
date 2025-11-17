@@ -5,10 +5,11 @@ export default class TransactionItemVariantPresenter {
 			id: record.id,
 			transactionItemId: record.transactionItemId,
 			menuVariantId: record.menuVariantId,
-			extraPrice: Number(record.extraPrice ?? 0),
+			extraPrice: Number(record.extraPrice ?? 0)
 		};
 	}
 
-	presentCollection(records) { return records.map((r) => this.present(r)); }
+	presentCollection(records) {
+		return records.map((r) => this.present(r));
+	}
 }
-

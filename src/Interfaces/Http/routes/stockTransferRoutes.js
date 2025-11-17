@@ -18,21 +18,20 @@ export default function registerStockTransferRoutes(app, { controller, requireAu
 		"/",
 		...canCreateStockTransfers,
 		validateRequest({ body: stSchemas.create }),
-		adapt(controller.create.bind(controller)),
+		adapt(controller.create.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewStockTransfers,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.get.bind(controller)),
+		adapt(controller.get.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteStockTransfers,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.delete.bind(controller)),
+		adapt(controller.delete.bind(controller))
 	);
 
 	app.use("/api/stock-transfers", router);
 }
-

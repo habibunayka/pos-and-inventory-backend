@@ -10,7 +10,7 @@ export default class LoginUsecase {
 	constructor({
 		userService,
 		tokenSigner = defaultSignToken,
-		tokenExpiresIn = process.env.JWT_EXPIRES_IN ?? process.env.JWT_EXPIRATION ?? "1h",
+		tokenExpiresIn = process.env.JWT_EXPIRES_IN ?? process.env.JWT_EXPIRATION ?? "1h"
 	} = {}) {
 		if (!userService) {
 			throw new Error("LOGIN_USECASE.MISSING_USER_SERVICE");
@@ -61,7 +61,7 @@ export default class LoginUsecase {
 			sub: user.id,
 			name: user.name,
 			role: user.role?.name ?? null,
-			placeId: user.placeId,
+			placeId: user.placeId
 		};
 
 		const signOptions = {};
@@ -74,7 +74,7 @@ export default class LoginUsecase {
 
 		return {
 			token,
-			user,
+			user
 		};
 	}
 }

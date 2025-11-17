@@ -6,13 +6,15 @@ export const SYSTEM_ROLE_NAMES = Object.freeze([
 	"cashier",
 	"chef",
 	"purchaising",
-	"waiters",
+	"waiters"
 ]);
 
 export const SYSTEM_ROLE_SET = new Set(SYSTEM_ROLE_NAMES);
 
 export function assertValidSystemRole(name) {
-	const normalized = String(name ?? "").trim().toLowerCase();
+	const normalized = String(name ?? "")
+		.trim()
+		.toLowerCase();
 	if (!SYSTEM_ROLE_SET.has(normalized)) {
 		throw new Error(
 			`Invalid system role: ${normalized || "<empty>"}. Expected one of: ${SYSTEM_ROLE_NAMES.join(", ")}`
@@ -23,6 +25,8 @@ export function assertValidSystemRole(name) {
 }
 
 export function isValidSystemRole(name) {
-	const normalized = String(name ?? "").trim().toLowerCase();
+	const normalized = String(name ?? "")
+		.trim()
+		.toLowerCase();
 	return SYSTEM_ROLE_SET.has(normalized);
 }

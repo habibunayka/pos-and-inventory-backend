@@ -8,7 +8,7 @@ export default class Category {
 		if (!record) return null;
 		return new Category({
 			id: record.id ?? null,
-			name: record.name ?? null,
+			name: record.name ?? null
 		});
 	}
 }

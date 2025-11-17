@@ -5,11 +5,7 @@ import { requirePermission } from "./permissionGuards.js";
 
 const { ingredientPackages: ipSchemas, common: commonSchemas } = validationSchemas;
 
-export default function registerIngredientPackageRoutes(app, {
-	controller,
-	requireAuth,
-	authorize,
-} = {}) {
+export default function registerIngredientPackageRoutes(app, { controller, requireAuth, authorize } = {}) {
 	if (!controller) throw new Error("INGREDIENT_PACKAGE_ROUTES.MISSING_CONTROLLER");
 
 	const router = express.Router();
@@ -23,27 +19,26 @@ export default function registerIngredientPackageRoutes(app, {
 		"/",
 		...canCreateIngredientPackages,
 		validateRequest({ body: ipSchemas.create }),
-		adapt(controller.createIngredientPackage.bind(controller)),
+		adapt(controller.createIngredientPackage.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewIngredientPackages,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getIngredientPackage.bind(controller)),
+		adapt(controller.getIngredientPackage.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateIngredientPackages,
 		validateRequest({ params: commonSchemas.idParam, body: ipSchemas.update }),
-		adapt(controller.updateIngredientPackage.bind(controller)),
+		adapt(controller.updateIngredientPackage.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteIngredientPackages,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteIngredientPackage.bind(controller)),
+		adapt(controller.deleteIngredientPackage.bind(controller))
 	);
 
 	app.use("/api/ingredient-packages", router);
 }
-

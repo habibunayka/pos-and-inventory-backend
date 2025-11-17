@@ -5,39 +5,36 @@ import {
 	GetPermissionUsecase,
 	CreatePermissionUsecase,
 	UpdatePermissionUsecase,
-	DeletePermissionUsecase,
+	DeletePermissionUsecase
 } from "../../Applications/Permissions/UseCases/index.js";
 import PermissionPresenter from "../../Interfaces/Presenters/PermissionPresenter.js";
 import PermissionController from "../../Interfaces/Controllers/PermissionController.js";
 
 export default function registerPermissionContainer({ container, overrides = {}, prisma }) {
-	const permissionRepository =
-    overrides.permissionRepository ?? new PrismaPermissionRepository({ prisma });
-	const permissionService =
-    overrides.permissionService ?? new PermissionService({ permissionRepository });
+	const permissionRepository = overrides.permissionRepository ?? new PrismaPermissionRepository({ prisma });
+	const permissionService = overrides.permissionService ?? new PermissionService({ permissionRepository });
 
 	const listPermissionsUsecase =
-    overrides.listPermissionsUsecase ?? new ListPermissionsUsecase({ permissionService });
-	const getPermissionUsecase =
-    overrides.getPermissionUsecase ?? new GetPermissionUsecase({ permissionService });
+		overrides.listPermissionsUsecase ?? new ListPermissionsUsecase({ permissionService });
+	const getPermissionUsecase = overrides.getPermissionUsecase ?? new GetPermissionUsecase({ permissionService });
 	const createPermissionUsecase =
-    overrides.createPermissionUsecase ?? new CreatePermissionUsecase({ permissionService });
+		overrides.createPermissionUsecase ?? new CreatePermissionUsecase({ permissionService });
 	const updatePermissionUsecase =
-    overrides.updatePermissionUsecase ?? new UpdatePermissionUsecase({ permissionService });
+		overrides.updatePermissionUsecase ?? new UpdatePermissionUsecase({ permissionService });
 	const deletePermissionUsecase =
-    overrides.deletePermissionUsecase ?? new DeletePermissionUsecase({ permissionService });
+		overrides.deletePermissionUsecase ?? new DeletePermissionUsecase({ permissionService });
 
 	const permissionPresenter = overrides.permissionPresenter ?? new PermissionPresenter();
 	const permissionController =
-    overrides.permissionController ??
-    new PermissionController({
-    	permissionPresenter,
-    	listPermissionsUsecase,
-    	getPermissionUsecase,
-    	createPermissionUsecase,
-    	updatePermissionUsecase,
-    	deletePermissionUsecase,
-    });
+		overrides.permissionController ??
+		new PermissionController({
+			permissionPresenter,
+			listPermissionsUsecase,
+			getPermissionUsecase,
+			createPermissionUsecase,
+			updatePermissionUsecase,
+			deletePermissionUsecase
+		});
 
 	container.set("permissionRepository", permissionRepository);
 	container.set("permissionService", permissionService);
@@ -49,4 +46,3 @@ export default function registerPermissionContainer({ container, overrides = {},
 	container.set("permissionPresenter", permissionPresenter);
 	container.set("permissionController", permissionController);
 }
-

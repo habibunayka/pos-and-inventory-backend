@@ -7,7 +7,7 @@ export default class MenuPriceController {
 		getMenuPriceUsecase,
 		createMenuPriceUsecase,
 		updateMenuPriceUsecase,
-		deleteMenuPriceUsecase,
+		deleteMenuPriceUsecase
 	}) {
 		if (!menuPricePresenter) throw new Error("MenuPriceController requires a presenter");
 		const deps = [
@@ -15,7 +15,7 @@ export default class MenuPriceController {
 			["getMenuPriceUsecase", getMenuPriceUsecase],
 			["createMenuPriceUsecase", createMenuPriceUsecase],
 			["updateMenuPriceUsecase", updateMenuPriceUsecase],
-			["deleteMenuPriceUsecase", deleteMenuPriceUsecase],
+			["deleteMenuPriceUsecase", deleteMenuPriceUsecase]
 		];
 		const miss = deps.find(([, v]) => !v);
 		if (miss) throw new Error(`MenuPriceController requires ${miss[0]}`);
@@ -28,10 +28,24 @@ export default class MenuPriceController {
 		this.deleteMenuPriceUsecase = deleteMenuPriceUsecase;
 	}
 
-	async listMenuPrices() { const recs=await this.listMenuPricesUsecase.execute(); return { status: HttpStatus.OK, data: this.menuPricePresenter.presentCollection(recs) }; }
-	async getMenuPrice({ params }) { const rec=await this.getMenuPriceUsecase.execute(params.id); return { status: HttpStatus.OK, data: this.menuPricePresenter.present(rec) }; }
-	async createMenuPrice({ body }) { const rec=await this.createMenuPriceUsecase.execute(body); return { status: HttpStatus.CREATED, data: this.menuPricePresenter.present(rec) }; }
-	async updateMenuPrice({ params, body }) { const rec=await this.updateMenuPriceUsecase.execute(params.id, body); return { status: HttpStatus.OK, data: this.menuPricePresenter.present(rec) }; }
-	async deleteMenuPrice({ params }) { await this.deleteMenuPriceUsecase.execute(params.id); return { status: HttpStatus.NO_CONTENT }; }
+	async listMenuPrices() {
+		const recs = await this.listMenuPricesUsecase.execute();
+		return { status: HttpStatus.OK, data: this.menuPricePresenter.presentCollection(recs) };
+	}
+	async getMenuPrice({ params }) {
+		const rec = await this.getMenuPriceUsecase.execute(params.id);
+		return { status: HttpStatus.OK, data: this.menuPricePresenter.present(rec) };
+	}
+	async createMenuPrice({ body }) {
+		const rec = await this.createMenuPriceUsecase.execute(body);
+		return { status: HttpStatus.CREATED, data: this.menuPricePresenter.present(rec) };
+	}
+	async updateMenuPrice({ params, body }) {
+		const rec = await this.updateMenuPriceUsecase.execute(params.id, body);
+		return { status: HttpStatus.OK, data: this.menuPricePresenter.present(rec) };
+	}
+	async deleteMenuPrice({ params }) {
+		await this.deleteMenuPriceUsecase.execute(params.id);
+		return { status: HttpStatus.NO_CONTENT };
+	}
 }
-

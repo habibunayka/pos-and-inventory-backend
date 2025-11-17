@@ -3,9 +3,10 @@ export default class CategoryPresenter {
 		if (!model) return null;
 		return {
 			id: model.id,
-			name: model.name,
+			name: model.name
 		};
 	}
-	presentCollection(records = []) { return records.map((r) => this.present(r)); }
+	presentCollection(records = []) {
+		return records.map((r) => this.present(r));
+	}
 }
-

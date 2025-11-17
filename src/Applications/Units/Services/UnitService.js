@@ -12,11 +12,22 @@ export default class UnitService {
 		this._unitRepository = unitRepository;
 	}
 
-	listUnits() { return this._unitRepository.findAll(); }
-	getUnit(id) { return this._unitRepository.findById(id); }
-	getUnitByName(name) { return this._unitRepository.findByName(name); }
-	createUnit(unitData) { return this._unitRepository.createUnit(unitData); }
-	updateUnit(payload) { return this._unitRepository.updateUnit(payload); }
-	deleteUnit(id) { return this._unitRepository.deleteUnit(id); }
+	listUnits() {
+		return this._unitRepository.findAll();
+	}
+	getUnit(id) {
+		return this._unitRepository.findById(id);
+	}
+	getUnitByName(name) {
+		return this._unitRepository.findByName(name);
+	}
+	createUnit(unitData) {
+		return this._unitRepository.createUnit(unitData);
+	}
+	updateUnit(payload) {
+		return this._unitRepository.updateUnit(payload);
+	}
+	deleteUnit(id) {
+		return this._unitRepository.deleteUnit(id);
+	}
 }
-

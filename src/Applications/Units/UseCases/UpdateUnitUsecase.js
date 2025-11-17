@@ -13,7 +13,9 @@ export default class UpdateUnitUsecase extends BaseUnitUsecase {
 			update.name = await this._assertNameAvailable(payload.name, numericId);
 		}
 		if (Object.prototype.hasOwnProperty.call(payload, "abbreviation")) {
-			const abv = String(payload.abbreviation ?? "").trim().toLowerCase();
+			const abv = String(payload.abbreviation ?? "")
+				.trim()
+				.toLowerCase();
 			if (!abv) throw new ValidationError("abbreviation cannot be empty");
 			update.abbreviation = abv;
 		}
@@ -21,4 +23,3 @@ export default class UpdateUnitUsecase extends BaseUnitUsecase {
 		return this.unitService.updateUnit({ id: numericId, unitData: update });
 	}
 }
-

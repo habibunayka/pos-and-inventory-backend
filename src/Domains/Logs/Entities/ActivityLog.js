@@ -6,7 +6,7 @@ export default class ActivityLog {
 		entityType = null,
 		entityId = null,
 		contextJson = null,
-		createdAt,
+		createdAt
 	}) {
 		this.id = id;
 		this.userId = userId;
@@ -26,7 +26,7 @@ export default class ActivityLog {
 			entityType: record.entityType ?? null,
 			entityId: record.entityId ?? null,
 			contextJson: record.contextJson ?? null,
-			createdAt: record.createdAt,
+			createdAt: record.createdAt
 		});
 	}
 }

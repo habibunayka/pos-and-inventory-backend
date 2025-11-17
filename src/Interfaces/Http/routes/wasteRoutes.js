@@ -19,27 +19,26 @@ export default function registerWasteRoutes(app, { controller, requireAuth, auth
 		"/",
 		...canCreateWastes,
 		validateRequest({ body: wSchemas.create }),
-		adapt(controller.create.bind(controller)),
+		adapt(controller.create.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewWastes,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.get.bind(controller)),
+		adapt(controller.get.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateWastes,
 		validateRequest({ params: commonSchemas.idParam, body: wSchemas.update }),
-		adapt(controller.update.bind(controller)),
+		adapt(controller.update.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteWastes,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.delete.bind(controller)),
+		adapt(controller.delete.bind(controller))
 	);
 
 	app.use("/api/wastes", router);
 }
-

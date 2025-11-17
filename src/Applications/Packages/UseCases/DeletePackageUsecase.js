@@ -9,4 +9,3 @@ export default class DeletePackageUsecase extends BasePackageUsecase {
 		return true;
 	}
 }
-

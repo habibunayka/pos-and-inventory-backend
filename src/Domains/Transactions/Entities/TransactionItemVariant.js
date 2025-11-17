@@ -12,7 +12,7 @@ export default class TransactionItemVariant {
 			id: record.id ?? null,
 			transactionItemId: record.transactionItemId,
 			menuVariantId: record.menuVariantId,
-			extraPrice: record.extraPrice,
+			extraPrice: record.extraPrice
 		});
 	}
 }

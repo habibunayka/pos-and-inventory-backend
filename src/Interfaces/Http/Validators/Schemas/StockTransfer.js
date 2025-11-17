@@ -6,8 +6,7 @@ export const createStockTransferSchema = Joi.object({
 	ingredientId: posInt.required(),
 	fromPlaceId: posInt.allow(null),
 	toPlaceId: posInt.allow(null),
-	qty: Joi.number().required(),
+	qty: Joi.number().required()
 });
 
 export default { create: createStockTransferSchema };
-

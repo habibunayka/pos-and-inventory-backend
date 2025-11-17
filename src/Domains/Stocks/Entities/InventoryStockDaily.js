@@ -1,14 +1,5 @@
 export default class InventoryStockDaily {
-	constructor({
-		id = null,
-		placeId,
-		ingredientId,
-		date,
-		openingQty,
-		closingQty,
-		diffQty = null,
-		createdAt,
-	}) {
+	constructor({ id = null, placeId, ingredientId, date, openingQty, closingQty, diffQty = null, createdAt }) {
 		this.id = id;
 		this.placeId = placeId;
 		this.ingredientId = ingredientId;
@@ -29,7 +20,7 @@ export default class InventoryStockDaily {
 			openingQty: record.openingQty,
 			closingQty: record.closingQty,
 			diffQty: record.diffQty ?? null,
-			createdAt: record.createdAt,
+			createdAt: record.createdAt
 		});
 	}
 }

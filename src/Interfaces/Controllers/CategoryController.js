@@ -7,7 +7,7 @@ export default class CategoryController {
 		getCategoryUsecase,
 		createCategoryUsecase,
 		updateCategoryUsecase,
-		deleteCategoryUsecase,
+		deleteCategoryUsecase
 	}) {
 		if (!categoryPresenter) throw new Error("CategoryController requires a presenter");
 		const deps = [
@@ -15,7 +15,7 @@ export default class CategoryController {
 			["getCategoryUsecase", getCategoryUsecase],
 			["createCategoryUsecase", createCategoryUsecase],
 			["updateCategoryUsecase", updateCategoryUsecase],
-			["deleteCategoryUsecase", deleteCategoryUsecase],
+			["deleteCategoryUsecase", deleteCategoryUsecase]
 		];
 		const miss = deps.find(([, v]) => !v);
 		if (miss) throw new Error(`CategoryController requires ${miss[0]}`);
@@ -49,4 +49,3 @@ export default class CategoryController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 }
-

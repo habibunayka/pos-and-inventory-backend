@@ -10,4 +10,3 @@ export default class GetIngredientUsecase extends BaseIngredientUsecase {
 		return record;
 	}
 }
-

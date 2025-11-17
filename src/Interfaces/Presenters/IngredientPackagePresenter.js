@@ -5,7 +5,7 @@ export default class IngredientPackagePresenter {
 			id: record.id,
 			ingredientId: record.ingredientId,
 			packageId: record.packageId,
-			qty: Number(record.qty),
+			qty: Number(record.qty)
 		};
 	}
 
@@ -13,4 +13,3 @@ export default class IngredientPackagePresenter {
 		return records.map((r) => this.present(r));
 	}
 }
-

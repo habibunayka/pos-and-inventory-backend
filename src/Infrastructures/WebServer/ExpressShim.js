@@ -5,7 +5,7 @@ let expressInstance;
 
 try {
 	const require = createRequire(import.meta.url);
-	 
+
 	expressInstance = require("express");
 } catch (error) {
 	expressInstance = createExpressStub();

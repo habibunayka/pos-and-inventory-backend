@@ -11,10 +11,19 @@ export default class KitchenOrderService {
 		this._repo = kitchenOrderRepository;
 	}
 
-	listKitchenOrders() { return this._repo.findAll(); }
-	getKitchenOrder(id) { return this._repo.findById(id); }
-	createKitchenOrder(data) { return this._repo.createKitchenOrder(data); }
-	updateKitchenOrder({ id, data }) { return this._repo.updateKitchenOrder({ id, data }); }
-	deleteKitchenOrder(id) { return this._repo.deleteKitchenOrder(id); }
+	listKitchenOrders() {
+		return this._repo.findAll();
+	}
+	getKitchenOrder(id) {
+		return this._repo.findById(id);
+	}
+	createKitchenOrder(data) {
+		return this._repo.createKitchenOrder(data);
+	}
+	updateKitchenOrder({ id, data }) {
+		return this._repo.updateKitchenOrder({ id, data });
+	}
+	deleteKitchenOrder(id) {
+		return this._repo.deleteKitchenOrder(id);
+	}
 }
-

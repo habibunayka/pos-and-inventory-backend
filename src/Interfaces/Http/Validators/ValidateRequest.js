@@ -4,14 +4,14 @@ const defaultOptions = {
 	abortEarly: false,
 	stripUnknown: true,
 	convert: true,
-	errors: { wrap: { label: "" } },
+	errors: { wrap: { label: "" } }
 };
 
 function formatJoiErrors(details = []) {
 	return details.map((detail) => ({
 		message: detail.message,
 		path: detail.path.join(".") || null,
-		type: detail.type,
+		type: detail.type
 	}));
 }
 

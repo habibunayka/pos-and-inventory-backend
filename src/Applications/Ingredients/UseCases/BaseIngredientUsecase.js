@@ -16,4 +16,3 @@ export default class BaseIngredientUsecase {
 		return id;
 	}
 }
-

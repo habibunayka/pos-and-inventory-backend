@@ -18,21 +18,20 @@ export default function registerSystemLogRoutes(app, { controller, requireAuth, 
 		"/",
 		...canCreateSystemLogs,
 		validateRequest({ body: slSchemas.create }),
-		adapt(controller.createSystemLog.bind(controller)),
+		adapt(controller.createSystemLog.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewSystemLogs,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getSystemLog.bind(controller)),
+		adapt(controller.getSystemLog.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteSystemLogs,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteSystemLog.bind(controller)),
+		adapt(controller.deleteSystemLog.bind(controller))
 	);
 
 	app.use("/api/system-logs", router);
 }
-

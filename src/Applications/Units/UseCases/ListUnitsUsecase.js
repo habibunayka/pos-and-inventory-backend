@@ -5,4 +5,3 @@ export default class ListUnitsUsecase extends BaseUnitUsecase {
 		return this.unitService.listUnits();
 	}
 }
-

@@ -10,11 +10,22 @@ export default class CategoryService {
 		}
 		this._repo = categoryRepository;
 	}
-	listCategories() { return this._repo.findAll(); }
-	getCategory(id) { return this._repo.findById(id); }
-	getCategoryByName(name) { return this._repo.findByName(name); }
-	createCategory(data) { return this._repo.createCategory(data); }
-	updateCategory(payload) { return this._repo.updateCategory(payload); }
-	deleteCategory(id) { return this._repo.deleteCategory(id); }
+	listCategories() {
+		return this._repo.findAll();
+	}
+	getCategory(id) {
+		return this._repo.findById(id);
+	}
+	getCategoryByName(name) {
+		return this._repo.findByName(name);
+	}
+	createCategory(data) {
+		return this._repo.createCategory(data);
+	}
+	updateCategory(payload) {
+		return this._repo.updateCategory(payload);
+	}
+	deleteCategory(id) {
+		return this._repo.deleteCategory(id);
+	}
 }
-

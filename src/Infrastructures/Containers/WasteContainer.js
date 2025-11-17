@@ -17,7 +17,9 @@ export default function registerWasteContainer({ container, overrides = {}, pris
 	const updateUsecase = overrides.updateWasteUsecase ?? new UpdateWasteUsecase({ wasteService: service });
 	const deleteUsecase = overrides.deleteWasteUsecase ?? new DeleteWasteUsecase({ wasteService: service });
 	const presenter = overrides.wastePresenter ?? new WastePresenter();
-	const controller = overrides.wasteController ?? new WasteController({ presenter, listUsecase, getUsecase, createUsecase, updateUsecase, deleteUsecase });
+	const controller =
+		overrides.wasteController ??
+		new WasteController({ presenter, listUsecase, getUsecase, createUsecase, updateUsecase, deleteUsecase });
 
 	container.set("wasteRepository", repository);
 	container.set("wasteService", service);

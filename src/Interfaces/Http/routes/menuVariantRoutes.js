@@ -19,27 +19,26 @@ export default function registerMenuVariantRoutes(app, { controller, requireAuth
 		"/",
 		...canCreateMenuVariants,
 		validateRequest({ body: menuVariantSchemas.create }),
-		adapt(controller.createMenuVariant.bind(controller)),
+		adapt(controller.createMenuVariant.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewMenuVariants,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getMenuVariant.bind(controller)),
+		adapt(controller.getMenuVariant.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateMenuVariants,
 		validateRequest({ params: commonSchemas.idParam, body: menuVariantSchemas.update }),
-		adapt(controller.updateMenuVariant.bind(controller)),
+		adapt(controller.updateMenuVariant.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteMenuVariants,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteMenuVariant.bind(controller)),
+		adapt(controller.deleteMenuVariant.bind(controller))
 	);
 
 	app.use("/api/menu-variants", router);
 }
-

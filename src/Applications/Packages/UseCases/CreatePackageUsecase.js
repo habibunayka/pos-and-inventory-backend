@@ -14,4 +14,3 @@ export default class CreatePackageUsecase extends BasePackageUsecase {
 		return this.packageService.createPackage({ name, description });
 	}
 }
-

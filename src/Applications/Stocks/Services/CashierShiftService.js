@@ -10,10 +10,19 @@ export default class CashierShiftService {
 		}
 		this._repo = cashierShiftRepository;
 	}
-	list() { return this._repo.findAll(); }
-	get(id) { return this._repo.findById(id); }
-	create(data) { return this._repo.createShift(data); }
-	update({ id, data }) { return this._repo.updateShift({ id, data }); }
-	delete(id) { return this._repo.deleteShift(id); }
+	list() {
+		return this._repo.findAll();
+	}
+	get(id) {
+		return this._repo.findById(id);
+	}
+	create(data) {
+		return this._repo.createShift(data);
+	}
+	update({ id, data }) {
+		return this._repo.updateShift({ id, data });
+	}
+	delete(id) {
+		return this._repo.deleteShift(id);
+	}
 }
-

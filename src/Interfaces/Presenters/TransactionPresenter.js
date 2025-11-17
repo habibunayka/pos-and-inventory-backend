@@ -11,10 +11,11 @@ export default class TransactionPresenter {
 			tax: record.tax == null ? null : Number(record.tax),
 			discount: record.discount == null ? null : Number(record.discount),
 			paymentMethodId: record.paymentMethodId,
-			createdAt: record.createdAt,
+			createdAt: record.createdAt
 		};
 	}
 
-	presentCollection(records) { return records.map((r) => this.present(r)); }
+	presentCollection(records) {
+		return records.map((r) => this.present(r));
+	}
 }
-

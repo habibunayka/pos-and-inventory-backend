@@ -9,7 +9,9 @@ export default class BasePermissionUsecase {
 	}
 
 	_normalizeName(name) {
-		return String(name ?? "").trim().toLowerCase();
+		return String(name ?? "")
+			.trim()
+			.toLowerCase();
 	}
 
 	async _assertNameAvailable(name, ignoreId = null) {
@@ -24,4 +26,3 @@ export default class BasePermissionUsecase {
 		return normalized;
 	}
 }
-

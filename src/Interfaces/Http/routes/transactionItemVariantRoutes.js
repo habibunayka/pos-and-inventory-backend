@@ -5,11 +5,7 @@ import { requirePermission } from "./permissionGuards.js";
 
 const { transactionItemVariants: tivSchemas, common: commonSchemas } = validationSchemas;
 
-export default function registerTransactionItemVariantRoutes(app, {
-	controller,
-	requireAuth,
-	authorize,
-} = {}) {
+export default function registerTransactionItemVariantRoutes(app, { controller, requireAuth, authorize } = {}) {
 	if (!controller) throw new Error("TRANSACTION_ITEM_VARIANT_ROUTES.MISSING_CONTROLLER");
 	const router = express.Router();
 	const canViewTransactionItemVariants = requirePermission("view_orders", { requireAuth, authorize });
@@ -21,20 +17,19 @@ export default function registerTransactionItemVariantRoutes(app, {
 		"/",
 		...canCreateTransactionItemVariants,
 		validateRequest({ body: tivSchemas.create }),
-		adapt(controller.createTransactionItemVariant.bind(controller)),
+		adapt(controller.createTransactionItemVariant.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewTransactionItemVariants,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getTransactionItemVariant.bind(controller)),
+		adapt(controller.getTransactionItemVariant.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteTransactionItemVariants,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteTransactionItemVariant.bind(controller)),
+		adapt(controller.deleteTransactionItemVariant.bind(controller))
 	);
 	app.use("/api/transaction-item-variants", router);
 }
-

@@ -19,27 +19,26 @@ export default function registerReportFileRoutes(app, { controller, requireAuth,
 		"/",
 		...canCreateReportFiles,
 		validateRequest({ body: rfSchemas.create }),
-		adapt(controller.createReportFile.bind(controller)),
+		adapt(controller.createReportFile.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewReportFiles,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getReportFile.bind(controller)),
+		adapt(controller.getReportFile.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateReportFiles,
 		validateRequest({ params: commonSchemas.idParam, body: rfSchemas.update }),
-		adapt(controller.updateReportFile.bind(controller)),
+		adapt(controller.updateReportFile.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteReportFiles,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteReportFile.bind(controller)),
+		adapt(controller.deleteReportFile.bind(controller))
 	);
 
 	app.use("/api/report-files", router);
 }
-

@@ -10,4 +10,3 @@ export default class GetTableUsecase extends BaseTableUsecase {
 		return record;
 	}
 }
-

@@ -9,4 +9,3 @@ export default class DeleteSupplierProductUsecase extends BaseSupplierProductUse
 		return true;
 	}
 }
-

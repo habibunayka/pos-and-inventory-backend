@@ -8,4 +8,3 @@ export { default as ListPromotionRulesUsecase } from "./promotionRules/ListPromo
 export { default as GetPromotionRuleUsecase } from "./promotionRules/GetPromotionRuleUsecase.js";
 export { default as CreatePromotionRuleUsecase } from "./promotionRules/CreatePromotionRuleUsecase.js";
 export { default as DeletePromotionRuleUsecase } from "./promotionRules/DeletePromotionRuleUsecase.js";
-

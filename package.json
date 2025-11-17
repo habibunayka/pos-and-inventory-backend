@@ -1,36 +1,39 @@
 {
-  "name": "pos-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "build:schema": "node prisma/build-schema.js",
-    "prisma:generate": "npm run build:schema && npx prisma generate",
-    "prisma:migrate": "npm run build:schema && npx prisma migrate dev",
-    "prisma:seed": "node prisma/seed.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "dependencies": {
-    "@prisma/client": "^6.1.0",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "joi": "^17.13.3",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.16.3"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "eslint": "^9.39.1",
-    "eslint-plugin-import": "^2.32.0",
-    "nodemon": "^3.1.10",
-    "prisma": "^6.1.0"
-  },
-  "prisma": {
-    "seed": "node prisma/seed.js"
-  }
+	"name": "pos-backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node src/index.js",
+		"dev": "nodemon src/index.js",
+		"build:schema": "node prisma/build-schema.js",
+		"prisma:generate": "npm run build:schema && npx prisma generate",
+		"prisma:migrate": "npm run build:schema && npx prisma migrate dev",
+		"prisma:seed": "node prisma/seed.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module",
+	"dependencies": {
+		"@prisma/client": "^6.1.0",
+		"dotenv": "^17.2.3",
+		"express": "^5.1.0",
+		"joi": "^17.13.3",
+		"jsonwebtoken": "^9.0.2",
+		"pg": "^8.16.3"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.39.1",
+		"eslint": "^9.39.1",
+		"eslint-plugin-import": "^2.32.0",
+		"eslint-plugin-prettier": "^5.5.4",
+		"globals": "^16.5.0",
+		"nodemon": "^3.1.10",
+		"prettier": "^3.6.2",
+		"prisma": "^6.1.0"
+	},
+	"prisma": {
+		"seed": "node prisma/seed.js"
+	}
 }

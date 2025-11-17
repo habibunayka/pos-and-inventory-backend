@@ -10,10 +10,19 @@ export default class MenuPriceService {
 		}
 		this._repo = menuPriceRepository;
 	}
-	listMenuPrices() { return this._repo.findAll(); }
-	getMenuPrice(id) { return this._repo.findById(id); }
-	createMenuPrice(data) { return this._repo.createMenuPrice(data); }
-	updateMenuPrice(payload) { return this._repo.updateMenuPrice(payload); }
-	deleteMenuPrice(id) { return this._repo.deleteMenuPrice(id); }
+	listMenuPrices() {
+		return this._repo.findAll();
+	}
+	getMenuPrice(id) {
+		return this._repo.findById(id);
+	}
+	createMenuPrice(data) {
+		return this._repo.createMenuPrice(data);
+	}
+	updateMenuPrice(payload) {
+		return this._repo.updateMenuPrice(payload);
+	}
+	deleteMenuPrice(id) {
+		return this._repo.deleteMenuPrice(id);
+	}
 }
-

@@ -4,7 +4,7 @@ export default class LogoutUsecase {
 	// Stateless logout; simply allows middleware hooks for future use.
 	async execute() {
 		return {
-			status: HttpStatus.NO_CONTENT,
+			status: HttpStatus.NO_CONTENT
 		};
 	}
 }

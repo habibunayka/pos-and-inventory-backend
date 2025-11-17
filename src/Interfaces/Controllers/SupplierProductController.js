@@ -7,7 +7,7 @@ export default class SupplierProductController {
 		getSupplierProductUsecase,
 		createSupplierProductUsecase,
 		updateSupplierProductUsecase,
-		deleteSupplierProductUsecase,
+		deleteSupplierProductUsecase
 	}) {
 		if (!supplierProductPresenter) throw new Error("SupplierProductController requires a presenter");
 		const reqs = [
@@ -15,7 +15,7 @@ export default class SupplierProductController {
 			["getSupplierProductUsecase", getSupplierProductUsecase],
 			["createSupplierProductUsecase", createSupplierProductUsecase],
 			["updateSupplierProductUsecase", updateSupplierProductUsecase],
-			["deleteSupplierProductUsecase", deleteSupplierProductUsecase],
+			["deleteSupplierProductUsecase", deleteSupplierProductUsecase]
 		];
 		const miss = reqs.find(([, v]) => !v);
 		if (miss) throw new Error(`SupplierProductController requires ${miss[0]}`);
@@ -49,4 +49,3 @@ export default class SupplierProductController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 }
-

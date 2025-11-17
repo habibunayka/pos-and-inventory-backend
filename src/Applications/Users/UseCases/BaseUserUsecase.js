@@ -11,7 +11,9 @@ export default class BaseUserUsecase {
 	}
 
 	async _findRole(roleName) {
-		const normalized = String(roleName ?? "").trim().toLowerCase();
+		const normalized = String(roleName ?? "")
+			.trim()
+			.toLowerCase();
 
 		if (!normalized) {
 			throw new ValidationError("roleName is required");

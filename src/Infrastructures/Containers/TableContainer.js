@@ -5,7 +5,7 @@ import {
 	GetTableUsecase,
 	CreateTableUsecase,
 	UpdateTableUsecase,
-	DeleteTableUsecase,
+	DeleteTableUsecase
 } from "../../Applications/Tables/UseCases/index.js";
 import TablePresenter from "../../Interfaces/Presenters/TablePresenter.js";
 import TableController from "../../Interfaces/Controllers/TableController.js";
@@ -16,7 +16,8 @@ export default function registerTableContainer({ container, overrides = {}, pris
 	const tableRepository = overrides.tableRepository ?? new PrismaTableRepository({ prisma });
 	const tableService = overrides.tableService ?? new TableService({ tableRepository });
 
-	let placeService = overrides.placeService ?? (container?.has("placeService") ? container.get("placeService") : null);
+	let placeService =
+		overrides.placeService ?? (container?.has("placeService") ? container.get("placeService") : null);
 
 	if (!placeService && prisma) {
 		const placeRepository = new PrismaPlaceRepository({ prisma });
@@ -30,14 +31,16 @@ export default function registerTableContainer({ container, overrides = {}, pris
 	const deleteTableUsecase = overrides.deleteTableUsecase ?? new DeleteTableUsecase({ tableService, placeService });
 
 	const tablePresenter = overrides.tablePresenter ?? new TablePresenter();
-	const tableController = overrides.tableController ?? new TableController({
-		tablePresenter,
-		listTablesUsecase,
-		getTableUsecase,
-		createTableUsecase,
-		updateTableUsecase,
-		deleteTableUsecase,
-	});
+	const tableController =
+		overrides.tableController ??
+		new TableController({
+			tablePresenter,
+			listTablesUsecase,
+			getTableUsecase,
+			createTableUsecase,
+			updateTableUsecase,
+			deleteTableUsecase
+		});
 
 	container.set("tableRepository", tableRepository);
 	container.set("tableService", tableService);
@@ -49,4 +52,3 @@ export default function registerTableContainer({ container, overrides = {}, pris
 	container.set("tablePresenter", tablePresenter);
 	container.set("tableController", tableController);
 }
-

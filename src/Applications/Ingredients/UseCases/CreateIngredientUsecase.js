@@ -12,4 +12,3 @@ export default class CreateIngredientUsecase extends BaseIngredientUsecase {
 		return this.ingredientService.createIngredient({ name, unitId });
 	}
 }
-

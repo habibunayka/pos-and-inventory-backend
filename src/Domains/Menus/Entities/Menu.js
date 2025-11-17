@@ -1,12 +1,5 @@
 export default class Menu {
-	constructor({
-		id = null,
-		placeId = null,
-		name,
-		categoryId = null,
-		description = null,
-		isActive = true,
-	}) {
+	constructor({ id = null, placeId = null, name, categoryId = null, description = null, isActive = true }) {
 		this.id = id;
 		this.placeId = placeId;
 		this.name = name;
@@ -23,7 +16,7 @@ export default class Menu {
 			name: record.name,
 			categoryId: record.categoryId ?? null,
 			description: record.description ?? null,
-			isActive: record.isActive ?? true,
+			isActive: record.isActive ?? true
 		});
 	}
 }

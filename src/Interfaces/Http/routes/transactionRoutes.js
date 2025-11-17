@@ -18,26 +18,25 @@ export default function registerTransactionRoutes(app, { controller, requireAuth
 		"/",
 		...canCreateTransactions,
 		validateRequest({ body: trxSchemas.create }),
-		adapt(controller.createTransaction.bind(controller)),
+		adapt(controller.createTransaction.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewTransactions,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getTransaction.bind(controller)),
+		adapt(controller.getTransaction.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateTransactions,
 		validateRequest({ params: commonSchemas.idParam, body: trxSchemas.update }),
-		adapt(controller.updateTransaction.bind(controller)),
+		adapt(controller.updateTransaction.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteTransactions,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteTransaction.bind(controller)),
+		adapt(controller.deleteTransaction.bind(controller))
 	);
 	app.use("/api/transactions", router);
 }
-

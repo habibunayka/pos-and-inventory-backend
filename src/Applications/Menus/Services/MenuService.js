@@ -10,10 +10,19 @@ export default class MenuService {
 		}
 		this._repo = menuRepository;
 	}
-	listMenus() { return this._repo.findAll(); }
-	getMenu(id) { return this._repo.findById(id); }
-	createMenu(data) { return this._repo.createMenu(data); }
-	updateMenu(payload) { return this._repo.updateMenu(payload); }
-	deleteMenu(id) { return this._repo.deleteMenu(id); }
+	listMenus() {
+		return this._repo.findAll();
+	}
+	getMenu(id) {
+		return this._repo.findById(id);
+	}
+	createMenu(data) {
+		return this._repo.createMenu(data);
+	}
+	updateMenu(payload) {
+		return this._repo.updateMenu(payload);
+	}
+	deleteMenu(id) {
+		return this._repo.deleteMenu(id);
+	}
 }
-

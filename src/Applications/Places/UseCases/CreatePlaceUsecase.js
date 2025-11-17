@@ -17,8 +17,8 @@ export default class CreatePlaceUsecase extends BasePlaceUsecase {
 				phone: normalized.phone ?? null,
 				logoPath: normalized.logoPath ?? null,
 				type: normalized.type ?? null,
-				isActive: normalized.isActive ?? true,
-			},
+				isActive: normalized.isActive ?? true
+			}
 		});
 
 		return Place.fromPersistence(created);

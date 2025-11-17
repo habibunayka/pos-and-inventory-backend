@@ -33,7 +33,8 @@ export default class UpdateSupplierProductUsecase extends BaseSupplierProductUse
 				update.leadTime = null;
 			} else {
 				const lead = Number(payload.leadTime);
-				if (!Number.isInteger(lead) || lead < 0) throw new ValidationError("leadTime must be a non-negative integer or null");
+				if (!Number.isInteger(lead) || lead < 0)
+					throw new ValidationError("leadTime must be a non-negative integer or null");
 				update.leadTime = lead;
 			}
 		}
@@ -44,4 +45,3 @@ export default class UpdateSupplierProductUsecase extends BaseSupplierProductUse
 		return this.supplierProductService.updateSupplierProduct({ id: numericId, data: update });
 	}
 }
-

@@ -3,7 +3,6 @@ import adapt from "../ExpressAdapter.js";
 import { validateRequest, schemas as validationSchemas } from "../Validators/Index.js";
 import { requirePermission } from "./permissionGuards.js";
 
-
 const { places: placeSchemas, common: commonSchemas } = validationSchemas;
 
 export default function registerPlaceRoutes(app, { controller, requireAuth, authorize } = {}) {
@@ -22,28 +21,28 @@ export default function registerPlaceRoutes(app, { controller, requireAuth, auth
 		"/",
 		...canCreatePlaces,
 		validateRequest({ body: placeSchemas.create }),
-		adapt(controller.createPlace.bind(controller)),
+		adapt(controller.createPlace.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewPlaces,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getPlace.bind(controller)),
+		adapt(controller.getPlace.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdatePlaces,
 		validateRequest({
 			params: commonSchemas.idParam,
-			body: placeSchemas.update,
+			body: placeSchemas.update
 		}),
-		adapt(controller.updatePlace.bind(controller)),
+		adapt(controller.updatePlace.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeletePlaces,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deletePlace.bind(controller)),
+		adapt(controller.deletePlace.bind(controller))
 	);
 
 	app.use("/api/places", router);

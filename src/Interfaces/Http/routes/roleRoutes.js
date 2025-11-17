@@ -21,28 +21,28 @@ export default function registerRoleRoutes(app, { controller, requireAuth, autho
 		"/",
 		...canCreateRoles,
 		validateRequest({ body: roleSchemas.create }),
-		adapt(controller.createRole.bind(controller)),
+		adapt(controller.createRole.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewRoles,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getRole.bind(controller)),
+		adapt(controller.getRole.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateRoles,
 		validateRequest({
 			params: commonSchemas.idParam,
-			body: roleSchemas.update,
+			body: roleSchemas.update
 		}),
-		adapt(controller.updateRole.bind(controller)),
+		adapt(controller.updateRole.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteRoles,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteRole.bind(controller)),
+		adapt(controller.deleteRole.bind(controller))
 	);
 
 	app.use("/api/roles", router);

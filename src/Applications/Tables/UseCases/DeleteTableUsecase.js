@@ -9,4 +9,3 @@ export default class DeleteTableUsecase extends BaseTableUsecase {
 		return true;
 	}
 }
-

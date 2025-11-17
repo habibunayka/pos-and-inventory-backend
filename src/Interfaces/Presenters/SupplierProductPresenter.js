@@ -9,10 +9,11 @@ export default class SupplierProductPresenter {
 			qty: Number(record.qty),
 			price: Number(record.price),
 			leadTime: record.leadTime ?? null,
-			isActive: Boolean(record.isActive),
+			isActive: Boolean(record.isActive)
 		};
 	}
 
-	presentCollection(records) { return records.map((r) => this.present(r)); }
+	presentCollection(records) {
+		return records.map((r) => this.present(r));
+	}
 }
-

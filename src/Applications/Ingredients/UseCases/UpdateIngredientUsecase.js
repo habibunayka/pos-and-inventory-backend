@@ -21,4 +21,3 @@ export default class UpdateIngredientUsecase extends BaseIngredientUsecase {
 		return this.ingredientService.updateIngredient({ id: numericId, ingredientData: update });
 	}
 }
-

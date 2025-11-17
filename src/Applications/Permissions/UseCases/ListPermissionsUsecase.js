@@ -5,4 +5,3 @@ export default class ListPermissionsUsecase extends BasePermissionUsecase {
 		return this.permissionService.listPermissions();
 	}
 }
-

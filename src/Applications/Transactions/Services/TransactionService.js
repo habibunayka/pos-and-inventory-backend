@@ -11,10 +11,19 @@ export default class TransactionService {
 		this._repo = transactionRepository;
 	}
 
-	listTransactions() { return this._repo.findAll(); }
-	getTransaction(id) { return this._repo.findById(id); }
-	createTransaction(data) { return this._repo.createTransaction(data); }
-	updateTransaction({ id, data }) { return this._repo.updateTransaction({ id, data }); }
-	deleteTransaction(id) { return this._repo.deleteTransaction(id); }
+	listTransactions() {
+		return this._repo.findAll();
+	}
+	getTransaction(id) {
+		return this._repo.findById(id);
+	}
+	createTransaction(data) {
+		return this._repo.createTransaction(data);
+	}
+	updateTransaction({ id, data }) {
+		return this._repo.updateTransaction({ id, data });
+	}
+	deleteTransaction(id) {
+		return this._repo.deleteTransaction(id);
+	}
 }
-

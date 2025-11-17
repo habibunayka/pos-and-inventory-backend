@@ -9,4 +9,3 @@ export default class DeleteSupplierUsecase extends BaseSupplierUsecase {
 		return true;
 	}
 }
-

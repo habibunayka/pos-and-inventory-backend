@@ -7,7 +7,6 @@ let PrismaNamespace;
 try {
 	// Force Node-API engine so Prisma middleware `$use` is available (disable accelerate/edge)
 	if (!process.env.PRISMA_CLIENT_ENGINE_TYPE) {
-		 
 		process.env.PRISMA_CLIENT_ENGINE_TYPE = "library";
 	}
 

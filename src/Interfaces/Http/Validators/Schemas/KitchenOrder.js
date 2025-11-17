@@ -8,7 +8,7 @@ export const createKitchenOrderSchema = Joi.object({
 	status: nullableText,
 	startedAt: Joi.date().iso().allow(null),
 	finishedAt: Joi.date().iso().allow(null),
-	note: nullableText,
+	note: nullableText
 });
 
 export const updateKitchenOrderSchema = Joi.object({
@@ -16,8 +16,7 @@ export const updateKitchenOrderSchema = Joi.object({
 	status: nullableText,
 	startedAt: Joi.date().iso().allow(null),
 	finishedAt: Joi.date().iso().allow(null),
-	note: nullableText,
+	note: nullableText
 }).min(1);
 
 export default { create: createKitchenOrderSchema, update: updateKitchenOrderSchema };
-

@@ -1,12 +1,5 @@
 export default class StockTransfer {
-	constructor({
-		id = null,
-		ingredientId,
-		fromPlaceId = null,
-		toPlaceId = null,
-		qty,
-		createdAt,
-	}) {
+	constructor({ id = null, ingredientId, fromPlaceId = null, toPlaceId = null, qty, createdAt }) {
 		this.id = id;
 		this.ingredientId = ingredientId;
 		this.fromPlaceId = fromPlaceId;
@@ -23,7 +16,7 @@ export default class StockTransfer {
 			fromPlaceId: record.fromPlaceId ?? null,
 			toPlaceId: record.toPlaceId ?? null,
 			qty: record.qty,
-			createdAt: record.createdAt,
+			createdAt: record.createdAt
 		});
 	}
 }

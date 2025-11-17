@@ -11,10 +11,19 @@ export default class TableService {
 		this._tableRepository = tableRepository;
 	}
 
-	listTables() { return this._tableRepository.findAll(); }
-	getTable(id) { return this._tableRepository.findById(id); }
-	createTable(tableData) { return this._tableRepository.createTable(tableData); }
-	updateTable(payload) { return this._tableRepository.updateTable(payload); }
-	deleteTable(id) { return this._tableRepository.deleteTable(id); }
+	listTables() {
+		return this._tableRepository.findAll();
+	}
+	getTable(id) {
+		return this._tableRepository.findById(id);
+	}
+	createTable(tableData) {
+		return this._tableRepository.createTable(tableData);
+	}
+	updateTable(payload) {
+		return this._tableRepository.updateTable(payload);
+	}
+	deleteTable(id) {
+		return this._tableRepository.deleteTable(id);
+	}
 }
-

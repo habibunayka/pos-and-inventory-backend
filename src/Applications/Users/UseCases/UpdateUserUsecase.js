@@ -81,8 +81,7 @@ export default class UpdateUserUsecase extends BaseUserUsecase {
 			userData.pinCodeHash = null;
 		}
 
-		const requestedPlaceId =
-      payload.placeId ?? payload.outletId ?? existingUser.placeId ?? null;
+		const requestedPlaceId = payload.placeId ?? payload.outletId ?? existingUser.placeId ?? null;
 		const placeId = await this._assertPlaceExists(requestedPlaceId ?? null);
 
 		try {
@@ -90,15 +89,12 @@ export default class UpdateUserUsecase extends BaseUserUsecase {
 				id: existingUser.id,
 				userData,
 				roleId: role.id,
-				placeId,
+				placeId
 			});
 
 			return User.fromPersistence(updated);
 		} catch (error) {
-			if (
-				error?.code === "P2003" &&
-        error?.meta?.constraint === "user_roles_place_id_fkey"
-			) {
+			if (error?.code === "P2003" && error?.meta?.constraint === "user_roles_place_id_fkey") {
 				throw new ValidationError("Place not found");
 			}
 

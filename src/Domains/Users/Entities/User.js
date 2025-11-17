@@ -8,7 +8,7 @@ export default class User {
 		status = "active",
 		authenticationMethod = "password",
 		role = null,
-		placeId = null,
+		placeId = null
 	}) {
 		this.id = id;
 		this.name = name;
@@ -30,7 +30,7 @@ export default class User {
 			status: record.status,
 			authenticationMethod: record.pinCodeHash ? "pin" : "password",
 			role,
-			placeId: roleAssignment?.placeId ?? null,
+			placeId: roleAssignment?.placeId ?? null
 		});
 	}
 

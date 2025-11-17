@@ -11,10 +11,19 @@ export default class IngredientService {
 		this._ingredientRepository = ingredientRepository;
 	}
 
-	listIngredients() { return this._ingredientRepository.findAll(); }
-	getIngredient(id) { return this._ingredientRepository.findById(id); }
-	createIngredient(ingredientData) { return this._ingredientRepository.createIngredient(ingredientData); }
-	updateIngredient(payload) { return this._ingredientRepository.updateIngredient(payload); }
-	deleteIngredient(id) { return this._ingredientRepository.deleteIngredient(id); }
+	listIngredients() {
+		return this._ingredientRepository.findAll();
+	}
+	getIngredient(id) {
+		return this._ingredientRepository.findById(id);
+	}
+	createIngredient(ingredientData) {
+		return this._ingredientRepository.createIngredient(ingredientData);
+	}
+	updateIngredient(payload) {
+		return this._ingredientRepository.updateIngredient(payload);
+	}
+	deleteIngredient(id) {
+		return this._ingredientRepository.deleteIngredient(id);
+	}
 }
-

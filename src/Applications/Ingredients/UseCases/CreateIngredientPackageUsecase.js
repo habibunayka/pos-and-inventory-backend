@@ -13,4 +13,3 @@ export default class CreateIngredientPackageUsecase extends BaseIngredientPackag
 		return this.ingredientPackageService.createIngredientPackage({ ingredientId, packageId, qty });
 	}
 }
-

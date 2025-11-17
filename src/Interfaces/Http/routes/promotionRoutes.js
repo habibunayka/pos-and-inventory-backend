@@ -18,26 +18,25 @@ export default function registerPromotionRoutes(app, { controller, requireAuth, 
 		"/",
 		...canCreatePromotions,
 		validateRequest({ body: promoSchemas.create }),
-		adapt(controller.create.bind(controller)),
+		adapt(controller.create.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewPromotions,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.get.bind(controller)),
+		adapt(controller.get.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdatePromotions,
 		validateRequest({ params: commonSchemas.idParam, body: promoSchemas.update }),
-		adapt(controller.update.bind(controller)),
+		adapt(controller.update.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeletePromotions,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.delete.bind(controller)),
+		adapt(controller.delete.bind(controller))
 	);
 	app.use("/api/promotions", router);
 }
-

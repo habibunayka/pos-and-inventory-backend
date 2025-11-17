@@ -19,27 +19,26 @@ export default function registerSupplierRoutes(app, { controller, requireAuth, a
 		"/",
 		...canCreateSuppliers,
 		validateRequest({ body: supplierSchemas.create }),
-		adapt(controller.createSupplier.bind(controller)),
+		adapt(controller.createSupplier.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewSuppliers,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getSupplier.bind(controller)),
+		adapt(controller.getSupplier.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateSuppliers,
 		validateRequest({ params: commonSchemas.idParam, body: supplierSchemas.update }),
-		adapt(controller.updateSupplier.bind(controller)),
+		adapt(controller.updateSupplier.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteSuppliers,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteSupplier.bind(controller)),
+		adapt(controller.deleteSupplier.bind(controller))
 	);
 
 	app.use("/api/suppliers", router);
 }
-

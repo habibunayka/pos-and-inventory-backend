@@ -19,27 +19,26 @@ export default function registerCategoryRoutes(app, { controller, requireAuth, a
 		"/",
 		...canCreateCategories,
 		validateRequest({ body: categorySchemas.create }),
-		adapt(controller.createCategory.bind(controller)),
+		adapt(controller.createCategory.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewCategories,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getCategory.bind(controller)),
+		adapt(controller.getCategory.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateCategories,
 		validateRequest({ params: commonSchemas.idParam, body: categorySchemas.update }),
-		adapt(controller.updateCategory.bind(controller)),
+		adapt(controller.updateCategory.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteCategories,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteCategory.bind(controller)),
+		adapt(controller.deleteCategory.bind(controller))
 	);
 
 	app.use("/api/categories", router);
 }
-

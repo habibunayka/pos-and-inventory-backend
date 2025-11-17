@@ -1,12 +1,5 @@
 export default class KitchenOrder {
-	constructor({
-		id = null,
-		transactionItemId,
-		status,
-		startedAt = null,
-		finishedAt = null,
-		note = null,
-	}) {
+	constructor({ id = null, transactionItemId, status, startedAt = null, finishedAt = null, note = null }) {
 		this.id = id;
 		this.transactionItemId = transactionItemId;
 		this.status = status;
@@ -23,7 +16,7 @@ export default class KitchenOrder {
 			status: record.status,
 			startedAt: record.startedAt ?? null,
 			finishedAt: record.finishedAt ?? null,
-			note: record.note ?? null,
+			note: record.note ?? null
 		});
 	}
 }

@@ -5,7 +5,7 @@ import {
 	GetUnitUsecase,
 	CreateUnitUsecase,
 	UpdateUnitUsecase,
-	DeleteUnitUsecase,
+	DeleteUnitUsecase
 } from "../../Applications/Units/UseCases/index.js";
 import UnitPresenter from "../../Interfaces/Presenters/UnitPresenter.js";
 import UnitController from "../../Interfaces/Controllers/UnitController.js";
@@ -19,14 +19,16 @@ export default function registerUnitContainer({ container, overrides = {}, prism
 	const updateUnitUsecase = overrides.updateUnitUsecase ?? new UpdateUnitUsecase({ unitService });
 	const deleteUnitUsecase = overrides.deleteUnitUsecase ?? new DeleteUnitUsecase({ unitService });
 	const unitPresenter = overrides.unitPresenter ?? new UnitPresenter();
-	const unitController = overrides.unitController ?? new UnitController({
-		unitPresenter,
-		listUnitsUsecase,
-		getUnitUsecase,
-		createUnitUsecase,
-		updateUnitUsecase,
-		deleteUnitUsecase,
-	});
+	const unitController =
+		overrides.unitController ??
+		new UnitController({
+			unitPresenter,
+			listUnitsUsecase,
+			getUnitUsecase,
+			createUnitUsecase,
+			updateUnitUsecase,
+			deleteUnitUsecase
+		});
 
 	container.set("unitRepository", unitRepository);
 	container.set("unitService", unitService);
@@ -38,4 +40,3 @@ export default function registerUnitContainer({ container, overrides = {}, prism
 	container.set("unitPresenter", unitPresenter);
 	container.set("unitController", unitController);
 }
-

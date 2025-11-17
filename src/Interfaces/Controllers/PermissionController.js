@@ -7,7 +7,7 @@ export default class PermissionController {
 		getPermissionUsecase,
 		createPermissionUsecase,
 		updatePermissionUsecase,
-		deletePermissionUsecase,
+		deletePermissionUsecase
 	}) {
 		if (!permissionPresenter) {
 			throw new Error("PermissionController requires a presenter");
@@ -18,7 +18,7 @@ export default class PermissionController {
 			["getPermissionUsecase", getPermissionUsecase],
 			["createPermissionUsecase", createPermissionUsecase],
 			["updatePermissionUsecase", updatePermissionUsecase],
-			["deletePermissionUsecase", deletePermissionUsecase],
+			["deletePermissionUsecase", deletePermissionUsecase]
 		];
 		const missing = deps.find(([, v]) => !v);
 		if (missing) throw new Error(`PermissionController requires ${missing[0]}`);
@@ -56,4 +56,3 @@ export default class PermissionController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 }
-

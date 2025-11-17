@@ -10,10 +10,19 @@ export default class WasteService {
 		}
 		this._repo = wasteRepository;
 	}
-	list() { return this._repo.findAll(); }
-	get(id) { return this._repo.findById(id); }
-	create(data) { return this._repo.createWaste(data); }
-	update({ id, data }) { return this._repo.updateWaste({ id, data }); }
-	delete(id) { return this._repo.deleteWaste(id); }
+	list() {
+		return this._repo.findAll();
+	}
+	get(id) {
+		return this._repo.findById(id);
+	}
+	create(data) {
+		return this._repo.createWaste(data);
+	}
+	update({ id, data }) {
+		return this._repo.updateWaste({ id, data });
+	}
+	delete(id) {
+		return this._repo.deleteWaste(id);
+	}
 }
-

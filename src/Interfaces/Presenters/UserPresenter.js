@@ -4,7 +4,7 @@ export default class UserPresenter {
 			? {
 				id: user.role.id,
 				name: user.role.name,
-				description: user.role.description,
+				description: user.role.description
 			}
 			: null;
 
@@ -15,7 +15,7 @@ export default class UserPresenter {
 			status: user.status,
 			role,
 			placeId: user.placeId,
-			authenticationMethod: user.authenticationMethod,
+			authenticationMethod: user.authenticationMethod
 		};
 	}
 

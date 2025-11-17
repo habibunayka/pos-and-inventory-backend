@@ -81,11 +81,7 @@ export function createRequireAuthMiddleware({ userService, tokenVerifier = verif
 
 		const subject = decoded?.sub;
 		const numericUserId =
-      typeof subject === "number"
-      	? subject
-      	: typeof subject === "string"
-      		? Number.parseInt(subject, 10)
-      		: NaN;
+			typeof subject === "number" ? subject : typeof subject === "string" ? Number.parseInt(subject, 10) : NaN;
 
 		if (!Number.isInteger(numericUserId) || numericUserId <= 0) {
 			next(new AppError("Invalid or expired token", HttpStatus.UNAUTHORIZED));
@@ -113,9 +109,7 @@ export function createRequireAuthMiddleware({ userService, tokenVerifier = verif
 			}
 
 			const rolePermissions = Array.isArray(domainUser.role?.permissions)
-				? domainUser.role.permissions
-					.map((permission) => normalizePermissionName(permission))
-					.filter(Boolean)
+				? domainUser.role.permissions.map((permission) => normalizePermissionName(permission)).filter(Boolean)
 				: [];
 
 			req.user = {
@@ -130,15 +124,15 @@ export function createRequireAuthMiddleware({ userService, tokenVerifier = verif
 						id: domainUser.role.id,
 						name: domainUser.role.name,
 						description: domainUser.role.description ?? null,
-						permissions: rolePermissions,
+						permissions: rolePermissions
 					}
 					: null,
-				permissions: rolePermissions,
+				permissions: rolePermissions
 			};
 
 			req.auth = {
 				token,
-				payload: decoded,
+				payload: decoded
 			};
 
 			setRequestContextUser(req.user);
@@ -152,13 +146,10 @@ export function createRequireAuthMiddleware({ userService, tokenVerifier = verif
 
 export function createAuthorizeMiddleware() {
 	return (...permissionArgs) => {
-		const flattened = permissionArgs.length === 1 && Array.isArray(permissionArgs[0])
-			? permissionArgs[0]
-			: permissionArgs;
+		const flattened =
+			permissionArgs.length === 1 && Array.isArray(permissionArgs[0]) ? permissionArgs[0] : permissionArgs;
 
-		const requiredPermissions = flattened
-			.map((permission) => normalizePermissionName(permission))
-			.filter(Boolean);
+		const requiredPermissions = flattened.map((permission) => normalizePermissionName(permission)).filter(Boolean);
 
 		return (req, res, next) => {
 			if (!req.user) {
@@ -191,9 +182,7 @@ export function createAuthorizeMiddleware() {
 			}
 
 			const permissionSet = expandPermissionsWithAliases(rolePermissions);
-			const hasAccess = requiredPermissions.some((permission) =>
-				permissionSet.has(permission)
-			);
+			const hasAccess = requiredPermissions.some((permission) => permissionSet.has(permission));
 
 			if (!hasAccess) {
 				next(new AppError("Access denied", HttpStatus.FORBIDDEN));

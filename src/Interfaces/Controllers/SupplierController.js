@@ -7,7 +7,7 @@ export default class SupplierController {
 		getSupplierUsecase,
 		createSupplierUsecase,
 		updateSupplierUsecase,
-		deleteSupplierUsecase,
+		deleteSupplierUsecase
 	}) {
 		if (!supplierPresenter) throw new Error("SupplierController requires a presenter");
 		const reqs = [
@@ -15,7 +15,7 @@ export default class SupplierController {
 			["getSupplierUsecase", getSupplierUsecase],
 			["createSupplierUsecase", createSupplierUsecase],
 			["updateSupplierUsecase", updateSupplierUsecase],
-			["deleteSupplierUsecase", deleteSupplierUsecase],
+			["deleteSupplierUsecase", deleteSupplierUsecase]
 		];
 		const miss = reqs.find(([, v]) => !v);
 		if (miss) throw new Error(`SupplierController requires ${miss[0]}`);
@@ -49,4 +49,3 @@ export default class SupplierController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 }
-

@@ -5,7 +5,7 @@ export default class TablePresenter {
 			id: table.id,
 			placeId: table.placeId,
 			name: table.name,
-			status: table.status,
+			status: table.status
 		};
 	}
 
@@ -13,4 +13,3 @@ export default class TablePresenter {
 		return records.map((r) => this.present(r));
 	}
 }
-

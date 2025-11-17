@@ -6,4 +6,3 @@ export { default as ListSystemLogsUsecase } from "./ListSystemLogsUsecase.js";
 export { default as GetSystemLogUsecase } from "./GetSystemLogUsecase.js";
 export { default as CreateSystemLogUsecase } from "./CreateSystemLogUsecase.js";
 export { default as DeleteSystemLogUsecase } from "./DeleteSystemLogUsecase.js";
-

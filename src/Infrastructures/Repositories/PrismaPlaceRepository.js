@@ -13,19 +13,19 @@ export default class PrismaPlaceRepository extends PlaceRepository {
 
 	async findAll() {
 		return this._prisma.place.findMany({
-			orderBy: { id: "asc" },
+			orderBy: { id: "asc" }
 		});
 	}
 
 	async findById(id) {
 		return this._prisma.place.findUnique({
-			where: { id },
+			where: { id }
 		});
 	}
 
 	async createPlace({ placeData }) {
 		return this._prisma.place.create({
-			data: placeData,
+			data: placeData
 		});
 	}
 
@@ -33,7 +33,7 @@ export default class PrismaPlaceRepository extends PlaceRepository {
 		try {
 			return await this._prisma.place.update({
 				where: { id },
-				data: placeData,
+				data: placeData
 			});
 		} catch (error) {
 			if (error?.code === "P2025") {
@@ -47,7 +47,7 @@ export default class PrismaPlaceRepository extends PlaceRepository {
 	async deletePlace(id) {
 		try {
 			await this._prisma.place.delete({
-				where: { id },
+				where: { id }
 			});
 			return true;
 		} catch (error) {

@@ -16,7 +16,7 @@ export default class Waste {
 			placeId: record.placeId ?? null,
 			qty: record.qty,
 			reason: record.reason ?? null,
-			createdAt: record.createdAt,
+			createdAt: record.createdAt
 		});
 	}
 }

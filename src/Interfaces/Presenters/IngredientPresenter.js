@@ -4,7 +4,7 @@ export default class IngredientPresenter {
 		return {
 			id: ingredient.id,
 			name: ingredient.name,
-			unitId: ingredient.unitId,
+			unitId: ingredient.unitId
 		};
 	}
 
@@ -12,4 +12,3 @@ export default class IngredientPresenter {
 		return records.map((r) => this.present(r));
 	}
 }
-

@@ -11,7 +11,7 @@ export const createTransactionSchema = Joi.object({
 	total: Joi.number().required(),
 	tax: Joi.number().allow(null),
 	discount: Joi.number().allow(null),
-	paymentMethodId: posInt.allow(null),
+	paymentMethodId: posInt.allow(null)
 });
 
 export const updateTransactionSchema = Joi.object({
@@ -22,8 +22,7 @@ export const updateTransactionSchema = Joi.object({
 	total: Joi.number(),
 	tax: Joi.number().allow(null),
 	discount: Joi.number().allow(null),
-	paymentMethodId: posInt.allow(null),
+	paymentMethodId: posInt.allow(null)
 }).min(1);
 
 export default { create: createTransactionSchema, update: updateTransactionSchema };
-

@@ -19,27 +19,26 @@ export default function registerUnitRoutes(app, { controller, requireAuth, autho
 		"/",
 		...canCreateUnits,
 		validateRequest({ body: unitSchemas.create }),
-		adapt(controller.createUnit.bind(controller)),
+		adapt(controller.createUnit.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewUnits,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getUnit.bind(controller)),
+		adapt(controller.getUnit.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateUnits,
 		validateRequest({ params: commonSchemas.idParam, body: unitSchemas.update }),
-		adapt(controller.updateUnit.bind(controller)),
+		adapt(controller.updateUnit.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteUnits,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteUnit.bind(controller)),
+		adapt(controller.deleteUnit.bind(controller))
 	);
 
 	app.use("/api/units", router);
 }
-

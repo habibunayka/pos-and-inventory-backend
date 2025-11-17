@@ -10,4 +10,3 @@ export default class GetIngredientPackageUsecase extends BaseIngredientPackageUs
 		return record;
 	}
 }
-

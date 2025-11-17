@@ -35,4 +35,3 @@ export default class UpdatePermissionUsecase extends BasePermissionUsecase {
 		return this.permissionService.updatePermission({ id: numericId, permissionData: update });
 	}
 }
-

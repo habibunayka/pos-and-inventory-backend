@@ -1,8 +1,4 @@
-import {
-	getRequestContext,
-	runWithRequestContext,
-	withActivityLoggingSuppressed,
-} from "../Context/RequestContext.js";
+import { getRequestContext, runWithRequestContext, withActivityLoggingSuppressed } from "../Context/RequestContext.js";
 
 const CRUD_ACTIONS = new Set(["create", "update", "delete"]);
 const EXCLUDED_MODELS = new Set(["ActivityLog", "SystemLog"]);
@@ -116,10 +112,7 @@ async function fetchSnapshot({ prisma, tableName, entityId, DecimalClass }) {
 	}
 
 	const rows = await withActivityLoggingSuppressed(() =>
-		prisma.$queryRawUnsafe(
-			`SELECT row_to_json(t) AS data FROM "${tableName}" AS t WHERE id = $1 LIMIT 1`,
-			entityId,
-		),
+		prisma.$queryRawUnsafe(`SELECT row_to_json(t) AS data FROM "${tableName}" AS t WHERE id = $1 LIMIT 1`, entityId)
 	);
 
 	if (!Array.isArray(rows) || rows.length === 0) {
@@ -145,8 +138,8 @@ function buildPayload({ action, tableName, entityId, before, after, context }) {
 		entityId,
 		contextJson: {
 			before: before ?? null,
-			after: after ?? null,
-		},
+			after: after ?? null
+		}
 	};
 }
 
@@ -158,7 +151,6 @@ async function persistActivityLog(prisma, payload) {
 	try {
 		await withActivityLoggingSuppressed(() => prisma.activityLog.create({ data: payload }));
 	} catch (error) {
-		 
 		console.warn("Failed to persist activity log:", error.message);
 	}
 }
@@ -201,7 +193,7 @@ async function handleActivityLogging({ prisma, params, next, tableNameMap, Decim
 		entityId,
 		before: action === "create" ? null : beforeSnapshot,
 		after: action === "delete" ? null : afterSnapshot,
-		context,
+		context
 	});
 
 	await persistActivityLog(prisma, payload);
@@ -215,7 +207,6 @@ export function registerActivityLogMiddleware(prisma, { PrismaNamespace } = {}) 
 	const hasExtends = prisma ? typeof prisma.$extends === "function" : false;
 
 	if (!prisma) {
-		 
 		console.warn("[ActivityLogMiddleware] prisma client missing", { prismaType, ctor });
 		return prisma;
 	}
@@ -236,7 +227,7 @@ export function registerActivityLogMiddleware(prisma, { PrismaNamespace } = {}) 
 					params,
 					next,
 					tableNameMap,
-					DecimalClass,
+					DecimalClass
 				});
 
 			if (getRequestContext()) {
@@ -258,9 +249,9 @@ export function registerActivityLogMiddleware(prisma, { PrismaNamespace } = {}) 
 						const params = { model, action: operation, args };
 						const next = (overrideParams = params) => {
 							const callArgs =
-                overrideParams && Object.prototype.hasOwnProperty.call(overrideParams, "args")
-                	? overrideParams.args
-                	: args;
+								overrideParams && Object.prototype.hasOwnProperty.call(overrideParams, "args")
+									? overrideParams.args
+									: args;
 							return query(callArgs);
 						};
 
@@ -270,7 +261,7 @@ export function registerActivityLogMiddleware(prisma, { PrismaNamespace } = {}) 
 								params,
 								next,
 								tableNameMap,
-								DecimalClass,
+								DecimalClass
 							});
 
 						if (getRequestContext()) {
@@ -278,21 +269,20 @@ export function registerActivityLogMiddleware(prisma, { PrismaNamespace } = {}) 
 						}
 
 						return runWithRequestContext({ source: "prisma" }, runner);
-					},
-				},
-			},
+					}
+				}
+			}
 		});
 
 		extended._activityLogMiddlewareRegistered = true;
 		return extended;
 	}
 
-	 
 	console.warn("[ActivityLogMiddleware] prisma client missing middleware hooks", {
 		prismaType,
 		ctor,
 		hasUse,
-		hasExtends,
+		hasExtends
 	});
 
 	return prisma;

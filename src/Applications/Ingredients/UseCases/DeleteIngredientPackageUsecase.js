@@ -9,4 +9,3 @@ export default class DeleteIngredientPackageUsecase extends BaseIngredientPackag
 		return true;
 	}
 }
-

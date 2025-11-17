@@ -11,7 +11,9 @@ export default class BaseRoleUsecase {
 	}
 
 	_normalizeRoleName(name) {
-		return String(name ?? "").trim().toLowerCase();
+		return String(name ?? "")
+			.trim()
+			.toLowerCase();
 	}
 
 	async _assertNameAvailable(name, ignoreRoleId = null) {
@@ -22,9 +24,7 @@ export default class BaseRoleUsecase {
 		}
 
 		if (!SYSTEM_ROLE_SET.has(normalized)) {
-			throw new ValidationError(
-				`Role name must be one of: ${SYSTEM_ROLE_NAMES.join(", ")}`
-			);
+			throw new ValidationError(`Role name must be one of: ${SYSTEM_ROLE_NAMES.join(", ")}`);
 		}
 
 		const existing = await this.roleService.getRoleByName(normalized);
@@ -66,6 +66,8 @@ export default class BaseRoleUsecase {
 	}
 
 	_normalizePermissionName(name) {
-		return String(name ?? "").trim().toLowerCase();
+		return String(name ?? "")
+			.trim()
+			.toLowerCase();
 	}
 }

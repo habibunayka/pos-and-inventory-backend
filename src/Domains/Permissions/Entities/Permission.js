@@ -10,7 +10,7 @@ export default class Permission {
 		return new Permission({
 			id: record.id ?? null,
 			name: record.name,
-			description: record.description ?? null,
+			description: record.description ?? null
 		});
 	}
 }

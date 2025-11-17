@@ -9,4 +9,3 @@ export default class GetMenuUsecase extends BaseMenuUsecase {
 		return rec;
 	}
 }
-

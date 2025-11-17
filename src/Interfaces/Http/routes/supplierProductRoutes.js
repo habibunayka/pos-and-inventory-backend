@@ -19,27 +19,26 @@ export default function registerSupplierProductRoutes(app, { controller, require
 		"/",
 		...canCreateSupplierProducts,
 		validateRequest({ body: spSchemas.create }),
-		adapt(controller.createSupplierProduct.bind(controller)),
+		adapt(controller.createSupplierProduct.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewSupplierProducts,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getSupplierProduct.bind(controller)),
+		adapt(controller.getSupplierProduct.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateSupplierProducts,
 		validateRequest({ params: commonSchemas.idParam, body: spSchemas.update }),
-		adapt(controller.updateSupplierProduct.bind(controller)),
+		adapt(controller.updateSupplierProduct.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteSupplierProducts,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteSupplierProduct.bind(controller)),
+		adapt(controller.deleteSupplierProduct.bind(controller))
 	);
 
 	app.use("/api/supplier-products", router);
 }
-

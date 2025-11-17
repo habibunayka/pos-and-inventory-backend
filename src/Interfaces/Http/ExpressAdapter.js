@@ -7,7 +7,7 @@ export default function adapt(handler) {
 				body: req.body,
 				params: req.params,
 				query: req.query,
-				user: req.user,
+				user: req.user
 			});
 
 			if (!response) {

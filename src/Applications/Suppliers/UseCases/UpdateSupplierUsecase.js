@@ -22,4 +22,3 @@ export default class UpdateSupplierUsecase extends BaseSupplierUsecase {
 		return this.supplierService.updateSupplier({ id: numericId, data: update });
 	}
 }
-

@@ -7,7 +7,7 @@ export default class PlaceController {
 		getPlaceUsecase,
 		createPlaceUsecase,
 		updatePlaceUsecase,
-		deletePlaceUsecase,
+		deletePlaceUsecase
 	}) {
 		if (!placePresenter) {
 			throw new Error("PlaceController requires a presenter");
@@ -18,7 +18,7 @@ export default class PlaceController {
 			["getPlaceUsecase", getPlaceUsecase],
 			["createPlaceUsecase", createPlaceUsecase],
 			["updatePlaceUsecase", updatePlaceUsecase],
-			["deletePlaceUsecase", deletePlaceUsecase],
+			["deletePlaceUsecase", deletePlaceUsecase]
 		];
 
 		const missing = requiredUsecases.find(([, usecase]) => !usecase);
@@ -38,7 +38,7 @@ export default class PlaceController {
 		const places = await this.listPlacesUsecase.execute();
 		return {
 			status: HttpStatus.OK,
-			data: this.placePresenter.presentCollection(places),
+			data: this.placePresenter.presentCollection(places)
 		};
 	}
 
@@ -46,7 +46,7 @@ export default class PlaceController {
 		const place = await this.getPlaceUsecase.execute(params.id);
 		return {
 			status: HttpStatus.OK,
-			data: this.placePresenter.present(place),
+			data: this.placePresenter.present(place)
 		};
 	}
 
@@ -54,7 +54,7 @@ export default class PlaceController {
 		const place = await this.createPlaceUsecase.execute(body);
 		return {
 			status: HttpStatus.CREATED,
-			data: this.placePresenter.present(place),
+			data: this.placePresenter.present(place)
 		};
 	}
 
@@ -62,14 +62,14 @@ export default class PlaceController {
 		const place = await this.updatePlaceUsecase.execute(params.id, body);
 		return {
 			status: HttpStatus.OK,
-			data: this.placePresenter.present(place),
+			data: this.placePresenter.present(place)
 		};
 	}
 
 	async deletePlace({ params }) {
 		await this.deletePlaceUsecase.execute(params.id);
 		return {
-			status: HttpStatus.NO_CONTENT,
+			status: HttpStatus.NO_CONTENT
 		};
 	}
 }

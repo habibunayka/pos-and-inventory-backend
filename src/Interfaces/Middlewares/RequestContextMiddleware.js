@@ -9,9 +9,9 @@ export default function requestContextMiddleware(req, res, next) {
 			source: "http",
 			metadata: {
 				method: req.method,
-				path: req.path,
-			},
+				path: req.path
+			}
 		},
-		() => next(),
+		() => next()
 	);
 }

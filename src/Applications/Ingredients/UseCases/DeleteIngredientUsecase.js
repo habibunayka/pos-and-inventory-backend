@@ -9,4 +9,3 @@ export default class DeleteIngredientUsecase extends BaseIngredientUsecase {
 		return true;
 	}
 }
-

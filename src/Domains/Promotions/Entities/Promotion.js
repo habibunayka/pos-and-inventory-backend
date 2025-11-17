@@ -14,7 +14,7 @@ export default class Promotion {
 			placeId: record.placeId ?? null,
 			name: record.name,
 			startAt: record.startAt ?? null,
-			endAt: record.endAt ?? null,
+			endAt: record.endAt ?? null
 		});
 	}
 }

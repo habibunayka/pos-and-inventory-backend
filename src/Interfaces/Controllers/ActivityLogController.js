@@ -6,15 +6,14 @@ export default class ActivityLogController {
 		listActivityLogsUsecase,
 		getActivityLogUsecase,
 		createActivityLogUsecase,
-		deleteActivityLogUsecase,
+		deleteActivityLogUsecase
 	}) {
-		if (!activityLogPresenter)
-			throw new Error("ActivityLogController requires a presenter");
+		if (!activityLogPresenter) throw new Error("ActivityLogController requires a presenter");
 		const deps = [
 			["listActivityLogsUsecase", listActivityLogsUsecase],
 			["getActivityLogUsecase", getActivityLogUsecase],
 			["createActivityLogUsecase", createActivityLogUsecase],
-			["deleteActivityLogUsecase", deleteActivityLogUsecase],
+			["deleteActivityLogUsecase", deleteActivityLogUsecase]
 		];
 		const miss = deps.find(([, v]) => !v);
 		if (miss) throw new Error(`ActivityLogController requires ${miss[0]}`);
@@ -28,21 +27,21 @@ export default class ActivityLogController {
 		const recs = await this.listActivityLogsUsecase.execute();
 		return {
 			status: HttpStatus.OK,
-			data: this.activityLogPresenter.presentCollection(recs),
+			data: this.activityLogPresenter.presentCollection(recs)
 		};
 	}
 	async getActivityLog({ params }) {
 		const rec = await this.getActivityLogUsecase.execute(params.id);
 		return {
 			status: HttpStatus.OK,
-			data: this.activityLogPresenter.present(rec),
+			data: this.activityLogPresenter.present(rec)
 		};
 	}
 	async createActivityLog({ body }) {
 		const rec = await this.createActivityLogUsecase.execute(body);
 		return {
 			status: HttpStatus.CREATED,
-			data: this.activityLogPresenter.present(rec),
+			data: this.activityLogPresenter.present(rec)
 		};
 	}
 	async deleteActivityLog({ params }) {

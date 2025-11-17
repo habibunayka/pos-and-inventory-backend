@@ -14,11 +14,14 @@ export default class CreateSupplierProductUsecase extends BaseSupplierProductUse
 		if (!Number.isFinite(qty) || qty <= 0) throw new ValidationError("qty must be a positive number");
 		if (!Number.isFinite(price) || price < 0) throw new ValidationError("price must be a non-negative number");
 		const out = {
-			supplierId, ingredientId, packageId, qty, price,
+			supplierId,
+			ingredientId,
+			packageId,
+			qty,
+			price,
 			leadTime: typeof payload.leadTime === "number" ? Math.max(0, Math.floor(payload.leadTime)) : null,
-			isActive: typeof payload.isActive === "boolean" ? payload.isActive : true,
+			isActive: typeof payload.isActive === "boolean" ? payload.isActive : true
 		};
 		return this.supplierProductService.createSupplierProduct(out);
 	}
 }
-

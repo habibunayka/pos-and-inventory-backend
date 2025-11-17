@@ -26,4 +26,3 @@ export default class BaseIngredientPackageUsecase {
 		return id;
 	}
 }
-

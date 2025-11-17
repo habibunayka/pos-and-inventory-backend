@@ -8,7 +8,7 @@ export const createInventoryStockDailySchema = Joi.object({
 	date: Joi.date().iso().required(),
 	openingQty: Joi.number().required(),
 	closingQty: Joi.number().required(),
-	diffQty: Joi.number().allow(null),
+	diffQty: Joi.number().allow(null)
 });
 
 export const updateInventoryStockDailySchema = Joi.object({
@@ -17,8 +17,7 @@ export const updateInventoryStockDailySchema = Joi.object({
 	date: Joi.date().iso(),
 	openingQty: Joi.number(),
 	closingQty: Joi.number(),
-	diffQty: Joi.number().allow(null),
+	diffQty: Joi.number().allow(null)
 }).min(1);
 
 export default { create: createInventoryStockDailySchema, update: updateInventoryStockDailySchema };
-

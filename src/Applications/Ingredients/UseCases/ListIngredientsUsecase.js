@@ -5,4 +5,3 @@ export default class ListIngredientsUsecase extends BaseIngredientUsecase {
 		return this.ingredientService.listIngredients();
 	}
 }
-

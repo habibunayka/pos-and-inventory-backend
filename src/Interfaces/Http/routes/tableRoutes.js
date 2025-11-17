@@ -19,27 +19,26 @@ export default function registerTableRoutes(app, { controller, requireAuth, auth
 		"/",
 		...canCreateTables,
 		validateRequest({ body: tableSchemas.create }),
-		adapt(controller.createTable.bind(controller)),
+		adapt(controller.createTable.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewTables,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getTable.bind(controller)),
+		adapt(controller.getTable.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdateTables,
 		validateRequest({ params: commonSchemas.idParam, body: tableSchemas.update }),
-		adapt(controller.updateTable.bind(controller)),
+		adapt(controller.updateTable.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeleteTables,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deleteTable.bind(controller)),
+		adapt(controller.deleteTable.bind(controller))
 	);
 
 	app.use("/api/tables", router);
 }
-

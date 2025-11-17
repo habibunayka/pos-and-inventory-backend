@@ -9,7 +9,7 @@ export const createSupplierProductSchema = Joi.object({
 	qty: Joi.number().positive().required(),
 	price: Joi.number().min(0).required(),
 	leadTime: Joi.number().integer().min(0).allow(null),
-	isActive: Joi.boolean(),
+	isActive: Joi.boolean()
 });
 
 export const updateSupplierProductSchema = Joi.object({
@@ -19,11 +19,10 @@ export const updateSupplierProductSchema = Joi.object({
 	qty: Joi.number().positive(),
 	price: Joi.number().min(0),
 	leadTime: Joi.number().integer().min(0).allow(null),
-	isActive: Joi.boolean(),
+	isActive: Joi.boolean()
 }).min(1);
 
 export default {
 	create: createSupplierProductSchema,
-	update: updateSupplierProductSchema,
+	update: updateSupplierProductSchema
 };
-

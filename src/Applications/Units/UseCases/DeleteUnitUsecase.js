@@ -9,4 +9,3 @@ export default class DeleteUnitUsecase extends BaseUnitUsecase {
 		return true;
 	}
 }
-

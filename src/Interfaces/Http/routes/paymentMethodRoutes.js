@@ -19,27 +19,26 @@ export default function registerPaymentMethodRoutes(app, { controller, requireAu
 		"/",
 		...canCreatePaymentMethods,
 		validateRequest({ body: pmSchemas.create }),
-		adapt(controller.createPaymentMethod.bind(controller)),
+		adapt(controller.createPaymentMethod.bind(controller))
 	);
 	router.get(
 		"/:id",
 		...canViewPaymentMethods,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.getPaymentMethod.bind(controller)),
+		adapt(controller.getPaymentMethod.bind(controller))
 	);
 	router.put(
 		"/:id",
 		...canUpdatePaymentMethods,
 		validateRequest({ params: commonSchemas.idParam, body: pmSchemas.update }),
-		adapt(controller.updatePaymentMethod.bind(controller)),
+		adapt(controller.updatePaymentMethod.bind(controller))
 	);
 	router.delete(
 		"/:id",
 		...canDeletePaymentMethods,
 		validateRequest({ params: commonSchemas.idParam }),
-		adapt(controller.deletePaymentMethod.bind(controller)),
+		adapt(controller.deletePaymentMethod.bind(controller))
 	);
 
 	app.use("/api/payment-methods", router);
 }
-

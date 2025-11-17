@@ -11,11 +11,7 @@ export default function registerAuthRoutes(app, { controller, optionalAuth } = {
 
 	const router = express.Router();
 
-	router.post(
-		"/login",
-		validateRequest({ body: authSchemas.login }),
-		adapt(controller.login.bind(controller)),
-	);
+	router.post("/login", validateRequest({ body: authSchemas.login }), adapt(controller.login.bind(controller)));
 
 	const logoutMiddleware = typeof optionalAuth === "function" ? [optionalAuth] : [];
 	router.post("/logout", ...logoutMiddleware, adapt(controller.logout.bind(controller)));

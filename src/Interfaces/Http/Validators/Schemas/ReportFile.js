@@ -9,7 +9,7 @@ export const createReportFileSchema = Joi.object({
 	reportDate: Joi.date().iso().allow(null),
 	placeId: positiveInt.allow(null),
 	fileName: Joi.string().trim().min(1).required(),
-	filePath: Joi.string().trim().min(1).required(),
+	filePath: Joi.string().trim().min(1).required()
 });
 
 export const updateReportFileSchema = Joi.object({
@@ -18,8 +18,7 @@ export const updateReportFileSchema = Joi.object({
 	reportDate: Joi.date().iso().allow(null),
 	placeId: positiveInt.allow(null),
 	fileName: Joi.string().trim().min(1),
-	filePath: Joi.string().trim().min(1),
+	filePath: Joi.string().trim().min(1)
 }).min(1);
 
 export default { create: createReportFileSchema, update: updateReportFileSchema };
-

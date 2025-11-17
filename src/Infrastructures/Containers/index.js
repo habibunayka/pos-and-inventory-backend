@@ -32,16 +32,11 @@ import registerPromotionRuleContainer from "./PromotionRuleContainer.js";
 import registerTransactionContainer from "./TransactionContainer.js";
 
 export default function createContainer(overrides = {}) {
-	const shouldSkipPrisma =
-    overrides.userRepository || overrides.roleRepository || overrides.placeRepository;
+	const shouldSkipPrisma = overrides.userRepository || overrides.roleRepository || overrides.placeRepository;
 
-	const prismaClient = shouldSkipPrisma
-		? overrides.prisma ?? null
-		: overrides.prisma ?? getPrisma();
+	const prismaClient = shouldSkipPrisma ? (overrides.prisma ?? null) : (overrides.prisma ?? getPrisma());
 
-	const values = new Map([
-		["prisma", prismaClient],
-	]);
+	const values = new Map([["prisma", prismaClient]]);
 
 	registerRoleContainer({ container: values, overrides, prisma: prismaClient });
 	registerUserContainer({ container: values, overrides, prisma: prismaClient });
@@ -86,6 +81,6 @@ export default function createContainer(overrides = {}) {
 			}
 
 			return values.get(token);
-		},
+		}
 	};
 }

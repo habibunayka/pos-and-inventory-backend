@@ -3,4 +3,3 @@ export { default as GetIngredientUsecase } from "./GetIngredientUsecase.js";
 export { default as CreateIngredientUsecase } from "./CreateIngredientUsecase.js";
 export { default as UpdateIngredientUsecase } from "./UpdateIngredientUsecase.js";
 export { default as DeleteIngredientUsecase } from "./DeleteIngredientUsecase.js";
-

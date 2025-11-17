@@ -8,8 +8,7 @@ export const createActivityLogSchema = Joi.object({
 	action: Joi.string().trim().min(1).required(),
 	entityType: nullableText,
 	entityId: positiveInt.allow(null),
-	contextJson: Joi.object().unknown(true).allow(null),
+	contextJson: Joi.object().unknown(true).allow(null)
 });
 
 export default { create: createActivityLogSchema };
-

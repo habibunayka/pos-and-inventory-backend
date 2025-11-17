@@ -19,4 +19,3 @@ export default class TableRepository {
 		throw new Error("TABLE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
 }
-

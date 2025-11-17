@@ -14,12 +14,10 @@ export default class UserService {
 				"findRoleByName",
 				"findByEmail",
 				"createUser",
-				"updateUser",
+				"updateUser"
 			];
 
-			const missingMethod = requiredMethods.find(
-				(method) => typeof userRepository[method] !== "function"
-			);
+			const missingMethod = requiredMethods.find((method) => typeof userRepository[method] !== "function");
 
 			if (missingMethod) {
 				throw new Error(`USER_SERVICE.INVALID_REPOSITORY: missing ${missingMethod}`);

@@ -79,7 +79,7 @@ function createContainer({ isRouter }) {
 				path,
 				handler,
 				isRouter: Boolean(handler._isRouter),
-				isError: handler.length === 4,
+				isError: handler.length === 4
 			};
 
 			stack.push(layer);
@@ -140,7 +140,7 @@ function createContainer({ isRouter }) {
 
 		_handle(req, res, done, err = null) {
 			handleStack({ stack, req, res, isRouter }, 0, err, done);
-		},
+		}
 	};
 
 	function registerRoute(method, path, handler) {
@@ -190,7 +190,7 @@ function prepareResponse(res) {
 		const types = {
 			json: "application/json",
 			html: "text/html; charset=utf-8",
-			text: "text/plain; charset=utf-8",
+			text: "text/plain; charset=utf-8"
 		};
 
 		res.setHeader("content-type", types[lower] ?? value);

@@ -1,14 +1,5 @@
 export default class SupplierProduct {
-	constructor({
-		id = null,
-		supplierId,
-		ingredientId,
-		packageId,
-		qty,
-		price,
-		leadTime = null,
-		isActive = true,
-	}) {
+	constructor({ id = null, supplierId, ingredientId, packageId, qty, price, leadTime = null, isActive = true }) {
 		this.id = id;
 		this.supplierId = supplierId;
 		this.ingredientId = ingredientId;
@@ -29,7 +20,7 @@ export default class SupplierProduct {
 			qty: record.qty,
 			price: record.price,
 			leadTime: record.leadTime ?? null,
-			isActive: record.isActive ?? true,
+			isActive: record.isActive ?? true
 		});
 	}
 }

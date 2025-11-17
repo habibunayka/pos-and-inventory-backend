@@ -10,7 +10,7 @@ export default class Unit {
 		return new Unit({
 			id: record.id ?? null,
 			name: record.name,
-			abbreviation: record.abbreviation,
+			abbreviation: record.abbreviation
 		});
 	}
 }

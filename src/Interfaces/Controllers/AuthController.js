@@ -27,8 +27,8 @@ export default class AuthController {
 			data: {
 				token,
 				tokenType: "Bearer",
-				user: this.userPresenter.present(user),
-			},
+				user: this.userPresenter.present(user)
+			}
 		};
 	}
 

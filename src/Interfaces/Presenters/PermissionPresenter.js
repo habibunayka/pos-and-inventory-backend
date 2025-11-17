@@ -4,7 +4,7 @@ export default class PermissionPresenter {
 		return {
 			id: permission.id,
 			name: permission.name,
-			description: permission.description,
+			description: permission.description
 		};
 	}
 
@@ -12,4 +12,3 @@ export default class PermissionPresenter {
 		return records.map((r) => this.present(r));
 	}
 }
-

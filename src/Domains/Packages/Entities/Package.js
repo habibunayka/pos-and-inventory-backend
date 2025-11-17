@@ -10,7 +10,7 @@ export default class Package {
 		return new Package({
 			id: record.id ?? null,
 			name: record.name,
-			description: record.description ?? null,
+			description: record.description ?? null
 		});
 	}
 }
