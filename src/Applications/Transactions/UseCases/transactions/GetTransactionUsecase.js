@@ -1,5 +1,6 @@
 import BaseTransactionUsecase from "../BaseTransactionUsecase.js";
-import ValidationError from "../../../../Commons/Errors/ValidationError.js";
+import AppError from "../../../../Commons/Errors/AppError.js";
+import HttpStatus from "../../../../Commons/Constants/HttpStatus.js";
 
 export default class GetTransactionUsecase extends BaseTransactionUsecase {
 	constructor({ transactionService } = {}) {
@@ -10,7 +11,7 @@ export default class GetTransactionUsecase extends BaseTransactionUsecase {
 	async execute(id) {
 		const intId = this._positiveInt(id, "id");
 		const rec = await this.transactionService.getTransaction(intId);
-		if (!rec) throw new ValidationError("Transaction not found");
+		if (!rec) throw new AppError("Transaction not found", HttpStatus.NOT_FOUND);
 		return rec;
 	}
 }

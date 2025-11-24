@@ -20,7 +20,13 @@ export default class User {
 	}
 
 	static fromPersistence(record) {
-		const roleAssignment = (record.userRoles || [])[0];
+		const assignments = Array.isArray(record.userRoles) ? [...record.userRoles].filter(Boolean) : [];
+		assignments.sort((a, b) => {
+			const aId = a?.id ?? Number.MAX_SAFE_INTEGER;
+			const bId = b?.id ?? Number.MAX_SAFE_INTEGER;
+			return aId - bId;
+		});
+		const roleAssignment = assignments.find((assignment) => assignment?.role) ?? assignments[0];
 		const role = Role.fromPersistence(roleAssignment?.role);
 
 		return new User({

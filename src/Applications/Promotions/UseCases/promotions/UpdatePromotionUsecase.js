@@ -1,4 +1,6 @@
 import ValidationError from "../../../../Commons/Errors/ValidationError.js";
+import AppError from "../../../../Commons/Errors/AppError.js";
+import HttpStatus from "../../../../Commons/Constants/HttpStatus.js";
 
 export default class UpdatePromotionUsecase {
 	constructor({ promotionService } = {}) {
@@ -15,6 +17,10 @@ export default class UpdatePromotionUsecase {
 		if (payload.name !== undefined) data.name = String(payload.name ?? "").trim() || null;
 		if (payload.startAt !== undefined) data.startAt = payload.startAt ? new Date(payload.startAt) : null;
 		if (payload.endAt !== undefined) data.endAt = payload.endAt ? new Date(payload.endAt) : null;
-		return this.promotionService.update({ id: intId, data });
+		const updated = await this.promotionService.update({ id: intId, data });
+		if (!updated) {
+			throw new AppError("Promotion not found", HttpStatus.NOT_FOUND);
+		}
+		return updated;
 	}
 }

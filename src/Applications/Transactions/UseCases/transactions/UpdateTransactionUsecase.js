@@ -1,4 +1,6 @@
 import BaseTransactionUsecase from "../BaseTransactionUsecase.js";
+import AppError from "../../../../Commons/Errors/AppError.js";
+import HttpStatus from "../../../../Commons/Constants/HttpStatus.js";
 
 export default class UpdateTransactionUsecase extends BaseTransactionUsecase {
 	constructor({ transactionService } = {}) {
@@ -21,6 +23,10 @@ export default class UpdateTransactionUsecase extends BaseTransactionUsecase {
 		if (payload.paymentMethodId !== undefined)
 			data.paymentMethodId =
 				payload.paymentMethodId == null ? null : this._positiveInt(payload.paymentMethodId, "paymentMethodId");
-		return this.transactionService.updateTransaction({ id: intId, data });
+		const updated = await this.transactionService.updateTransaction({ id: intId, data });
+		if (!updated) {
+			throw new AppError("Transaction not found", HttpStatus.NOT_FOUND);
+		}
+		return updated;
 	}
 }

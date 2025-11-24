@@ -1,6 +1,5 @@
 import AppError from "../../../Commons/Errors/AppError.js";
 import HttpStatus from "../../../Commons/Constants/HttpStatus.js";
-import ValidationError from "../../../Commons/Errors/ValidationError.js";
 import LoginUser from "../../../Domains/Users/Entities/LoginUser.js";
 import User from "../../../Domains/Users/Entities/User.js";
 import { verifySecret } from "../../../Commons/Utils/HashPassword.js";
@@ -28,12 +27,15 @@ export default class LoginUsecase {
 	async execute(payload = {}) {
 		const loginUser = new LoginUser(payload);
 		const normalizedUsername = User.normalizeEmail(loginUser.username);
+		let record = null;
 
-		if (!normalizedUsername) {
-			throw new ValidationError("LOGIN_USECASE.INVALID_USERNAME");
+		if (normalizedUsername) {
+			record = await this.userService.findByEmail(normalizedUsername);
 		}
 
-		const record = await this.userService.findByEmail(normalizedUsername);
+		if (!record) {
+			record = await this.userService.findByName(loginUser.username);
+		}
 
 		if (!record) {
 			throw new AppError("Invalid username or password", HttpStatus.UNAUTHORIZED);

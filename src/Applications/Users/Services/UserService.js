@@ -43,6 +43,10 @@ export default class UserService {
 		return this._userRepository.findByEmail(email);
 	}
 
+	async findByName(name) {
+		return this._userRepository.findByName?.(name);
+	}
+
 	async createUser(payload) {
 		return this._userRepository.createUser(payload);
 	}

@@ -15,6 +15,10 @@ export default class UserRepository {
 		throw new Error("USER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
 
+	async findByName(name) {
+		throw new Error("USER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+	}
+
 	async createUser({ userData, roleId, placeId }) {
 		throw new Error("USER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}

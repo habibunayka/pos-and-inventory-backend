@@ -1,5 +1,6 @@
 import BaseTransactionUsecase from "../BaseTransactionUsecase.js";
-import ValidationError from "../../../../Commons/Errors/ValidationError.js";
+import AppError from "../../../../Commons/Errors/AppError.js";
+import HttpStatus from "../../../../Commons/Constants/HttpStatus.js";
 
 export default class GetKitchenOrderUsecase extends BaseTransactionUsecase {
 	constructor({ kitchenOrderService } = {}) {
@@ -10,7 +11,7 @@ export default class GetKitchenOrderUsecase extends BaseTransactionUsecase {
 	async execute(id) {
 		const intId = this._positiveInt(id, "id");
 		const rec = await this.kitchenOrderService.getKitchenOrder(intId);
-		if (!rec) throw new ValidationError("Kitchen order not found");
+		if (!rec) throw new AppError("Kitchen order not found", HttpStatus.NOT_FOUND);
 		return rec;
 	}
 }

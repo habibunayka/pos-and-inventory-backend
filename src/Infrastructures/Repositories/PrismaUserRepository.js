@@ -2,6 +2,7 @@ import UserRepository from "../../Domains/Users/Repositories/UserRepository.js";
 
 const userInclude = {
 	userRoles: {
+		orderBy: { id: "asc" },
 		include: {
 			role: {
 				include: {
@@ -57,6 +58,22 @@ export default class PrismaUserRepository extends UserRepository {
 
 		return this._prisma.user.findUnique({
 			where: { email },
+			include: userInclude
+		});
+	}
+
+	async findByName(name) {
+		if (!name) {
+			return null;
+		}
+
+		return this._prisma.user.findFirst({
+			where: {
+				name: {
+					equals: name,
+					mode: "insensitive"
+				}
+			},
 			include: userInclude
 		});
 	}
