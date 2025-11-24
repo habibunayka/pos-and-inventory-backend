@@ -39,7 +39,8 @@ const authPaths = {
         "500": {
           "$ref": "#/components/responses/InternalServerError"
         }
-      }
+      },
+      "security": []
     }
   },
   "/api/auth/logout": {

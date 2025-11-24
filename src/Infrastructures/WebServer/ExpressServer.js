@@ -146,7 +146,7 @@ export function startServer() {
 	const port = AppConfig.port;
 
 	const server = app.listen(port, () => {
-		logger.info(`Server is running on port ${port}`);
+		logger.info(`Server is running on http://localhost:${port}`);
 	});
 
 	const shutdown = async () => {
