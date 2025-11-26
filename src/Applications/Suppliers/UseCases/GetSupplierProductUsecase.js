@@ -6,7 +6,7 @@ export default class GetSupplierProductUsecase extends BaseSupplierProductUsecas
 		const numericId = Number(id);
 		if (!Number.isInteger(numericId) || numericId <= 0) throw new ValidationError("Invalid id");
 		const record = await this.supplierProductService.getSupplierProduct(numericId);
-		if (!record) throw new ValidationError("SupplierProduct not found");
+		if (!record) throw new ValidationError("Supplier product not found");
 		return record;
 	}
 }

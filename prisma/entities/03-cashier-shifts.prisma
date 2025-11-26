@@ -2,6 +2,8 @@
 model CashierShift {
   id             Int       @id @default(autoincrement())
   placeId        Int       @map("place_id")
+  stationId      Int       @map("station_id")
+  shiftId        Int       @map("shift_id")
   cashierId      Int       @map("cashier_id")
   openedAt       DateTime  @default(now()) @map("opened_at")
   closedAt       DateTime? @map("closed_at")
@@ -11,8 +13,40 @@ model CashierShift {
   ipAddress      String    @map("ip_address")
   status         String    @default("open")
 
-  place   Place @relation(fields: [placeId], references: [id], onDelete: Restrict)
-  cashier User  @relation("UserCashierShifts", fields: [cashierId], references: [id], onDelete: Restrict)
+  place   Place   @relation(fields: [placeId], references: [id], onDelete: Restrict)
+  station Station @relation(fields: [stationId], references: [id], onDelete: Restrict)
+  shift   Shift   @relation(fields: [shiftId], references: [id], onDelete: Restrict)
+  cashier User    @relation("UserCashierShifts", fields: [cashierId], references: [id], onDelete: Restrict)
 
   @@map("cashier_shifts")
+}
+
+model Station {
+  id          Int     @id @default(autoincrement())
+  placeId     Int     @map("place_id")
+  name        String
+  description String?
+  isActive    Boolean @default(true) @map("is_active")
+
+  place         Place         @relation(fields: [placeId], references: [id], onDelete: Restrict)
+  cashierShifts CashierShift[]
+
+  @@unique([placeId, name])
+  @@map("stations")
+}
+
+model Shift {
+  id          Int     @id @default(autoincrement())
+  placeId     Int     @map("place_id")
+  name        String
+  startTime   String  @map("start_time")
+  endTime     String  @map("end_time")
+  description String?
+  isActive    Boolean @default(true) @map("is_active")
+
+  place         Place         @relation(fields: [placeId], references: [id], onDelete: Restrict)
+  cashierShifts CashierShift[]
+
+  @@unique([placeId, name])
+  @@map("shifts")
 }

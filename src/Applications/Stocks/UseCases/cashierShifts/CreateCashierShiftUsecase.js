@@ -1,20 +1,32 @@
 import ValidationError from "../../../../Commons/Errors/ValidationError.js";
+import BaseCashierShiftUsecase from "./BaseCashierShiftUsecase.js";
 
-export default class CreateCashierShiftUsecase {
-	constructor({ cashierShiftService } = {}) {
-		if (!cashierShiftService) throw new Error("CREATE_CASHIER_SHIFT.MISSING_SERVICE");
-		this.cashierShiftService = cashierShiftService;
-	}
+function normalizeNumber(value, fieldName) {
+	const num = Number(value);
+	if (!Number.isFinite(num)) throw new ValidationError(`${fieldName} must be a number`);
+	return num;
+}
+
+export default class CreateCashierShiftUsecase extends BaseCashierShiftUsecase {
 	async execute(payload = {}) {
-		if (typeof payload !== "object" || payload === null || Array.isArray(payload))
-			throw new ValidationError("Payload must be an object");
-		const data = {
-			placeId: Number(payload.placeId),
-			cashierId: Number(payload.cashierId),
-			ipAddress: String(payload.ipAddress)
-		};
-		if (payload.openingBalance !== undefined) data.openingBalance = Number(payload.openingBalance);
-		if (payload.status !== undefined) data.status = String(payload.status);
+		this._ensureObject(payload);
+		const placeId = await this._validatePlaceId(payload.placeId);
+		const stationId = await this._validateStationId(payload.stationId, placeId);
+		const shiftId = await this._validateShiftId(payload.shiftId, placeId);
+		const cashierId = this._validateId(payload.cashierId, "cashierId");
+		const ipAddress = String(payload.ipAddress ?? "").trim();
+		if (!ipAddress) throw new ValidationError("ipAddress is required");
+
+		const data = { placeId, stationId, shiftId, cashierId, ipAddress };
+
+		if (payload.openingBalance !== undefined) {
+			data.openingBalance = normalizeNumber(payload.openingBalance, "openingBalance");
+		}
+		if (payload.status !== undefined) {
+			const status = String(payload.status ?? "").trim();
+			if (!status) throw new ValidationError("status cannot be empty when provided");
+			data.status = status;
+		}
 		return this.cashierShiftService.create(data);
 	}
 }

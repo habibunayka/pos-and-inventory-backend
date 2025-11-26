@@ -26,6 +26,8 @@ import registerPlaceStockContainer from "./PlaceStockContainer.js";
 import registerInventoryStockDailyContainer from "./InventoryStockDailyContainer.js";
 import registerStockTransferContainer from "./StockTransferContainer.js";
 import registerWasteContainer from "./WasteContainer.js";
+import registerStationContainer from "./StationContainer.js";
+import registerShiftContainer from "./ShiftContainer.js";
 import registerCashierShiftContainer from "./CashierShiftContainer.js";
 import registerPromotionContainer from "./PromotionContainer.js";
 import registerPromotionRuleContainer from "./PromotionRuleContainer.js";
@@ -43,6 +45,8 @@ export default function createContainer(overrides = {}) {
 	registerPlaceContainer({ container: values, overrides, prisma: prismaClient });
 	registerUnitContainer({ container: values, overrides, prisma: prismaClient });
 	registerTableContainer({ container: values, overrides, prisma: prismaClient });
+	registerStationContainer({ container: values, overrides, prisma: prismaClient });
+	registerShiftContainer({ container: values, overrides, prisma: prismaClient });
 	registerIngredientContainer({ container: values, overrides, prisma: prismaClient });
 	registerPackageContainer({ container: values, overrides, prisma: prismaClient });
 	registerCategoryContainer({ container: values, overrides, prisma: prismaClient });

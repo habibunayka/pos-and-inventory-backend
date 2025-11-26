@@ -5,6 +5,8 @@ import places from "./Place.js";
 import permissions from "./Permission.js";
 import units from "./Unit.js";
 import tables from "./Table.js";
+import stations from "./Station.js";
+import shifts from "./Shift.js";
 import ingredients from "./Ingredient.js";
 import packages from "./Package.js";
 import menus from "./Menu.js";
@@ -42,6 +44,8 @@ export default {
 	permissions,
 	units,
 	tables,
+	stations,
+	shifts,
 	ingredients,
 	packages,
 	menus,

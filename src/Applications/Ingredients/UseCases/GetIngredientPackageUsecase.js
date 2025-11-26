@@ -6,7 +6,7 @@ export default class GetIngredientPackageUsecase extends BaseIngredientPackageUs
 		const numericId = Number(id);
 		if (!Number.isInteger(numericId) || numericId <= 0) throw new ValidationError("Invalid id");
 		const record = await this.ingredientPackageService.getIngredientPackage(numericId);
-		if (!record) throw new ValidationError("IngredientPackage not found");
+		if (!record) throw new ValidationError("Ingredient package not found");
 		return record;
 	}
 }

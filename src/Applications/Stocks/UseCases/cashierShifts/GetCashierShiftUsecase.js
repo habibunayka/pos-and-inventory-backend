@@ -1,13 +1,9 @@
 import ValidationError from "../../../../Commons/Errors/ValidationError.js";
+import BaseCashierShiftUsecase from "./BaseCashierShiftUsecase.js";
 
-export default class GetCashierShiftUsecase {
-	constructor({ cashierShiftService } = {}) {
-		if (!cashierShiftService) throw new Error("GET_CASHIER_SHIFT.MISSING_SERVICE");
-		this.cashierShiftService = cashierShiftService;
-	}
+export default class GetCashierShiftUsecase extends BaseCashierShiftUsecase {
 	async execute(id) {
-		const intId = Number(id);
-		if (!Number.isInteger(intId) || intId <= 0) throw new ValidationError("id must be positive integer");
+		const intId = this._validateId(id, "id");
 		const rec = await this.cashierShiftService.get(intId);
 		if (!rec) throw new ValidationError("Cashier shift not found");
 		return rec;

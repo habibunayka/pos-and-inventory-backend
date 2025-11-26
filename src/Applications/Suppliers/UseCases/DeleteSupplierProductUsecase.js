@@ -5,7 +5,8 @@ export default class DeleteSupplierProductUsecase extends BaseSupplierProductUse
 	async execute(id) {
 		const numericId = Number(id);
 		if (!Number.isInteger(numericId) || numericId <= 0) throw new ValidationError("Invalid id");
-		await this.supplierProductService.deleteSupplierProduct(numericId);
+		const deleted = await this.supplierProductService.deleteSupplierProduct(numericId);
+		if (!deleted) throw new ValidationError("Supplier product not found");
 		return true;
 	}
 }

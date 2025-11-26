@@ -4,9 +4,10 @@ import ValidationError from "../../../Commons/Errors/ValidationError.js";
 export default class UpdateUnitUsecase extends BaseUnitUsecase {
 	async execute(id, payload = {}) {
 		const numericId = Number(id);
-		if (!Number.isInteger(numericId) || numericId <= 0) throw new ValidationError("Invalid id");
-		const existing = await this.unitService.getUnit(numericId);
-		if (!existing) throw new ValidationError("Unit not found");
+		if (!Number.isInteger(numericId) || numericId <= 0) throw new ValidationError("id must be a positive integer");
+		if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+			throw new ValidationError("Payload must be an object");
+		}
 
 		const update = {};
 		if (Object.prototype.hasOwnProperty.call(payload, "name")) {
@@ -19,7 +20,10 @@ export default class UpdateUnitUsecase extends BaseUnitUsecase {
 			if (!abv) throw new ValidationError("abbreviation cannot be empty");
 			update.abbreviation = abv;
 		}
-		if (Object.keys(update).length === 0) throw new ValidationError("No updatable fields provided");
-		return this.unitService.updateUnit({ id: numericId, unitData: update });
+		if (Object.keys(update).length === 0) throw new ValidationError("No valid fields to update");
+
+		const updated = await this.unitService.updateUnit({ id: numericId, data: update });
+		if (!updated) throw new ValidationError("Unit not found");
+		return updated;
 	}
 }

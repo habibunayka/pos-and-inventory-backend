@@ -9,7 +9,8 @@ export default class LoginUsecase {
 	constructor({
 		userService,
 		tokenSigner = defaultSignToken,
-		tokenExpiresIn = process.env.JWT_EXPIRES_IN ?? process.env.JWT_EXPIRATION ?? "1h"
+		tokenExpiresIn = process.env.JWT_EXPIRES_IN ?? process.env.JWT_EXPIRATION ?? "1h",
+		verifySecretFn = verifySecret 
 	} = {}) {
 		if (!userService) {
 			throw new Error("LOGIN_USECASE.MISSING_USER_SERVICE");
@@ -22,6 +23,7 @@ export default class LoginUsecase {
 		this.userService = userService;
 		this.tokenSigner = tokenSigner;
 		this.tokenExpiresIn = tokenExpiresIn ?? null;
+		this.verifySecretFn = verifySecretFn;
 	}
 
 	async execute(payload = {}) {
@@ -51,7 +53,7 @@ export default class LoginUsecase {
 			throw new AppError("Invalid username or password", HttpStatus.UNAUTHORIZED);
 		}
 
-		const isValidSecret = await verifySecret(loginUser.password, hashedSecret);
+		const isValidSecret = await this.verifySecretFn(loginUser.password, hashedSecret);
 
 		if (!isValidSecret) {
 			throw new AppError("Invalid username or password", HttpStatus.UNAUTHORIZED);

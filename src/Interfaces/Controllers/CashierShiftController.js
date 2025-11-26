@@ -1,14 +1,25 @@
 import HttpStatus from "../../Commons/Constants/HttpStatus.js";
 
 export default class CashierShiftController {
-	constructor({ presenter, listUsecase, getUsecase, createUsecase, updateUsecase, deleteUsecase } = {}) {
+	constructor({
+		presenter,
+		listUsecase,
+		getUsecase,
+		createUsecase,
+		updateUsecase,
+		deleteUsecase,
+		openUsecase,
+		closeUsecase
+	} = {}) {
 		const deps = [
 			["presenter", presenter],
 			["listUsecase", listUsecase],
 			["getUsecase", getUsecase],
 			["createUsecase", createUsecase],
 			["updateUsecase", updateUsecase],
-			["deleteUsecase", deleteUsecase]
+			["deleteUsecase", deleteUsecase],
+			["openUsecase", openUsecase],
+			["closeUsecase", closeUsecase]
 		];
 		const miss = deps.find(([, v]) => !v);
 		if (miss) throw new Error(`CashierShiftController requires ${miss[0]}`);
@@ -34,5 +45,15 @@ export default class CashierShiftController {
 	async delete({ params }) {
 		await this.deleteUsecase.execute(params.id);
 		return { status: HttpStatus.NO_CONTENT };
+	}
+
+	async open({ body }) {
+		const rec = await this.openUsecase.execute(body);
+		return { status: HttpStatus.CREATED, data: this.presenter.present(rec) };
+	}
+
+	async close({ params, body }) {
+		const rec = await this.closeUsecase.execute(params.id, body);
+		return { status: HttpStatus.OK, data: this.presenter.present(rec) };
 	}
 }

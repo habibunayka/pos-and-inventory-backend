@@ -3,10 +3,17 @@ import ValidationError from "../../../Commons/Errors/ValidationError.js";
 
 export default class UpdateSupplierProductUsecase extends BaseSupplierProductUsecase {
 	async execute(id, payload = {}) {
+		if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+			throw new ValidationError("Payload must be an object");
+		}
+
 		const numericId = Number(id);
-		if (!Number.isInteger(numericId) || numericId <= 0) throw new ValidationError("Invalid id");
+		if (!Number.isInteger(numericId) || numericId <= 0) {
+			throw new ValidationError("id must be a positive integer");
+		}
+
 		const existing = await this.supplierProductService.getSupplierProduct(numericId);
-		if (!existing) throw new ValidationError("SupplierProduct not found");
+		if (!existing) throw new ValidationError("Supplier product not found");
 
 		const update = {};
 		if (Object.prototype.hasOwnProperty.call(payload, "supplierId")) {
@@ -33,9 +40,9 @@ export default class UpdateSupplierProductUsecase extends BaseSupplierProductUse
 				update.leadTime = null;
 			} else {
 				const lead = Number(payload.leadTime);
-				if (!Number.isInteger(lead) || lead < 0)
+				if (!Number.isFinite(lead) || lead < 0)
 					throw new ValidationError("leadTime must be a non-negative integer or null");
-				update.leadTime = lead;
+				update.leadTime = Math.floor(lead);
 			}
 		}
 		if (Object.prototype.hasOwnProperty.call(payload, "isActive")) {

@@ -4,6 +4,6 @@ export default class ListStockTransfersUsecase {
 		this.stockTransferService = stockTransferService;
 	}
 	async execute() {
-		return this.stockTransferService.list();
+		return this.stockTransferService.listStockTransfers();
 	}
 }

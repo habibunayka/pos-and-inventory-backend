@@ -29,9 +29,9 @@ export default class PrismaPackageRepository extends PackageRepository {
 		return Package.fromPersistence(record);
 	}
 
-	async updatePackage({ id, packageData }) {
+	async updatePackage({ id, data }) {
 		try {
-			const record = await this._prisma.package.update({ where: { id }, data: packageData });
+			const record = await this._prisma.package.update({ where: { id }, data });
 			return Package.fromPersistence(record);
 		} catch (error) {
 			if (error?.code === "P2025") return null;

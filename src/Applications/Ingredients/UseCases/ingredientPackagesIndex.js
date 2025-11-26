@@ -1,5 +1,21 @@
-export { default as ListIngredientPackagesUsecase } from "./ListIngredientPackagesUsecase.js";
-export { default as GetIngredientPackageUsecase } from "./GetIngredientPackageUsecase.js";
-export { default as CreateIngredientPackageUsecase } from "./CreateIngredientPackageUsecase.js";
-export { default as UpdateIngredientPackageUsecase } from "./UpdateIngredientPackageUsecase.js";
-export { default as DeleteIngredientPackageUsecase } from "./DeleteIngredientPackageUsecase.js";
+import ListIngredientPackagesUsecase from "./ListIngredientPackagesUsecase.js";
+import GetIngredientPackageUsecase from "./GetIngredientPackageUsecase.js";
+import CreateIngredientPackageUsecase from "./CreateIngredientPackageUsecase.js";
+import UpdateIngredientPackageUsecase from "./UpdateIngredientPackageUsecase.js";
+import DeleteIngredientPackageUsecase from "./DeleteIngredientPackageUsecase.js";
+
+export {
+	ListIngredientPackagesUsecase,
+	GetIngredientPackageUsecase,
+	CreateIngredientPackageUsecase,
+	UpdateIngredientPackageUsecase,
+	DeleteIngredientPackageUsecase
+};
+
+export default {
+	ListIngredientPackagesUsecase,
+	GetIngredientPackageUsecase,
+	CreateIngredientPackageUsecase,
+	UpdateIngredientPackageUsecase,
+	DeleteIngredientPackageUsecase
+};

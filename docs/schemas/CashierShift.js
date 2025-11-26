@@ -3,6 +3,8 @@ const CashierShift = {
   "required": [
     "id",
     "placeId",
+    "stationId",
+    "shiftId",
     "cashierId",
     "openedAt",
     "status"
@@ -13,6 +15,14 @@ const CashierShift = {
       "example": 1
     },
     "placeId": {
+      "type": "integer",
+      "example": 1
+    },
+    "stationId": {
+      "type": "integer",
+      "example": 2
+    },
+    "shiftId": {
       "type": "integer",
       "example": 1
     },

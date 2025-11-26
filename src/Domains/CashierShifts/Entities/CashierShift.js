@@ -2,6 +2,8 @@ export default class CashierShift {
 	constructor({
 		id = null,
 		placeId,
+		stationId,
+		shiftId,
 		cashierId,
 		openedAt,
 		closedAt = null,
@@ -13,6 +15,8 @@ export default class CashierShift {
 	}) {
 		this.id = id;
 		this.placeId = placeId;
+		this.stationId = stationId;
+		this.shiftId = shiftId;
 		this.cashierId = cashierId;
 		this.openedAt = openedAt;
 		this.closedAt = closedAt;
@@ -28,6 +32,8 @@ export default class CashierShift {
 		return new CashierShift({
 			id: record.id ?? null,
 			placeId: record.placeId,
+			stationId: record.stationId,
+			shiftId: record.shiftId,
 			cashierId: record.cashierId,
 			openedAt: record.openedAt,
 			closedAt: record.closedAt ?? null,

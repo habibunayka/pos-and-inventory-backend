@@ -19,9 +19,11 @@ import placesPaths from './places.js';
 import promotionRulesPaths from './promotion-rules.js';
 import promotionsPaths from './promotions.js';
 import recipesPaths from './recipes.js';
+import shiftsPaths from './shifts.js';
 import reportFilesPaths from './report-files.js';
 import rolesPaths from './roles.js';
 import stockTransfersPaths from './stock-transfers.js';
+import stationsPaths from './stations.js';
 import supplierProductsPaths from './supplier-products.js';
 import suppliersPaths from './suppliers.js';
 import systemLogsPaths from './system-logs.js';
@@ -55,9 +57,11 @@ const paths = {
   ...promotionRulesPaths,
   ...promotionsPaths,
   ...recipesPaths,
+  ...shiftsPaths,
   ...reportFilesPaths,
   ...rolesPaths,
   ...stockTransfersPaths,
+  ...stationsPaths,
   ...supplierProductsPaths,
   ...suppliersPaths,
   ...systemLogsPaths,

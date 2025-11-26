@@ -60,6 +60,18 @@ const tags = [
     "description": "Endpoint untuk metode pembayaran"
   },
   {
+    "name": "CashierShifts",
+    "description": "Endpoint untuk manajemen shift kasir dan kasir station"
+  },
+  {
+    "name": "Stations",
+    "description": "Endpoint untuk manajemen kasir/stasiun POS per tempat"
+  },
+  {
+    "name": "Shifts",
+    "description": "Endpoint untuk konfigurasi pola shift kasir"
+  },
+  {
     "name": "DeliveryIntegrations",
     "description": "Endpoint untuk integrasi delivery platform"
   },

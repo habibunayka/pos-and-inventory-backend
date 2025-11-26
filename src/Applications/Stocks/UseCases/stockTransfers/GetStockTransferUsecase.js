@@ -7,8 +7,8 @@ export default class GetStockTransferUsecase {
 	}
 	async execute(id) {
 		const intId = Number(id);
-		if (!Number.isInteger(intId) || intId <= 0) throw new ValidationError("id must be positive integer");
-		const rec = await this.stockTransferService.get(intId);
+		if (!Number.isInteger(intId) || intId <= 0) throw new ValidationError("id must be a positive integer");
+		const rec = await this.stockTransferService.getStockTransfer(intId);
 		if (!rec) throw new ValidationError("Stock transfer not found");
 		return rec;
 	}

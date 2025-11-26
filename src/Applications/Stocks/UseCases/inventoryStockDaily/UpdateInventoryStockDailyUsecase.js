@@ -14,9 +14,29 @@ export default class UpdateInventoryStockDailyUsecase {
 		if (payload.placeId !== undefined) data.placeId = Number(payload.placeId);
 		if (payload.ingredientId !== undefined) data.ingredientId = Number(payload.ingredientId);
 		if (payload.date !== undefined) data.date = payload.date ? new Date(payload.date) : null;
-		if (payload.openingQty !== undefined) data.openingQty = Number(payload.openingQty);
-		if (payload.closingQty !== undefined) data.closingQty = Number(payload.closingQty);
-		if (payload.diffQty !== undefined) data.diffQty = payload.diffQty == null ? null : Number(payload.diffQty);
-		return this.inventoryStockDailyService.update({ id: intId, data });
+		if (payload.openingQty !== undefined) {
+			const val = Number(payload.openingQty);
+			if (!Number.isFinite(val)) throw new ValidationError("openingQty must be a number");
+			data.openingQty = val;
+		}
+		if (payload.closingQty !== undefined) {
+			const val = Number(payload.closingQty);
+			if (!Number.isFinite(val)) throw new ValidationError("closingQty must be a number");
+			data.closingQty = val;
+		}
+		if (payload.diffQty !== undefined) {
+			if (payload.diffQty == null) {
+				data.diffQty = null;
+			} else {
+				const val = Number(payload.diffQty);
+				if (!Number.isFinite(val)) throw new ValidationError("diffQty must be a number");
+				data.diffQty = val;
+			}
+		}
+
+		if (Object.keys(data).length === 0) throw new ValidationError("No fields to update");
+		const updated = await this.inventoryStockDailyService.update({ id: intId, data });
+		if (!updated) throw new ValidationError("Inventory stock daily not found");
+		return updated;
 	}
 }

@@ -11,6 +11,8 @@ model Place {
   // relations
   userRoles            UserRole[]
   cashierShifts        CashierShift[]
+  stations             Station[]
+  shifts               Shift[]
   menus                Menu[]
   tables               Table[]
   placeStocks          PlaceStock[]

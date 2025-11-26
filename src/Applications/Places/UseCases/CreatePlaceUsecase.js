@@ -1,5 +1,4 @@
 import BasePlaceUsecase from "./BasePlaceUsecase.js";
-import Place from "../../../Domains/Places/Entities/Place.js";
 import ValidationError from "../../../Commons/Errors/ValidationError.js";
 
 export default class CreatePlaceUsecase extends BasePlaceUsecase {
@@ -21,6 +20,6 @@ export default class CreatePlaceUsecase extends BasePlaceUsecase {
 			}
 		});
 
-		return Place.fromPersistence(created);
+		return created;
 	}
 }

@@ -9,6 +9,8 @@ import registerPlaceRoutes from "../../Interfaces/Http/routes/placeRoutes.js";
 import registerPermissionRoutes from "../../Interfaces/Http/routes/permissionRoutes.js";
 import registerUnitRoutes from "../../Interfaces/Http/routes/unitRoutes.js";
 import registerTableRoutes from "../../Interfaces/Http/routes/tableRoutes.js";
+import registerStationRoutes from "../../Interfaces/Http/routes/stationRoutes.js";
+import registerShiftRoutes from "../../Interfaces/Http/routes/shiftRoutes.js";
 import registerIngredientRoutes from "../../Interfaces/Http/routes/ingredientRoutes.js";
 import registerPackageRoutes from "../../Interfaces/Http/routes/packageRoutes.js";
 import registerCategoryRoutes from "../../Interfaces/Http/routes/categoryRoutes.js";
@@ -54,6 +56,8 @@ export function createExpressApp({ container } = {}) {
 	const permissionController = diContainer.resolve("permissionController");
 	const unitController = diContainer.resolve("unitController");
 	const tableController = diContainer.resolve("tableController");
+	const stationController = diContainer.resolve("stationController");
+	const shiftController = diContainer.resolve("shiftController");
 	const ingredientController = diContainer.resolve("ingredientController");
 	const packageController = diContainer.resolve("packageController");
 	const categoryController = diContainer.resolve("categoryController");
@@ -91,6 +95,8 @@ export function createExpressApp({ container } = {}) {
 	registerPermissionRoutes(app, { controller: permissionController, ...middlewareDeps });
 	registerUnitRoutes(app, { controller: unitController, ...middlewareDeps });
 	registerTableRoutes(app, { controller: tableController, ...middlewareDeps });
+	registerStationRoutes(app, { controller: stationController, ...middlewareDeps });
+	registerShiftRoutes(app, { controller: shiftController, ...middlewareDeps });
 	registerIngredientRoutes(app, { controller: ingredientController, ...middlewareDeps });
 	registerPackageRoutes(app, { controller: packageController, ...middlewareDeps });
 	registerCategoryRoutes(app, { controller: categoryController, ...middlewareDeps });

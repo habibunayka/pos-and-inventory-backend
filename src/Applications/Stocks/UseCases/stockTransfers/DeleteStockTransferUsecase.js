@@ -7,8 +7,8 @@ export default class DeleteStockTransferUsecase {
 	}
 	async execute(id) {
 		const intId = Number(id);
-		if (!Number.isInteger(intId) || intId <= 0) throw new ValidationError("id must be positive integer");
-		const ok = await this.stockTransferService.delete(intId);
+		if (!Number.isInteger(intId) || intId <= 0) throw new ValidationError("id must be a positive integer");
+		const ok = await this.stockTransferService.deleteStockTransfer(intId);
 		if (!ok) throw new ValidationError("Stock transfer not found");
 		return true;
 	}

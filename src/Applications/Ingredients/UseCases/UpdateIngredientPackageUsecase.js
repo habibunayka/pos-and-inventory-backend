@@ -5,8 +5,11 @@ export default class UpdateIngredientPackageUsecase extends BaseIngredientPackag
 	async execute(id, payload = {}) {
 		const numericId = Number(id);
 		if (!Number.isInteger(numericId) || numericId <= 0) throw new ValidationError("Invalid id");
+		if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+			throw new ValidationError("Payload must be an object");
+		}
 		const existing = await this.ingredientPackageService.getIngredientPackage(numericId);
-		if (!existing) throw new ValidationError("IngredientPackage not found");
+		if (!existing) throw new ValidationError("Ingredient package not found");
 
 		const update = {};
 		if (Object.prototype.hasOwnProperty.call(payload, "ingredientId")) {

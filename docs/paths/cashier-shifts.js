@@ -29,7 +29,7 @@ const cashierShiftsPaths = {
       "tags": [
         "CashierShifts"
       ],
-      "summary": "Buka shift kasir",
+      "summary": "Buka shift kasir (raw)",
       "operationId": "createCashierShift",
       "requestBody": {
         "required": true,
@@ -44,6 +44,43 @@ const cashierShiftsPaths = {
       "responses": {
         "201": {
           "description": "Shift dibuat",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CashierShift"
+              }
+            }
+          }
+        },
+        "400": {
+          "$ref": "#/components/responses/BadRequest"
+        },
+        "500": {
+          "$ref": "#/components/responses/InternalServerError"
+        }
+      }
+    }
+  },
+  "/api/cashier-shifts/open": {
+    "post": {
+      "tags": [
+        "CashierShifts"
+      ],
+      "summary": "Buka shift kasir",
+      "operationId": "openCashierShift",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateCashierShiftRequest"
+            }
+          }
+        }
+      },
+      "responses": {
+        "201": {
+          "description": "Shift dibuka",
           "content": {
             "application/json": {
               "schema": {
@@ -82,6 +119,44 @@ const cashierShiftsPaths = {
       "responses": {
         "200": {
           "description": "Detail shift",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CashierShift"
+              }
+            }
+          }
+        },
+        "400": {
+          "$ref": "#/components/responses/BadRequest"
+        },
+        "404": {
+          "$ref": "#/components/responses/NotFound"
+        },
+        "500": {
+          "$ref": "#/components/responses/InternalServerError"
+        }
+      }
+    },
+    "post": {
+      "tags": [
+        "CashierShifts"
+      ],
+      "summary": "Tutup shift kasir",
+      "operationId": "closeCashierShift",
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CloseCashierShiftRequest"
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Shift ditutup",
           "content": {
             "application/json": {
               "schema": {

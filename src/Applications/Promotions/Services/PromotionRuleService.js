@@ -10,16 +10,16 @@ export default class PromotionRuleService {
 		}
 		this._repo = promotionRuleRepository;
 	}
-	list() {
+	listPromotionRules() {
 		return this._repo.findAll();
 	}
-	get(id) {
+	getPromotionRule(id) {
 		return this._repo.findById(id);
 	}
-	create(data) {
+	createPromotionRule(data) {
 		return this._repo.createPromotionRule(data);
 	}
-	delete(id) {
+	deletePromotionRule(id) {
 		return this._repo.deletePromotionRule(id);
 	}
 }

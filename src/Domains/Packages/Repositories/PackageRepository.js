@@ -11,7 +11,7 @@ export default class PackageRepository {
 	async createPackage(packageData) {
 		throw new Error("PACKAGE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
-	async updatePackage({ id, packageData }) {
+	async updatePackage({ id, data }) {
 		throw new Error("PACKAGE_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
 	async deletePackage(id) {

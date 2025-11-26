@@ -1,3 +1,5 @@
+import { envOrDefault } from "../../prisma/utils/index.js";
+
 const LoginRequest = {
   "type": "object",
   "required": [
@@ -7,12 +9,12 @@ const LoginRequest = {
   "properties": {
     "username": {
       "type": "string",
-      "example": "alice@example.com",
+      "example": envOrDefault("SEED_OWNER_EMAIL", "brand.owner@example.com"),
       "description": "Email akun yang digunakan untuk login"
     },
     "password": {
       "type": "string",
-      "example": "SuperSecret123",
+      "example": envOrDefault("SEED_OWNER_PASSWORD", "BrandOwnerPass123!"),
       "description": "Password atau PIN tergantung role pengguna"
     }
   }
