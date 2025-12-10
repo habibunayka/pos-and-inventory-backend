@@ -53,4 +53,16 @@ describe("UpdatePaymentMethodUsecase", () => {
 		});
 		expect(result).toEqual(updated);
 	});
+
+	test("should allow updating description/isActive without name", async () => {
+		paymentMethodService.updatePaymentMethod.mockResolvedValue({ id: 3, description: null });
+
+		const result = await usecase.execute(3, { description: null, isActive: true });
+
+		expect(paymentMethodService.updatePaymentMethod).toHaveBeenCalledWith({
+			id: 3,
+			data: { description: null, isActive: true }
+		});
+		expect(result).toEqual({ id: 3, description: null });
+	});
 });

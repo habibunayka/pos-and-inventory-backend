@@ -48,4 +48,17 @@ describe("CreateStockTransferUsecase", () => {
 		});
 		expect(result).toEqual(created);
 	});
+
+	test("should allow optional fields to be skipped and normalize empty note", async () => {
+		stockTransferService.createStockTransfer.mockResolvedValue({});
+
+		await usecase.execute({ note: "   " });
+
+		expect(stockTransferService.createStockTransfer).toHaveBeenCalledWith({ note: null });
+	});
+
+	test("should validate qty separately from ids", async () => {
+		await expect(usecase.execute({ qty: 0 })).rejects.toThrow(new ValidationError("qty must be a number"));
+		await expect(usecase.execute({ qty: "abc" })).rejects.toThrow(new ValidationError("qty must be a number"));
+	});
 });

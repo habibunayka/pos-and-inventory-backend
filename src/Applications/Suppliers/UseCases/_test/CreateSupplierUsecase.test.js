@@ -19,6 +19,10 @@ describe("CreateSupplierUsecase", () => {
 		await expect(usecase.execute({ name: "   " })).rejects.toThrow(new ValidationError("name is required"));
 	});
 
+	test("should throw when payload missing", async () => {
+		await expect(usecase.execute()).rejects.toThrow(new ValidationError("name is required"));
+	});
+
 	test("should create supplier with normalized payload", async () => {
 		const created = { id: 1 };
 		supplierService.createSupplier.mockResolvedValue(created);

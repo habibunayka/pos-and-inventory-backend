@@ -51,4 +51,20 @@ describe("UpdateTableUsecase", () => {
 		});
 		expect(result).toEqual(updated);
 	});
+
+	test("should normalize nullable/blank status", async () => {
+		tableService.updateTable.mockResolvedValue({});
+
+		await usecase.execute(1, { status: null, placeId: 1 });
+		expect(tableService.updateTable).toHaveBeenLastCalledWith({
+			id: 1,
+			tableData: { placeId: 1, status: null }
+		});
+
+		await usecase.execute(1, { status: "   " });
+		expect(tableService.updateTable).toHaveBeenLastCalledWith({
+			id: 1,
+			tableData: { status: null }
+		});
+	});
 });

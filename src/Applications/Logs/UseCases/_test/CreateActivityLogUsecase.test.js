@@ -56,4 +56,12 @@ describe("CreateActivityLogUsecase", () => {
 			contextJson: null
 		});
 	});
+
+	test("should skip optional properties when not provided", async () => {
+		activityLogService.createActivityLog.mockResolvedValue({});
+
+		await usecase.execute({ action: "CLICK" });
+
+		expect(activityLogService.createActivityLog).toHaveBeenCalledWith({ action: "CLICK" });
+	});
 });

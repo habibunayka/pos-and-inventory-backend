@@ -44,4 +44,13 @@ describe("CreateTransactionItemVariantUsecase", () => {
 		});
 		expect(result).toEqual(created);
 	});
+
+	test("should allow optional extraPrice to be skipped and cover default payload", async () => {
+		mockService.createVariant.mockResolvedValue({});
+
+		await usecase.execute({ transactionItemId: 1, menuVariantId: 2 });
+		expect(mockService.createVariant).toHaveBeenCalledWith({ transactionItemId: 1, menuVariantId: 2 });
+
+		await expect(usecase.execute()).rejects.toThrow(new ValidationError("transactionItemId must be a positive integer"));
+	});
 });

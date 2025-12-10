@@ -34,4 +34,17 @@ describe("CreateMenuPriceUsecase", () => {
 		});
 		expect(result).toEqual(created);
 	});
+
+	test("should default effectiveDate when missing and validate menuId", async () => {
+		menuPriceService.createMenuPrice.mockResolvedValue({});
+
+		await usecase.execute({ menuId: 3, price: 50 });
+		const call = menuPriceService.createMenuPrice.mock.calls.pop()[0];
+		expect(call.menuId).toBe(3);
+		expect(call.effectiveDate).toBeInstanceOf(Date);
+
+		await expect(usecase.execute({ menuId: "bad", price: 10 })).rejects.toThrow(
+			new ValidationError("menuId must be a positive integer")
+		);
+	});
 });

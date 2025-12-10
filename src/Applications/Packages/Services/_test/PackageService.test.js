@@ -75,4 +75,22 @@ describe("PackageService", () => {
 		expect(mockRepo.deletePackage).toHaveBeenCalledWith(5);
 		await expect(result).resolves.toBe(true);
 	});
+
+	test("getPackageByName should throw when repository cannot search by name", async () => {
+		const service = new PackageService({ packageRepository: { ...mockRepo, findByName: undefined } });
+
+		expect(() => service.getPackageByName("box")).toThrow(
+			"PACKAGE_SERVICE.REPOSITORY_MISSING_FIND_BY_NAME"
+		);
+	});
+
+	test("getPackageByName should delegate when repository supports lookup", async () => {
+		mockRepo.findByName = jest.fn().mockResolvedValue({ id: 9 });
+		const service = new PackageService({ packageRepository: mockRepo });
+
+		const result = service.getPackageByName("crate");
+
+		expect(mockRepo.findByName).toHaveBeenCalledWith("crate");
+		await expect(result).resolves.toEqual({ id: 9 });
+	});
 });

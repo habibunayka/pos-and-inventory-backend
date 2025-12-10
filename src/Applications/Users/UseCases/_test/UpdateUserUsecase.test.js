@@ -84,11 +84,46 @@ describe("UpdateUserUsecase", () => {
 	test("should throw when cashier provides email or password", async () => {
 		mockUserService.getUser.mockResolvedValue(existingManagedRecord);
 		mockUserService.findRoleByName.mockResolvedValue({ id: 1, name: "cashier" });
-		const usecase = new UpdateUserUsecase({ userService: mockUserService });
+		mockPlaceService.getPlace.mockResolvedValue({ id: 10 });
+		const usecase = new UpdateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
 
 		await expect(
 			usecase.execute(5, { roleName: "cashier", email: "cash@example.com" })
 		).rejects.toThrow(new ValidationError("Cashier accounts cannot have email or password"));
+	});
+
+	test("should require pin when switching to cashier role", async () => {
+		mockUserService.getUser.mockResolvedValue(existingManagedRecord);
+		mockUserService.findRoleByName.mockResolvedValue({ id: 1, name: "cashier" });
+		mockPlaceService.getPlace.mockResolvedValue({ id: 10 });
+		const usecase = new UpdateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
+
+		await expect(usecase.execute(5, { roleName: "cashier" })).rejects.toThrow(
+			new ValidationError("Cashier accounts require a PIN")
+		);
+	});
+
+	test("should forbid pin on non-cashier roles", async () => {
+		mockUserService.getUser.mockResolvedValue(existingManagedRecord);
+		mockUserService.findRoleByName.mockResolvedValue({ id: 3, name: "manager" });
+		mockUserService.findByEmail.mockResolvedValue(null);
+		mockPlaceService.getPlace.mockResolvedValue({ id: 10 });
+		const usecase = new UpdateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
+
+		await expect(usecase.execute(5, { roleName: "manager", pin: "1234" })).rejects.toThrow(
+			new ValidationError("Non-cashier accounts must not define PIN codes")
+		);
+	});
+
+	test("should require email when moving cashier to non-cashier", async () => {
+		mockUserService.getUser.mockResolvedValue(existingCashierRecord);
+		mockUserService.findRoleByName.mockResolvedValue({ id: 3, name: "manager" });
+		mockUserService.findByEmail.mockResolvedValue(null);
+		const usecase = new UpdateUserUsecase({ userService: mockUserService });
+
+		await expect(usecase.execute(6, { roleName: "manager", password: "password1" })).rejects.toThrow(
+			new ValidationError("Email is required for non-cashier roles")
+		);
 	});
 
 	test("should throw when place validation fails", async () => {
@@ -101,6 +136,26 @@ describe("UpdateUserUsecase", () => {
 		await expect(
 			usecase.execute(5, { roleName: "manager", email: "old@example.com", password: "password1", placeId: 20 })
 		).rejects.toThrow(new ValidationError("Place not found"));
+	});
+
+	test("should update status when provided", async () => {
+		mockUserService.getUser.mockResolvedValue(existingManagedRecord);
+		mockUserService.findRoleByName.mockResolvedValue({ id: 3, name: "manager" });
+		mockUserService.findByEmail.mockResolvedValue(null);
+		mockPlaceService.getPlace.mockResolvedValue({ id: 10 });
+		const updatedRecord = { ...existingManagedRecord, status: "inactive" };
+		mockUserService.updateUser.mockResolvedValue(updatedRecord);
+		const usecase = new UpdateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
+
+		const result = await usecase.execute(5, { status: "inactive" });
+
+		expect(mockUserService.updateUser).toHaveBeenCalledWith({
+			id: 5,
+			userData: { status: "inactive", email: "old@example.com", pinCodeHash: null },
+			roleId: 3,
+			placeId: 10
+		});
+		expect(result.status).toBe("inactive");
 	});
 
 	test("should update non-cashier user with hashed password", async () => {
@@ -162,5 +217,35 @@ describe("UpdateUserUsecase", () => {
 			placeId: 10
 		});
 		expect(result.authenticationMethod).toBe("pin");
+	});
+
+	test("should map place FK errors when updating user", async () => {
+		mockUserService.getUser.mockResolvedValue(existingManagedRecord);
+		mockUserService.findRoleByName.mockResolvedValue({ id: 3, name: "manager" });
+		mockUserService.findByEmail.mockResolvedValue(null);
+		mockPlaceService.getPlace.mockResolvedValue({ id: 10 });
+		mockUserService.updateUser.mockRejectedValue({
+			code: "P2003",
+			meta: { constraint: "user_roles_place_id_fkey" }
+		});
+		const usecase = new UpdateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
+
+		await expect(usecase.execute(5, { roleName: "manager", email: "old@example.com", password: "password1" })).rejects.toThrow(
+			new ValidationError("Place not found")
+		);
+	});
+
+	test("should rethrow unexpected update errors", async () => {
+		mockUserService.getUser.mockResolvedValue(existingManagedRecord);
+		mockUserService.findRoleByName.mockResolvedValue({ id: 3, name: "manager" });
+		mockUserService.findByEmail.mockResolvedValue(null);
+		mockPlaceService.getPlace.mockResolvedValue({ id: 10 });
+		const failure = new Error("update failed");
+		mockUserService.updateUser.mockRejectedValue(failure);
+		const usecase = new UpdateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
+
+		await expect(
+			usecase.execute(5, { roleName: "manager", email: "old@example.com", password: "password1" })
+		).rejects.toThrow(failure);
 	});
 });

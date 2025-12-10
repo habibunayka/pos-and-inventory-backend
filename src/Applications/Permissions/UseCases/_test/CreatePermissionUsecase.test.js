@@ -19,6 +19,10 @@ describe("CreatePermissionUsecase", () => {
 		await expect(usecase.execute(null)).rejects.toThrow(new ValidationError("Payload must be an object"));
 	});
 
+	test("should require name", async () => {
+		await expect(usecase.execute({ name: "   " })).rejects.toThrow(new ValidationError("Permission name is required"));
+	});
+
 	test("should throw when name exists", async () => {
 		permissionService.getPermissionByName.mockResolvedValue({ id: 1, name: "read" });
 
@@ -33,6 +37,17 @@ describe("CreatePermissionUsecase", () => {
 		await expect(usecase.execute({ name: "read", description: 123 })).rejects.toThrow(
 			new ValidationError("description must be a string")
 		);
+	});
+
+	test("should allow null description", async () => {
+		permissionService.getPermissionByName.mockResolvedValue(null);
+		const created = { id: 7, name: "read", description: null };
+		permissionService.createPermission.mockResolvedValue(created);
+
+		const result = await usecase.execute({ name: "read", description: null });
+
+		expect(permissionService.createPermission).toHaveBeenCalledWith({ name: "read", description: null });
+		expect(result).toEqual(created);
 	});
 
 	test("should create permission with normalized data", async () => {

@@ -49,11 +49,50 @@ describe("BaseSupplierProductUsecase", () => {
 		expect(ingredientService.getIngredient).toHaveBeenCalledWith(2);
 	});
 
+	test("_validateIngredientId should reject invalid values", async () => {
+		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+
+		await expect(usecase._validateIngredientId("abc")).rejects.toThrow(
+			new ValidationError("ingredientId must be a positive integer")
+		);
+	});
+
 	test("_validatePackageId should validate and check existence", async () => {
 		packageService.getPackage.mockResolvedValue({ id: 3 });
 		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
 
 		await expect(usecase._validatePackageId("3")).resolves.toBe(3);
 		expect(packageService.getPackage).toHaveBeenCalledWith(3);
+	});
+
+	test("_validatePackageId should reject invalid or missing package", async () => {
+		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+
+		await expect(usecase._validatePackageId("abc")).rejects.toThrow(
+			new ValidationError("packageId must be a positive integer")
+		);
+
+		packageService.getPackage.mockResolvedValue(null);
+		await expect(usecase._validatePackageId(2)).rejects.toThrow(new ValidationError("packageId not found"));
+	});
+
+	test("validator methods bypass existence checks when services missing", async () => {
+		const usecase = new DummyUsecase({
+			supplierProductService: {},
+			supplierService: null,
+			ingredientService: null,
+			packageService: null
+		});
+
+		await expect(usecase._validateSupplierId(1)).resolves.toBe(1);
+		await expect(usecase._validateIngredientId(2)).resolves.toBe(2);
+		await expect(usecase._validatePackageId(3)).resolves.toBe(3);
+	});
+
+	test("_validateIngredientId should throw when ingredient not found", async () => {
+		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+		ingredientService.getIngredient.mockResolvedValue(null);
+
+		await expect(usecase._validateIngredientId(2)).rejects.toThrow(new ValidationError("ingredientId not found"));
 	});
 });

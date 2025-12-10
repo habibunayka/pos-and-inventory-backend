@@ -15,6 +15,10 @@ describe("CreateUnitUsecase", () => {
 		expect(() => new CreateUnitUsecase()).toThrow("UNIT_USECASE.MISSING_SERVICE");
 	});
 
+	test("should throw when payload is not object", async () => {
+		await expect(usecase.execute(null)).rejects.toThrow(new ValidationError("Payload must be an object"));
+	});
+
 	test("should throw when name missing", async () => {
 		await expect(usecase.execute({ name: "   " })).rejects.toThrow(new ValidationError("Unit name is required"));
 	});

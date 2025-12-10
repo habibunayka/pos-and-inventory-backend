@@ -57,6 +57,61 @@ describe("UpdateShiftUsecase", () => {
 		);
 	});
 
+	test("should throw when update target disappears", async () => {
+		shiftService.updateShift.mockResolvedValue(null);
+		shiftService.getShift.mockResolvedValue({ ...existing, startTime: "08:00", endTime: "09:00" });
+
+		await expect(usecase.execute(1, { name: "New" })).rejects.toThrow(new ValidationError("Shift not found"));
+	});
+
+	test("should allow updating description to null", async () => {
+		const updated = { id: 1, description: null };
+		shiftService.updateShift.mockResolvedValue(updated);
+		shiftService.getShift.mockResolvedValue({ ...existing, startTime: "08:00", endTime: "09:00" });
+
+		const result = await usecase.execute(1, { description: null });
+
+		expect(shiftService.updateShift).toHaveBeenCalledWith({
+			id: 1,
+			data: { description: null }
+		});
+		expect(result).toEqual(updated);
+	});
+
+	test("should set description to null when empty string provided", async () => {
+		shiftService.updateShift.mockResolvedValue({ id: 1 });
+		shiftService.getShift.mockResolvedValue({ ...existing, startTime: "08:00", endTime: "09:00" });
+
+		await usecase.execute(1, { description: "   " });
+
+		expect(shiftService.updateShift).toHaveBeenCalledWith({
+			id: 1,
+			data: { description: null }
+		});
+	});
+
+	test("should enforce time window even when only endTime provided", async () => {
+		shiftService.getShift.mockResolvedValue({ ...existing, startTime: "08:00", endTime: "08:00" });
+		await expect(usecase.execute(1, { endTime: "08:00" })).rejects.toThrow(
+			new ValidationError("endTime must be different from startTime")
+		);
+	});
+
+	test("should skip place validation when disabled", async () => {
+		const customUsecase = new UpdateShiftUsecase({
+			shiftService,
+			placeService: { supportsPlaceValidation: false }
+		});
+		shiftService.getShift.mockResolvedValue({ ...existing, startTime: "08:00", endTime: "17:00" });
+		shiftService.updateShift.mockResolvedValue({ id: 1, placeId: 99 });
+
+		await customUsecase.execute(1, { placeId: 99, name: "Day" });
+
+		expect(shiftService.updateShift).toHaveBeenCalledWith({
+			id: 1,
+			data: { placeId: 99, name: "Day" }
+		});
+	});
 	test("should update shift with normalized payload", async () => {
 		const updated = { id: 1, name: "New" };
 		shiftService.updateShift.mockResolvedValue(updated);

@@ -23,6 +23,12 @@ describe("UpdateWasteUsecase", () => {
 		await expect(usecase.execute(1, null)).rejects.toThrow(new ValidationError("Payload must be an object"));
 	});
 
+	test("should throw when ingredientId invalid", async () => {
+		await expect(usecase.execute(1, { ingredientId: "abc" })).rejects.toThrow(
+			new ValidationError("ingredientId must be a positive integer")
+		);
+	});
+
 	test("should throw when qty invalid", async () => {
 		await expect(usecase.execute(1, { qty: "abc" })).rejects.toThrow(new ValidationError("qty must be a number"));
 	});
@@ -53,5 +59,18 @@ describe("UpdateWasteUsecase", () => {
 			data: { ingredientId: 3, qty: 4, unitId: 5, reason: "note" }
 		});
 		expect(result).toEqual(updated);
+	});
+
+	test("should validate unitId and normalize place/reason", async () => {
+		await expect(usecase.execute(1, { unitId: 0 })).rejects.toThrow(
+			new ValidationError("unitId must be a positive integer")
+		);
+
+		wasteService.updateWaste.mockResolvedValue({ id: 7 });
+		await usecase.execute(7, { placeId: null, reason: "   " });
+		expect(wasteService.updateWaste).toHaveBeenLastCalledWith({ id: 7, data: { placeId: null, reason: "" } });
+
+		await usecase.execute(7, { placeId: "9" });
+		expect(wasteService.updateWaste).toHaveBeenLastCalledWith({ id: 7, data: { placeId: 9 } });
 	});
 });

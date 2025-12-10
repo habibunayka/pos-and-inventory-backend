@@ -71,4 +71,42 @@ describe("OpenCashierShiftUsecase", () => {
 		});
 		expect(result).toBe(created);
 	});
+
+	test("allows missing optional openingBalance", async () => {
+		cashierShiftService.create.mockResolvedValue({ id: 11 });
+
+		const result = await usecase.execute({
+			placeId: 1,
+			stationId: 2,
+			shiftId: 3,
+			cashierId: 4,
+			ipAddress: "1.1.1.1"
+		});
+
+		expect(cashierShiftService.create).toHaveBeenCalledWith({
+			placeId: 1,
+			stationId: 2,
+			shiftId: 3,
+			cashierId: 4,
+			ipAddress: "1.1.1.1",
+			status: "open",
+			closedAt: null
+		});
+		expect(result).toEqual({ id: 11 });
+	});
+
+	test("should reject non-object payload and invalid openingBalance", async () => {
+		await expect(usecase.execute(1)).rejects.toThrow(new ValidationError("Payload must be an object"));
+
+		await expect(
+			usecase.execute({
+				placeId: 1,
+				stationId: 2,
+				shiftId: 3,
+				cashierId: 4,
+				ipAddress: "1.1.1.1",
+				openingBalance: "NaN"
+			})
+		).rejects.toThrow(new ValidationError("openingBalance must be a number"));
+	});
 });

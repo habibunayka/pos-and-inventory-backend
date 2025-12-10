@@ -15,6 +15,10 @@ describe("CreatePromotionRuleUsecase", () => {
 		expect(() => new CreatePromotionRuleUsecase()).toThrow("PROMOTION_RULE_USECASE.MISSING_SERVICE");
 	});
 
+	test("should throw when payload is not object", async () => {
+		await expect(usecase.execute(null)).rejects.toThrow(new ValidationError("Payload must be an object"));
+	});
+
 	test("should throw when promotionId invalid", async () => {
 		await expect(usecase.execute({ promotionId: "abc", name: "rule" })).rejects.toThrow(
 			new ValidationError("promotionId must be a positive integer")

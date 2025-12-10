@@ -27,6 +27,29 @@ describe("CreateTransactionUsecase", () => {
 		);
 	});
 
+	test("should allow nullables and default orderType trimming", async () => {
+		mockService.createTransaction.mockResolvedValue({ id: 20 });
+
+		const result = await usecase.execute({
+			cashierId: "1",
+			orderType: "   ",
+			total: "50",
+			tax: null,
+			discount: "5",
+			paymentMethodId: null
+		});
+
+		expect(mockService.createTransaction).toHaveBeenCalledWith({
+			cashierId: 1,
+			orderType: null,
+			total: 50,
+			tax: null,
+			discount: 5,
+			paymentMethodId: null
+		});
+		expect(result).toEqual({ id: 20 });
+	});
+
 	test("should create transaction with normalized payload", async () => {
 		const payload = {
 			cashierId: "1",
@@ -54,5 +77,35 @@ describe("CreateTransactionUsecase", () => {
 			paymentMethodId: 4
 		});
 		expect(result).toEqual(created);
+	});
+
+	test("should allow optional fields to be omitted entirely", async () => {
+		mockService.createTransaction.mockResolvedValue({});
+
+		await usecase.execute({});
+
+		expect(mockService.createTransaction).toHaveBeenCalledWith({});
+	});
+
+	test("should handle nullables and validate paymentMethodId", async () => {
+		const created = { id: 11 };
+		mockService.createTransaction.mockResolvedValue(created);
+
+		const result = await usecase.execute({
+			orderType: null,
+			tax: undefined,
+			discount: undefined,
+			paymentMethodId: null
+		});
+
+		expect(mockService.createTransaction).toHaveBeenCalledWith({
+			orderType: null,
+			paymentMethodId: null
+		});
+		expect(result).toEqual(created);
+
+		await expect(usecase.execute({ paymentMethodId: "abc" })).rejects.toThrow(
+			new ValidationError("paymentMethodId must be a positive integer")
+		);
 	});
 });

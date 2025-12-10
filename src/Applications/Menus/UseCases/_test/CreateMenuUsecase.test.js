@@ -39,4 +39,27 @@ describe("CreateMenuUsecase", () => {
 		});
 		expect(result).toEqual(created);
 	});
+
+	test("should allow optional fields to be skipped", async () => {
+		menuService.createMenu.mockResolvedValue({});
+
+		await usecase.execute({ name: "Simple" });
+
+		expect(menuService.createMenu).toHaveBeenCalledWith({ name: "Simple" });
+	});
+
+	test("should normalize description and accept falsy isActive", async () => {
+		await usecase.execute({ name: "Desc", description: "   ", isActive: false });
+
+		expect(menuService.createMenu).toHaveBeenLastCalledWith({
+			name: "Desc",
+			description: "   ",
+			isActive: false
+		});
+	});
+
+	test("should ignore null place and category ids", async () => {
+		await usecase.execute({ name: "SkipIds", placeId: null, categoryId: null });
+		expect(menuService.createMenu).toHaveBeenLastCalledWith({ name: "SkipIds" });
+	});
 });

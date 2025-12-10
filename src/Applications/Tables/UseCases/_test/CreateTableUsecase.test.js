@@ -36,4 +36,37 @@ describe("CreateTableUsecase", () => {
 		expect(tableService.createTable).toHaveBeenCalledWith({ placeId: 1, name: "Table", status: "active" });
 		expect(result).toEqual(created);
 	});
+
+	test("should default status to null when undefined and allow null explicitly", async () => {
+		tableService.createTable.mockResolvedValue({});
+
+		await usecase.execute({ placeId: 1, name: "Desk" });
+		expect(tableService.createTable).toHaveBeenLastCalledWith({ placeId: 1, name: "Desk", status: null });
+
+		await usecase.execute({ placeId: 1, name: "Desk", status: null });
+		expect(tableService.createTable).toHaveBeenLastCalledWith({ placeId: 1, name: "Desk", status: null });
+	});
+
+	test("should normalize blank status to null", async () => {
+		tableService.createTable.mockResolvedValue({});
+
+		await usecase.execute({ placeId: 1, name: "Desk", status: "   " });
+
+		expect(tableService.createTable).toHaveBeenCalledWith({ placeId: 1, name: "Desk", status: null });
+	});
+
+	test("should validate place existence or skip when validation disabled", async () => {
+		placeService.getPlace.mockResolvedValue(null);
+		await expect(usecase.execute({ placeId: 9, name: "Desk" })).rejects.toThrow(
+			new ValidationError("placeId not found")
+		);
+
+		const noValidation = new CreateTableUsecase({
+			tableService,
+			placeService: { supportsPlaceValidation: false }
+		});
+
+		await noValidation.execute({ placeId: "3", name: "NoValidate" });
+		expect(tableService.createTable).toHaveBeenLastCalledWith({ placeId: 3, name: "NoValidate", status: null });
+	});
 });

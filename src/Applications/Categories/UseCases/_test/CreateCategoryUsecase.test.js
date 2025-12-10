@@ -25,6 +25,10 @@ describe("CreateCategoryUsecase", () => {
 		);
 	});
 
+	test("should throw when payload is missing", async () => {
+		await expect(usecase.execute()).rejects.toThrow(new ValidationError("Category name is required"));
+	});
+
 	test("should throw error if category already exists", async () => {
 		mockService.getCategoryByName.mockResolvedValue({ id: "20", name: "food" });
 

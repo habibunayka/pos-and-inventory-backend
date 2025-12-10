@@ -34,4 +34,11 @@ describe("DeleteShiftUsecase", () => {
 
 		expect(shiftService.deleteShift).toHaveBeenCalledWith(2);
 	});
+
+	test("should throw when delete operation reports missing shift", async () => {
+		shiftService.getShift.mockResolvedValue({ id: 3 });
+		shiftService.deleteShift.mockResolvedValue(false);
+
+		await expect(usecase.execute(3)).rejects.toThrow(new ValidationError("Shift not found"));
+	});
 });

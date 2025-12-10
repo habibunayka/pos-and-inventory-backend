@@ -19,6 +19,10 @@ describe("CreatePromotionUsecase", () => {
 		await expect(usecase.execute({ name: "   " })).rejects.toThrow(new ValidationError("name is required"));
 	});
 
+	test("should throw when payload is not object", async () => {
+		await expect(usecase.execute(null)).rejects.toThrow(new ValidationError("Payload must be an object"));
+	});
+
 	test("should create promotion with normalized data", async () => {
 		const created = { id: 1 };
 		promotionService.createPromotion.mockResolvedValue(created);
@@ -39,5 +43,25 @@ describe("CreatePromotionUsecase", () => {
 			isActive: true
 		});
 		expect(result).toEqual(created);
+	});
+
+	test("should handle optional fields being omitted or falsey", async () => {
+		promotionService.createPromotion.mockResolvedValue({});
+
+		await usecase.execute({ name: "NoDates" });
+		expect(promotionService.createPromotion).toHaveBeenCalledWith({ name: "NoDates" });
+
+		await usecase.execute({
+			name: "NullDates",
+			startDate: "",
+			endDate: "",
+			isActive: false
+		});
+		expect(promotionService.createPromotion).toHaveBeenLastCalledWith({
+			name: "NullDates",
+			startDate: null,
+			endDate: null,
+			isActive: false
+		});
 	});
 });

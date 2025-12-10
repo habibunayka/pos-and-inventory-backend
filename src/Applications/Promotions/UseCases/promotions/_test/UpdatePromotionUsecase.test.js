@@ -60,4 +60,11 @@ describe("UpdatePromotionUsecase", () => {
 		});
 		expect(result).toEqual({ id: 1, name: "Promo" });
 	});
+
+	test("should throw when update target no longer exists", async () => {
+		promotionService.getPromotion.mockResolvedValue({ id: 2 });
+		promotionService.updatePromotion.mockResolvedValue(null);
+
+		await expect(usecase.execute(2, { name: "X" })).rejects.toThrow(AppError);
+	});
 });

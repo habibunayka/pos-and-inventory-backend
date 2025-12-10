@@ -4,3 +4,8 @@ package-lock.json
 prisma/schema.prisma
 prisma/migrations
 prisma/migrations/migration_lock.toml
+src/**/_test/_test/
+*.spec.spec.js
+temp-delete.txt
+generate-tests.mjs
+coverage/

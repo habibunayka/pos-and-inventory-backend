@@ -27,6 +27,12 @@ describe("CreateIngredientPackageUsecase", () => {
 		await expect(usecase.execute(null)).rejects.toThrow(new ValidationError("Payload must be an object"));
 	});
 
+	test("should throw when qty is not a positive number", async () => {
+		await expect(usecase.execute({ ingredientId: 1, packageId: 2, qty: 0 })).rejects.toThrow(
+			new ValidationError("qty must be a positive number")
+		);
+	});
+
 	test("should create ingredient package with validated ids", async () => {
 		const created = { id: 5 };
 		ingredientPackageService.createIngredientPackage.mockResolvedValue(created);

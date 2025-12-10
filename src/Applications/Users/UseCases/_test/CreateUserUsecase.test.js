@@ -182,4 +182,44 @@ describe("CreateUserUsecase", () => {
 			})
 		).rejects.toThrow("USER_USECASE.MISSING_PLACE_SERVICE");
 	});
+
+	test("should translate place FK errors when creating user", async () => {
+		mockUserService.findRoleByName.mockResolvedValue({ id: 2, name: "manager" });
+		mockUserService.findByEmail.mockResolvedValue(null);
+		mockPlaceService.getPlace.mockResolvedValue({ id: 7 });
+		mockUserService.createUser.mockRejectedValue({
+			code: "P2003",
+			meta: { constraint: "user_roles_place_id_fkey" }
+		});
+		const usecase = new CreateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
+
+		await expect(
+			usecase.execute({
+				name: "John",
+				roleName: "manager",
+				email: "john@example.com",
+				password: "password1",
+				placeId: 7
+			})
+		).rejects.toThrow(new ValidationError("Place not found"));
+	});
+
+	test("should rethrow unexpected errors from service", async () => {
+		mockUserService.findRoleByName.mockResolvedValue({ id: 2, name: "manager" });
+		mockUserService.findByEmail.mockResolvedValue(null);
+		mockPlaceService.getPlace.mockResolvedValue({ id: 5 });
+		const failure = new Error("DB down");
+		mockUserService.createUser.mockRejectedValue(failure);
+		const usecase = new CreateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
+
+		await expect(
+			usecase.execute({
+				name: "John",
+				roleName: "manager",
+				email: "john@example.com",
+				password: "password1",
+				placeId: 5
+			})
+		).rejects.toThrow(failure);
+	});
 });

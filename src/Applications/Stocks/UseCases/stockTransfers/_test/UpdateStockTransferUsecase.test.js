@@ -29,6 +29,12 @@ describe("UpdateStockTransferUsecase", () => {
 		);
 	});
 
+	test("should validate positive integer fields", async () => {
+		await expect(usecase.execute(1, { fromPlaceId: "abc" })).rejects.toThrow(
+			new ValidationError("fromPlaceId must be a positive integer")
+		);
+	});
+
 	test("should throw when no fields provided", async () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No valid fields to update"));
 	});

@@ -46,4 +46,45 @@ describe("CreateStationUsecase", () => {
 		});
 		expect(result).toEqual(created);
 	});
+
+	test("should default description to null when omitted or empty", async () => {
+		stationService.createStation.mockResolvedValue({});
+
+		await usecase.execute({ placeId: 1, name: "Station" });
+		expect(stationService.createStation).toHaveBeenCalledWith({ placeId: 1, name: "Station", description: null });
+
+		await usecase.execute({ placeId: 1, name: "Station", description: "   ", isActive: 0 });
+		expect(stationService.createStation).toHaveBeenLastCalledWith({
+			placeId: 1,
+			name: "Station",
+			description: null,
+			isActive: false
+		});
+	});
+
+	test("should keep null description when explicitly provided", async () => {
+		stationService.createStation.mockResolvedValue({});
+
+		await usecase.execute({ placeId: 1, name: "Station", description: null });
+		expect(stationService.createStation).toHaveBeenLastCalledWith({
+			placeId: 1,
+			name: "Station",
+			description: null
+		});
+	});
+
+	test("should validate placeId and skip validation when disabled", async () => {
+		await expect(usecase.execute({ placeId: "abc", name: "Station" })).rejects.toThrow(
+			new ValidationError("placeId must be a positive integer")
+		);
+
+		placeService.getPlace.mockResolvedValue(null);
+		await expect(usecase.execute({ placeId: 2, name: "Station" })).rejects.toThrow(
+			new ValidationError("placeId not found")
+		);
+
+		const noValidation = new CreateStationUsecase({ stationService, placeService: { supportsPlaceValidation: false } });
+		await noValidation.execute({ placeId: 3, name: "X" });
+		expect(stationService.createStation).toHaveBeenLastCalledWith({ placeId: 3, name: "X", description: null });
+	});
 });

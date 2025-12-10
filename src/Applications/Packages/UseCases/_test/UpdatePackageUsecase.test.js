@@ -21,6 +21,10 @@ describe("UpdatePackageUsecase", () => {
 		);
 	});
 
+	test("should throw when payload is not an object", async () => {
+		await expect(usecase.execute(1, null)).rejects.toThrow(new ValidationError("Payload must be an object"));
+	});
+
 	test("should throw when no fields provided", async () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No valid fields to update"));
 	});
@@ -46,5 +50,20 @@ describe("UpdatePackageUsecase", () => {
 			data: { name: "box", description: "desc" }
 		});
 		expect(result).toEqual(updated);
+	});
+
+	test("should handle duplicate names and nullable descriptions", async () => {
+		packageService.getPackageByName.mockResolvedValue({ id: 3, name: "bag" });
+		await expect(usecase.execute(1, { name: "bag" })).rejects.toThrow(
+			new ValidationError("Package bag already exists")
+		);
+
+		packageService.getPackageByName.mockResolvedValue(null);
+		packageService.updatePackage.mockResolvedValue({ id: 5 });
+		await usecase.execute(5, { description: "   " });
+		expect(packageService.updatePackage).toHaveBeenLastCalledWith({
+			id: 5,
+			data: { description: null }
+		});
 	});
 });

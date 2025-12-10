@@ -40,4 +40,8 @@ describe("CreateMenuVariantItemUsecase", () => {
 		});
 		expect(result).toEqual(created);
 	});
+
+	test("should validate default payload", async () => {
+		await expect(usecase.execute()).rejects.toThrow(new ValidationError("menuVariantId must be a positive integer"));
+	});
 });

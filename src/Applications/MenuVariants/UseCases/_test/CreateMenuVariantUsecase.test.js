@@ -30,4 +30,14 @@ describe("CreateMenuVariantUsecase", () => {
 		expect(menuVariantService.createMenuVariant).toHaveBeenCalledWith({ menuId: 2, name: "Size" });
 		expect(result).toEqual(created);
 	});
+
+	test("should validate menuId", async () => {
+		await expect(usecase.execute({ menuId: "bad", name: "Item" })).rejects.toThrow(
+			new ValidationError("menuId must be a positive integer")
+		);
+	});
+
+	test("should cover default payload branch", async () => {
+		await expect(usecase.execute()).rejects.toThrow(new ValidationError("menuId must be a positive integer"));
+	});
 });

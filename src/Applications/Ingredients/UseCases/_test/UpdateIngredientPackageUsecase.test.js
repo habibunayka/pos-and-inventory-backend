@@ -46,6 +46,12 @@ describe("UpdateIngredientPackageUsecase", () => {
 		await expect(usecase.execute(5, {})).rejects.toThrow(new ValidationError("No updatable fields provided"));
 	});
 
+	test("should throw when qty is not positive number", async () => {
+		await expect(usecase.execute(5, { qty: 0 })).rejects.toThrow(
+			new ValidationError("qty must be a positive number")
+		);
+	});
+
 	test("should update ingredient package with validated ids", async () => {
 		const updated = { id: 5, qty: 2 };
 		ingredientPackageService.updateIngredientPackage.mockResolvedValue(updated);

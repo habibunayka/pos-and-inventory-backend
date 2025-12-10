@@ -60,4 +60,58 @@ describe("UpdateTransactionUsecase", () => {
 		});
 		expect(result).toEqual(updated);
 	});
+
+	test("should allow skipping optional fields and handle nullables", async () => {
+		const updated = { id: 7, orderType: null };
+		mockService.updateTransaction.mockResolvedValue(updated);
+
+		const result = await usecase.execute(7, {
+			orderType: null,
+			paymentMethodId: null,
+			placeId: undefined,
+			tableId: undefined,
+			tax: undefined,
+			discount: undefined
+		});
+
+		expect(mockService.updateTransaction).toHaveBeenCalledWith({
+			id: 7,
+			data: {
+				orderType: null,
+				paymentMethodId: null
+			}
+		});
+		expect(result).toEqual(updated);
+	});
+
+	test("should validate optional ids when provided", async () => {
+		await expect(usecase.execute(1, { paymentMethodId: "bad" })).rejects.toThrow(
+			new ValidationError("paymentMethodId must be a positive integer")
+		);
+		await expect(usecase.execute(1, { cashierId: "bad" })).rejects.toThrow(
+			new ValidationError("cashierId must be a positive integer")
+		);
+	});
+
+	test("should normalize empty orderType strings", async () => {
+		mockService.updateTransaction.mockResolvedValue({ id: 3 });
+
+		await usecase.execute(3, { orderType: "   " });
+
+		expect(mockService.updateTransaction).toHaveBeenCalledWith({
+			id: 3,
+			data: { orderType: null }
+		});
+	});
+
+	test("should handle nullable ids and tax", async () => {
+		mockService.updateTransaction.mockResolvedValue({ id: 4 });
+
+		await usecase.execute(4, { placeId: null, tableId: "6", tax: null });
+
+		expect(mockService.updateTransaction).toHaveBeenLastCalledWith({
+			id: 4,
+			data: { placeId: null, tableId: 6, tax: null }
+		});
+	});
 });

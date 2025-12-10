@@ -52,4 +52,13 @@ describe("CreatePackageUsecase", () => {
 
 		expect(packageService.createPackage).toHaveBeenCalledWith({ name: "bag", description: null });
 	});
+
+	test("should default missing description to null", async () => {
+		packageService.getPackageByName.mockResolvedValue(null);
+		packageService.createPackage.mockResolvedValue({ id: 4, name: "crate" });
+
+		await usecase.execute({ name: " crate " });
+
+		expect(packageService.createPackage).toHaveBeenCalledWith({ name: "crate", description: null });
+	});
 });

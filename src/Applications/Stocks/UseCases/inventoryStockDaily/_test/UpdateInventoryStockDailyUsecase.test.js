@@ -29,8 +29,29 @@ describe("UpdateInventoryStockDailyUsecase", () => {
 		);
 	});
 
+	test("should validate closingQty and diffQty numbers", async () => {
+		await expect(usecase.execute(1, { closingQty: "bad" })).rejects.toThrow(
+			new ValidationError("closingQty must be a number")
+		);
+
+		await expect(usecase.execute(1, { diffQty: "bad" })).rejects.toThrow(
+			new ValidationError("diffQty must be a number")
+		);
+	});
+
 	test("should throw when no fields provided", async () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No fields to update"));
+	});
+
+	test("should normalize numeric diffQty", async () => {
+		inventoryStockDailyService.update.mockResolvedValue({ id: 3 });
+
+		await usecase.execute(3, { diffQty: "7" });
+
+		expect(inventoryStockDailyService.update).toHaveBeenCalledWith({
+			id: 3,
+			data: { diffQty: 7 }
+		});
 	});
 
 	test("should throw when record not found", async () => {

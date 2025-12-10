@@ -27,4 +27,10 @@ describe("DeleteRecipeUsecase", () => {
 		expect(recipeService.deleteRecipe).toHaveBeenCalledWith(2);
 		expect(result).toBe(true);
 	});
+
+	test("should throw when recipe not found", async () => {
+		recipeService.deleteRecipe.mockResolvedValue(false);
+
+		await expect(usecase.execute(5)).rejects.toThrow(new ValidationError("Recipe not found"));
+	});
 });

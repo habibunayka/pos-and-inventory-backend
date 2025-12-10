@@ -42,6 +42,63 @@ describe("CreateCashierShiftUsecase", () => {
 		).rejects.toThrow(new ValidationError("openingBalance must be a number"));
 	});
 
+	test("should validate station/shift ownership and status", async () => {
+		placeService.getPlace.mockResolvedValue(null);
+		await expect(
+			usecase.execute({ placeId: 9, stationId: 2, shiftId: 3, cashierId: 4, ipAddress: "1.1.1.1" })
+		).rejects.toThrow(new ValidationError("placeId not found"));
+
+		placeService.getPlace.mockResolvedValue({ id: 1 });
+		stationService.getStation.mockResolvedValue({ id: 2, placeId: 99 });
+		await expect(
+			usecase.execute({ placeId: 1, stationId: 2, shiftId: 3, cashierId: 4, ipAddress: "1.1.1.1" })
+		).rejects.toThrow(new ValidationError("stationId does not belong to placeId"));
+
+		stationService.getStation.mockResolvedValue({ id: 2, placeId: 1 });
+		shiftService.getShift.mockResolvedValue({ id: 3, placeId: 99 });
+		await expect(
+			usecase.execute({ placeId: 1, stationId: 2, shiftId: 3, cashierId: 4, ipAddress: "1.1.1.1", status: "" })
+		).rejects.toThrow(new ValidationError("shiftId does not belong to placeId"));
+	});
+
+	test("should allow optional fields to be skipped and place validation disabled", async () => {
+		const noPlaceValidation = new CreateCashierShiftUsecase({
+			cashierShiftService,
+			placeService: { supportsPlaceValidation: false },
+			stationService: null,
+			shiftService: null
+		});
+
+		await noPlaceValidation.execute({
+			placeId: 1,
+			stationId: 2,
+			shiftId: 3,
+			cashierId: 4,
+			ipAddress: "1.1.1.1"
+		});
+
+		expect(cashierShiftService.create).toHaveBeenLastCalledWith({
+			placeId: 1,
+			stationId: 2,
+			shiftId: 3,
+			cashierId: 4,
+			ipAddress: "1.1.1.1"
+		});
+	});
+
+	test("should validate provided status is not empty", async () => {
+		await expect(
+			usecase.execute({
+				placeId: 1,
+				stationId: 2,
+				shiftId: 3,
+				cashierId: 4,
+				ipAddress: "1.1.1.1",
+				status: "   "
+			})
+		).rejects.toThrow(new ValidationError("status cannot be empty when provided"));
+	});
+
 	test("should create cashier shift with normalized payload", async () => {
 		const created = { id: 10 };
 		cashierShiftService.create.mockResolvedValue(created);
@@ -66,5 +123,18 @@ describe("CreateCashierShiftUsecase", () => {
 			status: "open"
 		});
 		expect(result).toEqual(created);
+	});
+
+	test("should reject when station or shift not found", async () => {
+		stationService.getStation.mockResolvedValue(null);
+		await expect(
+			usecase.execute({ placeId: 1, stationId: 9, shiftId: 3, cashierId: 4, ipAddress: "1.1.1.1" })
+		).rejects.toThrow(new ValidationError("stationId not found"));
+
+		stationService.getStation.mockResolvedValue({ id: 2, placeId: 1 });
+		shiftService.getShift.mockResolvedValue(null);
+		await expect(
+			usecase.execute({ placeId: 1, stationId: 2, shiftId: 8, cashierId: 4, ipAddress: "1.1.1.1" })
+		).rejects.toThrow(new ValidationError("shiftId not found"));
 	});
 });

@@ -63,6 +63,13 @@ describe("BaseCashierShiftUsecase", () => {
 		);
 	});
 
+	test("_validateStationId should throw when station missing", async () => {
+		stationService.getStation.mockResolvedValue(null);
+		const usecase = new DummyUsecase({ cashierShiftService: {}, placeService, stationService });
+
+		await expect(usecase._validateStationId(2)).rejects.toThrow(new ValidationError("stationId not found"));
+	});
+
 	test("_validateShiftId should validate ownership", async () => {
 		shiftService.getShift.mockResolvedValue({ id: 3, placeId: 5 });
 		const usecase = new DummyUsecase({ cashierShiftService: {}, placeService, shiftService });
@@ -71,5 +78,12 @@ describe("BaseCashierShiftUsecase", () => {
 		await expect(usecase._validateShiftId(3, 6)).rejects.toThrow(
 			new ValidationError("shiftId does not belong to placeId")
 		);
+	});
+
+	test("_validateShiftId should throw when shift missing", async () => {
+		shiftService.getShift.mockResolvedValue(null);
+		const usecase = new DummyUsecase({ cashierShiftService: {}, placeService, shiftService });
+
+		await expect(usecase._validateShiftId(4)).rejects.toThrow(new ValidationError("shiftId not found"));
 	});
 });

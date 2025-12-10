@@ -47,4 +47,41 @@ describe("UpdateKitchenOrderUsecase", () => {
 		});
 		expect(result).toEqual(updated);
 	});
+
+	test("should allow nullables and fallback status when empty", async () => {
+		mockService.updateKitchenOrder.mockResolvedValue({ id: 5 });
+
+		const result = await usecase.execute(5, {
+			status: "   ",
+			startedAt: null,
+			finishedAt: undefined,
+			note: null
+		});
+
+		expect(mockService.updateKitchenOrder).toHaveBeenCalledWith({
+			id: 5,
+			data: { status: "waiting", startedAt: null, note: null }
+		});
+		expect(result).toEqual({ id: 5 });
+	});
+
+	test("should skip optional fields when not provided and handle nullables", async () => {
+		mockService.updateKitchenOrder.mockResolvedValue({ id: 6 });
+
+		await usecase.execute(6, {
+			status: null,
+			finishedAt: null
+		});
+
+		expect(mockService.updateKitchenOrder).toHaveBeenCalledWith({
+			id: 6,
+			data: { status: null, finishedAt: null }
+		});
+	});
+
+	test("should validate transactionItemId when provided", async () => {
+		await expect(usecase.execute(1, { transactionItemId: "bad" })).rejects.toThrow(
+			new ValidationError("transactionItemId must be a positive integer")
+		);
+	});
 });

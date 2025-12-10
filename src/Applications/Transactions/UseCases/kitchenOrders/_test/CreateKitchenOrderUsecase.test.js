@@ -25,6 +25,18 @@ describe("CreateKitchenOrderUsecase", () => {
 		);
 	});
 
+	test("should apply default status when empty string provided", async () => {
+		mockService.createKitchenOrder.mockResolvedValue({ id: 6 });
+
+		const result = await usecase.execute({ transactionItemId: 1, status: "   " });
+
+		expect(mockService.createKitchenOrder).toHaveBeenCalledWith({
+			transactionItemId: 1,
+			status: "waiting"
+		});
+		expect(result).toEqual({ id: 6 });
+	});
+
 	test("should create kitchen order with normalized payload", async () => {
 		const created = { id: 5 };
 		mockService.createKitchenOrder.mockResolvedValue(created);
@@ -45,5 +57,37 @@ describe("CreateKitchenOrderUsecase", () => {
 			note: "extra spicy"
 		});
 		expect(result).toEqual(created);
+	});
+
+	test("should allow nullables and skip optional fields", async () => {
+		mockService.createKitchenOrder.mockResolvedValue({ id: 7 });
+
+		await usecase.execute({
+			transactionItemId: 1,
+			status: null,
+			startedAt: undefined,
+			finishedAt: undefined
+		});
+
+		expect(mockService.createKitchenOrder).toHaveBeenCalledWith({
+			transactionItemId: 1,
+			status: null
+		});
+	});
+
+	test("should convert nullables to null and trim empty note", async () => {
+		mockService.createKitchenOrder.mockResolvedValue({ id: 8 });
+
+		await usecase.execute({
+			transactionItemId: 2,
+			finishedAt: "",
+			note: "   "
+		});
+
+		expect(mockService.createKitchenOrder).toHaveBeenLastCalledWith({
+			transactionItemId: 2,
+			finishedAt: null,
+			note: null
+		});
 	});
 });

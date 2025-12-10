@@ -40,6 +40,20 @@ describe("CreateRoleUsecase", () => {
 		);
 	});
 
+	test("should allow null description", async () => {
+		roleService.getRoleByName.mockResolvedValue(null);
+		roleService.findPermissionsByNames.mockResolvedValue([]);
+		roleService.createRole.mockResolvedValue({ id: 10, name: "manager", description: null });
+
+		const result = await usecase.execute({ name: "manager", description: null });
+
+		expect(roleService.createRole).toHaveBeenCalledWith({
+			roleData: { name: "manager", description: null },
+			permissionIds: []
+		});
+		expect(result).toMatchObject({ id: 10, name: "manager", description: null });
+	});
+
 	test("should throw when permissions missing or invalid", async () => {
 		roleService.getRoleByName.mockResolvedValue(null);
 		roleService.findPermissionsByNames.mockResolvedValue([]);

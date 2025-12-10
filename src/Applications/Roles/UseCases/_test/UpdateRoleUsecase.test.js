@@ -77,4 +77,36 @@ describe("UpdateRoleUsecase", () => {
 		});
 		expect(result).toMatchObject({ id: 1, name: "manager", permissions: ["write"] });
 	});
+
+	test("should allow clearing description explicitly", async () => {
+		roleService.getRoleByName.mockResolvedValue(null);
+		roleService.findPermissionsByNames.mockResolvedValue([]);
+		const updated = { id: 5, name: "cashier", description: null, rolePermissions: [] };
+		roleService.updateRole.mockResolvedValue(updated);
+		roleService.getRoleById.mockResolvedValue({ ...existing, description: "old" });
+
+		const result = await usecase.execute(5, { description: null });
+
+		expect(roleService.updateRole).toHaveBeenCalledWith({
+			id: 5,
+			roleData: { name: "admin", description: null },
+			permissionIds: [10]
+		});
+		expect(result).toMatchObject({ id: 5, description: null });
+	});
+
+	test("should normalize blank description and handle empty permissions array", async () => {
+		roleService.getRoleByName.mockResolvedValue(null);
+		roleService.findPermissionsByNames.mockResolvedValue([]);
+		roleService.updateRole.mockResolvedValue({ id: 1, name: "admin", description: null, rolePermissions: [] });
+
+		const result = await usecase.execute(1, { description: "   ", permissions: [] });
+
+		expect(roleService.updateRole).toHaveBeenCalledWith({
+			id: 1,
+			roleData: { name: "admin", description: null },
+			permissionIds: []
+		});
+		expect(result).toMatchObject({ description: null, permissions: [] });
+	});
 });

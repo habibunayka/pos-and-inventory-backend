@@ -19,6 +19,10 @@ describe("UpdatePromotionRuleUsecase", () => {
 		await expect(usecase.execute("abc", {})).rejects.toThrow(new ValidationError("id must be a positive integer"));
 	});
 
+	test("should throw when payload is not an object", async () => {
+		await expect(usecase.execute(1, null)).rejects.toThrow(new ValidationError("Payload must be an object"));
+	});
+
 	test("should throw when no fields provided", async () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No fields to update"));
 	});
@@ -52,5 +56,13 @@ describe("UpdatePromotionRuleUsecase", () => {
 			}
 		});
 		expect(result).toEqual(updated);
+	});
+
+	test("should throw when update target not found", async () => {
+		promotionRuleService.updatePromotionRule.mockResolvedValue(null);
+
+		await expect(usecase.execute(9, { name: "x" })).rejects.toThrow(
+			new ValidationError("Promotion rule not found")
+		);
 	});
 });

@@ -19,6 +19,10 @@ describe("UpdateReportFileUsecase", () => {
 		await expect(usecase.execute("abc", {})).rejects.toThrow(new ValidationError("id must be a positive integer"));
 	});
 
+	test("should throw when payload is not object", async () => {
+		await expect(usecase.execute(1, null)).rejects.toThrow(new ValidationError("Payload must be an object"));
+	});
+
 	test("should throw when no fields provided", async () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No valid fields to update"));
 	});

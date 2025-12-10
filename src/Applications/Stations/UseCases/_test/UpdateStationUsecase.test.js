@@ -56,4 +56,36 @@ describe("UpdateStationUsecase", () => {
 		});
 		expect(result).toEqual(updated);
 	});
+
+	test("should throw when update result missing", async () => {
+		stationService.updateStation.mockResolvedValue(null);
+
+		await expect(usecase.execute(1, { name: "New" })).rejects.toThrow(new ValidationError("Station not found"));
+	});
+
+	test("should normalize description variants and support validation skip", async () => {
+		stationService.updateStation.mockResolvedValue({ id: 1 });
+
+		await usecase.execute(1, { description: null });
+		expect(stationService.updateStation).toHaveBeenLastCalledWith({
+			id: 1,
+			data: { description: null }
+		});
+
+		await usecase.execute(1, { description: "   " });
+		expect(stationService.updateStation).toHaveBeenLastCalledWith({
+			id: 1,
+			data: { description: null }
+		});
+
+		const noValidation = new UpdateStationUsecase({
+			stationService,
+			placeService: { supportsPlaceValidation: false }
+		});
+		await noValidation.execute(1, { placeId: 10, name: "Name" });
+		expect(stationService.updateStation).toHaveBeenLastCalledWith({
+			id: 1,
+			data: { placeId: 10, name: "Name" }
+		});
+	});
 });

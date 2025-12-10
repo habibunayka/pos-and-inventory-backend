@@ -46,6 +46,20 @@ describe("UpdatePermissionUsecase", () => {
 		);
 	});
 
+	test("should allow null description update", async () => {
+		permissionService.getPermissionByName.mockResolvedValue(null);
+		const updated = { id: 1, name: "read", description: null };
+		permissionService.updatePermission.mockResolvedValue(updated);
+
+		const result = await usecase.execute(1, { description: null });
+
+		expect(permissionService.updatePermission).toHaveBeenCalledWith({
+			id: 1,
+			permissionData: { description: null }
+		});
+		expect(result).toEqual(updated);
+	});
+
 	test("should throw when no updatable fields", async () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No updatable fields provided"));
 	});

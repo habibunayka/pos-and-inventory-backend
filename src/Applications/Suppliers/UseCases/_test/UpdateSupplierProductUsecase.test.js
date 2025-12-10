@@ -45,6 +45,28 @@ describe("UpdateSupplierProductUsecase", () => {
 		await expect(usecase.execute(1, { qty: "abc" })).rejects.toThrow(new ValidationError("qty must be a positive number"));
 	});
 
+	test("should throw when price invalid", async () => {
+		await expect(usecase.execute(1, { price: -1 })).rejects.toThrow(
+			new ValidationError("price must be a non-negative number")
+		);
+	});
+
+	test("should allow null leadTime and reject negative values", async () => {
+		supplierProductService.updateSupplierProduct.mockResolvedValue({ id: 1 });
+
+		const result = await usecase.execute(1, { leadTime: null });
+
+		expect(result).toEqual({ id: 1 });
+		expect(supplierProductService.updateSupplierProduct).toHaveBeenCalledWith({
+			id: 1,
+			data: { leadTime: null }
+		});
+
+		await expect(usecase.execute(1, { leadTime: -1 })).rejects.toThrow(
+			new ValidationError("leadTime must be a non-negative integer or null")
+		);
+	});
+
 	test("should throw when no fields provided", async () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No updatable fields provided"));
 	});

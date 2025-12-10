@@ -31,6 +31,12 @@ describe("CreateWasteUsecase", () => {
 		);
 	});
 
+	test("should throw when unitId invalid", async () => {
+		await expect(usecase.execute({ ingredientId: 1, qty: 2, unitId: "abc" })).rejects.toThrow(
+			new ValidationError("unitId must be a positive integer")
+		);
+	});
+
 	test("should create waste with normalized payload", async () => {
 		const created = { id: 1 };
 		wasteService.createWaste.mockResolvedValue(created);
@@ -49,5 +55,15 @@ describe("CreateWasteUsecase", () => {
 			reason: "expired"
 		});
 		expect(result).toEqual(created);
+	});
+
+	test("should allow optional fields to be omitted or null", async () => {
+		wasteService.createWaste.mockResolvedValue({});
+
+		await usecase.execute({ ingredientId: 1, qty: 1, placeId: null });
+		expect(wasteService.createWaste).toHaveBeenCalledWith({ ingredientId: 1, qty: 1, placeId: null });
+
+		await usecase.execute({ ingredientId: 1, qty: 1, reason: "   " });
+		expect(wasteService.createWaste).toHaveBeenLastCalledWith({ ingredientId: 1, qty: 1, reason: "" });
 	});
 });

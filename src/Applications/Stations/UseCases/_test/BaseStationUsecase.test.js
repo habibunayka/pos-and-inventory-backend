@@ -46,4 +46,11 @@ describe("BaseStationUsecase", () => {
 
 		await expect(usecase._validatePlaceId("2")).resolves.toBe(2);
 	});
+
+	test("_validatePlaceId should throw when place missing", async () => {
+		placeService.getPlace.mockResolvedValue(null);
+		const usecase = new DummyUsecase({ stationService: {}, placeService });
+
+		await expect(usecase._validatePlaceId(3)).rejects.toThrow(new ValidationError("placeId not found"));
+	});
 });
