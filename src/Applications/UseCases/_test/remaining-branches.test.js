@@ -1,15 +1,15 @@
 import { jest } from "@jest/globals";
-import ValidationError from "../Commons/Errors/ValidationError.js";
-import CreateMenuVariantUsecase from "../Applications/MenuVariants/UseCases/CreateMenuVariantUsecase.js";
-import UpdatePlaceUsecase from "../Applications/Places/UseCases/UpdatePlaceUsecase.js";
-import CreateShiftUsecase from "../Applications/Shifts/UseCases/CreateShiftUsecase.js";
-import CreatePermissionUsecase from "../Applications/Permissions/UseCases/CreatePermissionUsecase.js";
-import CreateMenuUsecase from "../Applications/Menus/UseCases/CreateMenuUsecase.js";
-import CreateCashierShiftUsecase from "../Applications/Stocks/UseCases/cashierShifts/CreateCashierShiftUsecase.js";
-import UpdateUserUsecase from "../Applications/Users/UseCases/UpdateUserUsecase.js";
-import CreateKitchenOrderUsecase from "../Applications/Transactions/UseCases/kitchenOrders/CreateKitchenOrderUsecase.js";
-import UpdateTransactionItemUsecase from "../Applications/Transactions/UseCases/transactionItems/UpdateTransactionItemUsecase.js";
-import CreateTableUsecase from "../Applications/Tables/UseCases/CreateTableUsecase.js";
+import ValidationError from "../../../Commons/Errors/ValidationError.js";
+import CreateMenuVariantUsecase from "../../MenuVariants/UseCases/CreateMenuVariantUsecase.js";
+import UpdatePlaceUsecase from "../../Places/UseCases/UpdatePlaceUsecase.js";
+import CreateShiftUsecase from "../../Shifts/UseCases/CreateShiftUsecase.js";
+import CreatePermissionUsecase from "../../Permissions/UseCases/CreatePermissionUsecase.js";
+import CreateMenuUsecase from "../../Menus/UseCases/CreateMenuUsecase.js";
+import CreateCashierShiftUsecase from "../../Stocks/UseCases/cashierShifts/CreateCashierShiftUsecase.js";
+import UpdateUserUsecase from "../../Users/UseCases/UpdateUserUsecase.js";
+import CreateKitchenOrderUsecase from "../../Transactions/UseCases/kitchenOrders/CreateKitchenOrderUsecase.js";
+import UpdateTransactionItemUsecase from "../../Transactions/UseCases/transactionItems/UpdateTransactionItemUsecase.js";
+import CreateTableUsecase from "../../Tables/UseCases/CreateTableUsecase.js";
 
 describe("Remaining branch coverage helpers", () => {
 	test("CreateMenuVariantUsecase handles missing name via nullish fallback", async () => {
