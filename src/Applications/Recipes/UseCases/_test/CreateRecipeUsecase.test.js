@@ -21,13 +21,13 @@ describe("CreateRecipeUsecase", () => {
 		);
 	});
 
-test("should create recipe with normalized data", async () => {
-const created = { id: 1 };
-recipeService.createRecipe.mockResolvedValue(created);
+	test("should create recipe with normalized data", async () => {
+		const created = { id: 1 };
+		recipeService.createRecipe.mockResolvedValue(created);
 
-const result = await usecase.execute({ menuId: "2", ingredientId: "3", qty: "5" });
+		const result = await usecase.execute({ menuId: "2", ingredientId: "3", qty: "5" });
 
-expect(recipeService.createRecipe).toHaveBeenCalledWith({ menuId: 2, ingredientId: 3, qty: 5 });
-expect(result).toEqual(created);
-});
+		expect(recipeService.createRecipe).toHaveBeenCalledWith({ menuId: 2, ingredientId: 3, qty: 5 });
+		expect(result).toEqual(created);
+	});
 });
