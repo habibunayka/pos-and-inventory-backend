@@ -42,29 +42,29 @@ describe("CreateSupplierProductUsecase", () => {
 		);
 	});
 
-test("should create supplier product with validated ids", async () => {
-const created = { id: 1 };
-supplierProductService.createSupplierProduct.mockResolvedValue(created);
+	test("should create supplier product with validated ids", async () => {
+		const created = { id: 1 };
+		supplierProductService.createSupplierProduct.mockResolvedValue(created);
 
-const result = await usecase.execute({
-supplierId: "1",
-ingredientId: "2",
-packageId: "3",
-qty: "4",
-price: "5",
-leadTime: 2.8,
-isActive: false
-});
+		const result = await usecase.execute({
+			supplierId: "1",
+			ingredientId: "2",
+			packageId: "3",
+			qty: "4",
+			price: "5",
+			leadTime: 2.8,
+			isActive: false
+		});
 
-expect(supplierProductService.createSupplierProduct).toHaveBeenCalledWith({
-supplierId: 1,
-ingredientId: 2,
-packageId: 3,
-qty: 4,
-price: 5,
-leadTime: 2,
-isActive: false
-});
-expect(result).toEqual(created);
-});
+		expect(supplierProductService.createSupplierProduct).toHaveBeenCalledWith({
+			supplierId: 1,
+			ingredientId: 2,
+			packageId: 3,
+			qty: 4,
+			price: 5,
+			leadTime: 2,
+			isActive: false
+		});
+		expect(result).toEqual(created);
+	});
 });

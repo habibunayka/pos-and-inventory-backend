@@ -3,9 +3,12 @@ import importPlugin from "eslint-plugin-import";
 import globals from "globals";
 
 export default [
+	{
+		ignores: ["node_modules/**", "coverage/**", "testing/**", "**/_test/_test/**"]
+	},
 	js.configs.recommended,
 	{
-		files: ["**/*.js", "**/*.cjs"],
+		files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
 		languageOptions: {
 			ecmaVersion: "latest",
 			sourceType: "module",
@@ -13,7 +16,7 @@ export default [
 				...globals.node,
 				console: "readonly",
 				process: "readonly",
-				Buffer: "readonly" 
+				Buffer: "readonly"
 			}
 		},
 		plugins: {

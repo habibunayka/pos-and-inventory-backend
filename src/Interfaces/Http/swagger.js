@@ -1,11 +1,11 @@
-import buildDocument from '../../../docs/index.js';
+import buildDocument from "../../../docs/index.js";
 
-export function createOpenApiDocument({ serverUrl = 'http://localhost:3000' } = {}) {
-  return buildDocument({ serverUrl });
+export function createOpenApiDocument({ serverUrl = "http://localhost:3000" } = {}) {
+	return buildDocument({ serverUrl });
 }
 
-export function createSwaggerHtml({ title = 'POS Backend API Docs', specUrl = '/api/docs.json' } = {}) {
-  return `<!DOCTYPE html>
+export function createSwaggerHtml({ title = "POS Backend API Docs", specUrl = "/api/docs.json" } = {}) {
+	return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
