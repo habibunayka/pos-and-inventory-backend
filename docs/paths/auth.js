@@ -11,7 +11,15 @@ const authPaths = {
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/LoginRequest"
+              "description": "Gunakan skema password untuk admin/owner atau PIN untuk kasir",
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LoginRequest"
+                },
+                {
+                  "$ref": "#/components/schemas/LoginWithPinRequest"
+                }
+              ]
             }
           }
         }
