@@ -11,7 +11,31 @@ const authPaths = {
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/LoginRequest"
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/LoginRequest"
+                },
+                {
+                  "$ref": "#/components/schemas/LoginWithPinRequest"
+                }
+              ],
+              "description": "Pilih skema login sesuai role: email/password untuk non-cashier atau PIN (diisi di field password) untuk kasir."
+            },
+            "examples": {
+              "passwordLogin": {
+                "summary": "Login dengan email & password",
+                "value": {
+                  "username": "brand.owner@example.com",
+                  "password": "BrandOwnerPass123!"
+                }
+              },
+              "cashierPinLogin": {
+                "summary": "Login kasir menggunakan PIN",
+                "value": {
+                  "username": "Cashier A",
+                  "password": "123456"
+                }
+              }
             }
           }
         }

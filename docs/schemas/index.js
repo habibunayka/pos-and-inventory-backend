@@ -95,6 +95,7 @@ import UpdateUserRequest from './UpdateUserRequest.js';
 import ErrorResponse from './ErrorResponse.js';
 import LoginRequest from './LoginRequest.js';
 import LoginResponse from './LoginResponse.js';
+import LoginWithPinRequest from './LoginWithPinRequest.js';
 import Unit from './Unit.js';
 import Table from './Table.js';
 import Ingredient from './Ingredient.js';
@@ -202,6 +203,7 @@ const schemas = {
   ErrorResponse,
   LoginRequest,
   LoginResponse,
+  LoginWithPinRequest,
   Unit,
   Table,
   Ingredient,
