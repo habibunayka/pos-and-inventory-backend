@@ -1,0 +1,42 @@
+import HttpStatus from "../../Commons/Constants/HttpStatus.js";
+
+export default class ShiftController {
+	constructor({ presenter, listUsecase, getUsecase, createUsecase, updateUsecase, deleteUsecase } = {}) {
+		const deps = [
+			["presenter", presenter],
+			["listUsecase", listUsecase],
+			["getUsecase", getUsecase],
+			["createUsecase", createUsecase],
+			["updateUsecase", updateUsecase],
+			["deleteUsecase", deleteUsecase]
+		];
+		const miss = deps.find(([, v]) => !v);
+		if (miss) throw new Error(`ShiftController requires ${miss[0]}`);
+		Object.assign(this, Object.fromEntries(deps));
+	}
+
+	async list() {
+		const records = await this.listUsecase.execute();
+		return { status: HttpStatus.OK, data: this.presenter.presentCollection(records) };
+	}
+
+	async get({ params }) {
+		const record = await this.getUsecase.execute(params.id);
+		return { status: HttpStatus.OK, data: this.presenter.present(record) };
+	}
+
+	async create({ body }) {
+		const record = await this.createUsecase.execute(body);
+		return { status: HttpStatus.CREATED, data: this.presenter.present(record) };
+	}
+
+	async update({ params, body }) {
+		const record = await this.updateUsecase.execute(params.id, body);
+		return { status: HttpStatus.OK, data: this.presenter.present(record) };
+	}
+
+	async delete({ params }) {
+		await this.deleteUsecase.execute(params.id);
+		return { status: HttpStatus.NO_CONTENT };
+	}
+}

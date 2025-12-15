@@ -1,13 +1,4 @@
-export const SYSTEM_ROLE_NAMES = Object.freeze([
-	"brand_owner",
-	"location_owner",
-	"admin",
-	"store_manager",
-	"cashier",
-	"chef",
-	"purchaising",
-	"waiters"
-]);
+export const SYSTEM_ROLE_NAMES = Object.freeze(["admin", "manager", "cashier"]);
 
 export const SYSTEM_ROLE_SET = new Set(SYSTEM_ROLE_NAMES);
 

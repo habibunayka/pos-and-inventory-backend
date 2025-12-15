@@ -5,7 +5,8 @@ export default class DeleteTableUsecase extends BaseTableUsecase {
 	async execute(id) {
 		const numericId = Number(id);
 		if (!Number.isInteger(numericId) || numericId <= 0) throw new ValidationError("Invalid id");
-		await this.tableService.deleteTable(numericId);
+		const deleted = await this.tableService.deleteTable(numericId);
+		if (!deleted) throw new ValidationError("Table not found");
 		return true;
 	}
 }

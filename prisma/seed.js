@@ -581,6 +581,8 @@ async function main() {
 
 	// Tables (need a place)
 	const mainPlace = await prisma.place.findFirst({ orderBy: { id: "asc" } });
+	const stationRecords = {};
+	const shiftRecords = {};
 	if (mainPlace) {
 		const tableDefs = [
 			{ placeId: mainPlace.id, name: "T-01", status: "available" },
@@ -595,6 +597,70 @@ async function main() {
 			} else {
 				await prisma.table.create({ data: t });
 			}
+		}
+
+		const stationDefs = [
+			{ placeId: mainPlace.id, name: "Front Counter", description: "Default POS station", isActive: true },
+			{ placeId: mainPlace.id, name: "Secondary Counter", description: "Backup register", isActive: true }
+		];
+
+		for (const station of stationDefs) {
+			const payload = {
+				placeId: station.placeId,
+				name: station.name,
+				description: station.description ?? null,
+				isActive: station.isActive !== false
+			};
+			const existing = await prisma.station.findFirst({
+				where: { placeId: station.placeId, name: station.name }
+			});
+
+			let record;
+			if (existing) {
+				record = await prisma.station.update({ where: { id: existing.id }, data: payload });
+			} else {
+				record = await prisma.station.create({ data: payload });
+			}
+			stationRecords[station.name] = record;
+		}
+
+		const shiftDefs = [
+			{
+				placeId: mainPlace.id,
+				name: "Morning",
+				startTime: "08:00",
+				endTime: "16:00",
+				description: "Shift pagi"
+			},
+			{
+				placeId: mainPlace.id,
+				name: "Evening",
+				startTime: "16:00",
+				endTime: "23:00",
+				description: "Shift sore"
+			}
+		];
+
+		for (const shift of shiftDefs) {
+			const payload = {
+				placeId: shift.placeId,
+				name: shift.name,
+				startTime: shift.startTime,
+				endTime: shift.endTime,
+				description: shift.description ?? null,
+				isActive: true
+			};
+			const existing = await prisma.shift.findFirst({
+				where: { placeId: shift.placeId, name: shift.name }
+			});
+
+			let record;
+			if (existing) {
+				record = await prisma.shift.update({ where: { id: existing.id }, data: payload });
+			} else {
+				record = await prisma.shift.create({ data: payload });
+			}
+			shiftRecords[shift.name] = record;
 		}
 	}
 
@@ -1006,10 +1072,18 @@ async function main() {
 	const csCount = await prisma.cashierShift.count();
 	if (csCount === 0 && mainPlace) {
 		const cashier = await prisma.user.findFirst({ orderBy: { id: "asc" } });
-		if (cashier) {
+		const station =
+			stationRecords["Front Counter"] ??
+			(await prisma.station.findFirst({ where: { placeId: mainPlace.id }, orderBy: { id: "asc" } }));
+		const shift =
+			shiftRecords["Morning"] ??
+			(await prisma.shift.findFirst({ where: { placeId: mainPlace.id }, orderBy: { id: "asc" } }));
+		if (cashier && station && shift) {
 			await prisma.cashierShift.create({
 				data: {
 					placeId: mainPlace.id,
+					stationId: station.id,
+					shiftId: shift.id,
 					cashierId: cashier.id,
 					ipAddress: "127.0.0.1",
 					openingBalance: 0,

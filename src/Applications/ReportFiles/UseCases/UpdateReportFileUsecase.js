@@ -4,15 +4,21 @@ import ValidationError from "../../../Commons/Errors/ValidationError.js";
 export default class UpdateReportFileUsecase extends BaseReportFileUsecase {
 	async execute(id, payload = {}) {
 		const intId = this._toInt(id);
+		if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+			throw new ValidationError("Payload must be an object");
+		}
+
 		const data = {};
-		if (typeof payload.reportType !== "undefined") data.reportType = String(payload.reportType).trim();
-		if (typeof payload.reportScope !== "undefined") data.reportScope = String(payload.reportScope).trim();
-		if (typeof payload.reportDate !== "undefined")
-			data.reportDate = payload.reportDate ? new Date(payload.reportDate) : null;
-		if (typeof payload.placeId !== "undefined")
-			data.placeId = payload.placeId === null ? null : Number(payload.placeId);
-		if (typeof payload.fileName !== "undefined") data.fileName = String(payload.fileName).trim();
-		if (typeof payload.filePath !== "undefined") data.filePath = String(payload.filePath).trim();
+		if (typeof payload.label !== "undefined") data.label = String(payload.label ?? "").trim();
+		if (typeof payload.filePath !== "undefined") data.filePath = String(payload.filePath ?? "").trim();
+		if (typeof payload.mimeType !== "undefined") data.mimeType = payload.mimeType;
+		if (typeof payload.fileSize !== "undefined") {
+			const size = Number(payload.fileSize);
+			if (!Number.isFinite(size)) throw new ValidationError("fileSize must be a number");
+			data.fileSize = size;
+		}
+		if (typeof payload.metaJson !== "undefined") data.metaJson = payload.metaJson;
+
 		if (Object.keys(data).length === 0) throw new ValidationError("No valid fields to update");
 		const rec = await this.reportFileService.updateReportFile({ id: intId, data });
 		if (!rec) throw new ValidationError("Report file not found");

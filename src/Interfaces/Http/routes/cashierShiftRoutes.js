@@ -21,6 +21,12 @@ export default function registerCashierShiftRoutes(app, { controller, requireAut
 		validateRequest({ body: csSchemas.create }),
 		adapt(controller.create.bind(controller))
 	);
+	router.post(
+		"/open",
+		...canCreateCashierShifts,
+		validateRequest({ body: csSchemas.open }),
+		adapt(controller.open.bind(controller))
+	);
 	router.get(
 		"/:id",
 		...canViewCashierShifts,
@@ -32,6 +38,12 @@ export default function registerCashierShiftRoutes(app, { controller, requireAut
 		...canUpdateCashierShifts,
 		validateRequest({ params: commonSchemas.idParam, body: csSchemas.update }),
 		adapt(controller.update.bind(controller))
+	);
+	router.post(
+		"/:id/close",
+		...canUpdateCashierShifts,
+		validateRequest({ params: commonSchemas.idParam, body: csSchemas.close }),
+		adapt(controller.close.bind(controller))
 	);
 	router.delete(
 		"/:id",

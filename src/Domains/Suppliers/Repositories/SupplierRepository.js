@@ -5,6 +5,9 @@ export default class SupplierRepository {
 	async findById(id) {
 		throw new Error("SUPPLIER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
+	async findByName(name) {
+		throw new Error("SUPPLIER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+	}
 	async createSupplier(data) {
 		throw new Error("SUPPLIER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}

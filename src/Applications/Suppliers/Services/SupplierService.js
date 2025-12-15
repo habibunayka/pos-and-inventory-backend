@@ -4,7 +4,7 @@ export default class SupplierService {
 	constructor({ supplierRepository } = {}) {
 		if (!supplierRepository) throw new Error("SUPPLIER_SERVICE.MISSING_REPOSITORY");
 		if (!(supplierRepository instanceof SupplierRepository)) {
-			const methods = ["findAll", "findById", "createSupplier", "updateSupplier", "deleteSupplier"];
+			const methods = ["findAll", "findById", "findByName", "createSupplier", "updateSupplier", "deleteSupplier"];
 			const missing = methods.find((m) => typeof supplierRepository[m] !== "function");
 			if (missing) throw new Error(`SUPPLIER_SERVICE.INVALID_REPOSITORY: missing ${missing}`);
 		}
@@ -16,6 +16,9 @@ export default class SupplierService {
 	}
 	getSupplier(id) {
 		return this._supplierRepository.findById(id);
+	}
+	getSupplierByName(name) {
+		return this._supplierRepository.findByName(name);
 	}
 	createSupplier(data) {
 		return this._supplierRepository.createSupplier(data);

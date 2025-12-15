@@ -4,7 +4,7 @@ export default class PackageService {
 	constructor({ packageRepository } = {}) {
 		if (!packageRepository) throw new Error("PACKAGE_SERVICE.MISSING_REPOSITORY");
 		if (!(packageRepository instanceof PackageRepository)) {
-			const methods = ["findAll", "findById", "findByName", "createPackage", "updatePackage", "deletePackage"];
+			const methods = ["findAll", "findById", "createPackage", "updatePackage", "deletePackage"];
 			const missing = methods.find((m) => typeof packageRepository[m] !== "function");
 			if (missing) throw new Error(`PACKAGE_SERVICE.INVALID_REPOSITORY: missing ${missing}`);
 		}
@@ -18,6 +18,9 @@ export default class PackageService {
 		return this._packageRepository.findById(id);
 	}
 	getPackageByName(name) {
+		if (typeof this._packageRepository.findByName !== "function") {
+			throw new Error("PACKAGE_SERVICE.REPOSITORY_MISSING_FIND_BY_NAME");
+		}
 		return this._packageRepository.findByName(name);
 	}
 	createPackage(packageData) {

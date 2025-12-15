@@ -7,8 +7,8 @@ export default class DeleteWasteUsecase {
 	}
 	async execute(id) {
 		const intId = Number(id);
-		if (!Number.isInteger(intId) || intId <= 0) throw new ValidationError("id must be positive integer");
-		const ok = await this.wasteService.delete(intId);
+		if (!Number.isInteger(intId) || intId <= 0) throw new ValidationError("id must be a positive integer");
+		const ok = await this.wasteService.deleteWaste(intId);
 		if (!ok) throw new ValidationError("Waste not found");
 		return true;
 	}

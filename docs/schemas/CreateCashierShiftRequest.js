@@ -2,6 +2,8 @@ const CreateCashierShiftRequest = {
   "type": "object",
   "required": [
     "placeId",
+    "stationId",
+    "shiftId",
     "cashierId",
     "ipAddress"
   ],
@@ -13,6 +15,14 @@ const CreateCashierShiftRequest = {
     "cashierId": {
       "type": "integer",
       "example": 2
+    },
+    "stationId": {
+      "type": "integer",
+      "example": 3
+    },
+    "shiftId": {
+      "type": "integer",
+      "example": 1
     },
     "ipAddress": {
       "type": "string",

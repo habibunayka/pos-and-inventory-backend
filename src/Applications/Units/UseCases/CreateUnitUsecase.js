@@ -7,10 +7,6 @@ export default class CreateUnitUsecase extends BaseUnitUsecase {
 			throw new ValidationError("Payload must be an object");
 		}
 		const name = await this._assertNameAvailable(payload.name);
-		const abbreviation = String(payload.abbreviation ?? "")
-			.trim()
-			.toLowerCase();
-		if (!abbreviation) throw new ValidationError("abbreviation is required");
-		return this.unitService.createUnit({ name, abbreviation });
+		return this.unitService.createUnit({ name });
 	}
 }

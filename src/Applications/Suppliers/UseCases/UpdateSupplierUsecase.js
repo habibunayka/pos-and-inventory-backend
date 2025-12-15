@@ -12,7 +12,7 @@ export default class UpdateSupplierUsecase extends BaseSupplierUsecase {
 		if (Object.prototype.hasOwnProperty.call(payload, "name")) {
 			update.name = this._requireText(payload.name, "name");
 		}
-		const fields = ["contactName", "phone", "email", "address"];
+		const fields = ["contactName", "phone", "email", "address", "note"];
 		for (const f of fields) {
 			if (Object.prototype.hasOwnProperty.call(payload, f)) {
 				update[f] = this._textOrNull(payload[f]);

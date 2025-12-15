@@ -1,5 +1,4 @@
 import BasePlaceUsecase from "./BasePlaceUsecase.js";
-import Place from "../../../Domains/Places/Entities/Place.js";
 import AppError from "../../../Commons/Errors/AppError.js";
 import HttpStatus from "../../../Commons/Constants/HttpStatus.js";
 
@@ -12,6 +11,6 @@ export default class GetPlaceUsecase extends BasePlaceUsecase {
 			throw new AppError("Place tidak ditemukan", HttpStatus.NOT_FOUND);
 		}
 
-		return Place.fromPersistence(record);
+		return record;
 	}
 }

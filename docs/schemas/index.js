@@ -9,9 +9,16 @@ import CreateStockTransferRequest from './CreateStockTransferRequest.js';
 import Waste from './Waste.js';
 import CreateWasteRequest from './CreateWasteRequest.js';
 import UpdateWasteRequest from './UpdateWasteRequest.js';
+import Station from './Station.js';
+import CreateStationRequest from './CreateStationRequest.js';
+import UpdateStationRequest from './UpdateStationRequest.js';
+import Shift from './Shift.js';
+import CreateShiftRequest from './CreateShiftRequest.js';
+import UpdateShiftRequest from './UpdateShiftRequest.js';
 import CashierShift from './CashierShift.js';
 import CreateCashierShiftRequest from './CreateCashierShiftRequest.js';
 import UpdateCashierShiftRequest from './UpdateCashierShiftRequest.js';
+import CloseCashierShiftRequest from './CloseCashierShiftRequest.js';
 import Promotion from './Promotion.js';
 import CreatePromotionRequest from './CreatePromotionRequest.js';
 import UpdatePromotionRequest from './UpdatePromotionRequest.js';
@@ -109,9 +116,16 @@ const schemas = {
   Waste,
   CreateWasteRequest,
   UpdateWasteRequest,
+  Station,
+  CreateStationRequest,
+  UpdateStationRequest,
+  Shift,
+  CreateShiftRequest,
+  UpdateShiftRequest,
   CashierShift,
   CreateCashierShiftRequest,
   UpdateCashierShiftRequest,
+  CloseCashierShiftRequest,
   Promotion,
   CreatePromotionRequest,
   UpdatePromotionRequest,
