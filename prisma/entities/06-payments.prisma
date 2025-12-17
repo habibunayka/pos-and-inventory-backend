@@ -1,6 +1,7 @@
 /// ========== PAYMENTS ==========
 model PaymentMethod {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name        String  @unique
   description String?
   isActive    Boolean @default(true) @map("is_active")

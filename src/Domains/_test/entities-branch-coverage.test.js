@@ -461,7 +461,11 @@ describe("Entity branch coverage fallbacks", () => {
 				props: { placeId: 1, name: "Shift", startTime: "08:00", endTime: "09:00" },
 				expected: { description: null, isActive: true }
 			},
-			{ Entity: Station, props: { placeId: 1, name: "Station" }, expected: { description: null, isActive: true } },
+			{
+				Entity: Station,
+				props: { placeId: 1, name: "Station" },
+				expected: { description: null, isActive: true }
+			},
 			{
 				Entity: InventoryStockDaily,
 				props: { placeId: 1, ingredientId: 2, date: "2024", openingQty: 0, closingQty: 0, createdAt: "now" },
@@ -473,7 +477,11 @@ describe("Entity branch coverage fallbacks", () => {
 				props: { ingredientId: 1, qty: 5, createdAt: "now" },
 				expected: { fromPlaceId: null, toPlaceId: null }
 			},
-			{ Entity: Waste, props: { ingredientId: 1, qty: 1, createdAt: "now" }, expected: { placeId: null, reason: null } },
+			{
+				Entity: Waste,
+				props: { ingredientId: 1, qty: 1, createdAt: "now" },
+				expected: { placeId: null, reason: null }
+			},
 			{
 				Entity: Supplier,
 				props: { name: "Supplier" },

@@ -14,14 +14,14 @@ export default function buildDocument({ serverUrl } = {}) {
 		tags,
 		security: [
 			{
-				bearerAuth: [],
-			},
+				bearerAuth: []
+			}
 		],
 		paths,
 		components: {
 			schemas,
 			responses,
-			securitySchemes,
-		},
+			securitySchemes
+		}
 	};
 }

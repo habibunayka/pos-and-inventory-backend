@@ -1,6 +1,7 @@
 /// ========== CASHIER SHIFTS ==========
 model CashierShift {
   id             Int       @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId        Int       @map("place_id")
   stationId      Int       @map("station_id")
   shiftId        Int       @map("shift_id")
@@ -23,6 +24,7 @@ model CashierShift {
 
 model Station {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId     Int     @map("place_id")
   name        String
   description String?
@@ -37,6 +39,7 @@ model Station {
 
 model Shift {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId     Int     @map("place_id")
   name        String
   startTime   String  @map("start_time")

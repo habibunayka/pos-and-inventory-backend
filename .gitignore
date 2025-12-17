@@ -6,5 +6,7 @@ prisma/migrations/migration_lock.toml
 src/**/_test/_test/
 *.spec.spec.js
 temp-delete.txt
+tmp_prettier_seed.js
+testdelete.txt
 generate-tests.mjs
 coverage/

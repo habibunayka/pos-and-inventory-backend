@@ -1,21 +1,19 @@
 const CreatePaymentMethodRequest = {
-	"type": "object",
-	"required": [
-		"name"
-	],
-	"properties": {
-		"name": {
-			"type": "string",
-			"example": "cash"
+	type: "object",
+	required: ["name"],
+	properties: {
+		name: {
+			type: "string",
+			example: "cash"
 		},
-		"description": {
-			"type": "string",
-			"nullable": true,
-			"example": "Tunai"
+		description: {
+			type: "string",
+			nullable: true,
+			example: "Tunai"
 		},
-		"isActive": {
-			"type": "boolean",
-			"example": true
+		isActive: {
+			type: "boolean",
+			example: true
 		}
 	}
 };

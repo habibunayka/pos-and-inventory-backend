@@ -14,9 +14,7 @@ describe("UpdateDeliveryIntegrationUsecase", () => {
 	});
 
 	test("should throw when service is missing", () => {
-		expect(() => new UpdateDeliveryIntegrationUsecase()).toThrow(
-			"DELIVERYINTEGRATION_USECASE.MISSING_SERVICE"
-		);
+		expect(() => new UpdateDeliveryIntegrationUsecase()).toThrow("DELIVERYINTEGRATION_USECASE.MISSING_SERVICE");
 	});
 
 	test("should throw when id is invalid", async () => {
@@ -32,17 +30,15 @@ describe("UpdateDeliveryIntegrationUsecase", () => {
 	});
 
 	test("should throw when no fields provided", async () => {
-		await expect(usecase.execute(1, {})).rejects.toThrow(
-			new ValidationError("No valid fields to update")
-		);
+		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No valid fields to update"));
 	});
 
 	test("should throw when record is not found", async () => {
 		mockService.updateDeliveryIntegration.mockResolvedValue(null);
 
-		await expect(
-			usecase.execute(1, { platformName: " GrabFood " })
-		).rejects.toThrow(new ValidationError("Delivery integration not found"));
+		await expect(usecase.execute(1, { platformName: " GrabFood " })).rejects.toThrow(
+			new ValidationError("Delivery integration not found")
+		);
 	});
 
 	test("should update delivery integration with normalized payload", async () => {

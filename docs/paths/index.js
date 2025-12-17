@@ -71,7 +71,7 @@ const paths = {
 	...transactionsPaths,
 	...unitsPaths,
 	...usersPaths,
-	...wastesPaths,
+	...wastesPaths
 };
 
 export default paths;

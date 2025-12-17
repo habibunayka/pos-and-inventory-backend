@@ -9,12 +9,15 @@ export default class PrismaPromotionRepository extends PromotionRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.promotion.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.promotion.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Promotion.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.promotion.findUnique({ where: { id } });
+		const record = await this._prisma.promotion.findFirst({ where: { id, deletedAt: null } });
 		return Promotion.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaPromotionRepository extends PromotionRepository {
 	}
 
 	async updatePromotion({ id, data }) {
-		try {
-			const record = await this._prisma.promotion.update({ where: { id }, data });
-			return Promotion.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.promotion.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.promotion.update({ where: { id }, data });
+		return Promotion.fromPersistence(record);
 	}
 
 	async deletePromotion(id) {
-		try {
-			await this._prisma.promotion.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.promotion.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.promotion.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

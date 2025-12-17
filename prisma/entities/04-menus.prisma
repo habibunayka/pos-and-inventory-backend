@@ -1,6 +1,7 @@
 /// ========== MENUS ==========
 model Menu {
   id          Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId     Int?     @map("place_id")
   name        String
   categoryId  Int?     @map("category_id")
@@ -19,6 +20,7 @@ model Menu {
 
 model Category {
   id   Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name String @unique
 
   menus Menu[]
@@ -28,6 +30,7 @@ model Category {
 
 model MenuVariant {
   id     Int @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   menuId Int @map("menu_id")
   name   String
 
@@ -40,6 +43,7 @@ model MenuVariant {
 
 model MenuPrice {
   id        Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   menuId    Int      @map("menu_id")
   price     Decimal  @db.Decimal(12, 2)
   effectiveDate DateTime @map("effective_date") @db.Date
@@ -51,6 +55,7 @@ model MenuPrice {
 
 model MenuVariantItem {
   id             Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   menuVariantId  Int     @map("menu_variant_id")
   name           String
   additionalPrice Decimal @db.Decimal(12, 2) @default(0) @map("additional_price")

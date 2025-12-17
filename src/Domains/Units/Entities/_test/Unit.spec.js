@@ -22,5 +22,4 @@ describe("Unit", () => {
 			abbreviation: "abbreviation-value-3"
 		});
 	});
-
 });

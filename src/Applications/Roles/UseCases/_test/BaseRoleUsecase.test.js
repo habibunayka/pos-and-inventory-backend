@@ -33,9 +33,7 @@ describe("BaseRoleUsecase", () => {
 
 	test("_assertNameAvailable should require a non-empty name", async () => {
 		const usecase = new DummyUsecase({ roleService });
-		await expect(usecase._assertNameAvailable("   ")).rejects.toThrow(
-			new ValidationError("Role name is required")
-		);
+		await expect(usecase._assertNameAvailable("   ")).rejects.toThrow(new ValidationError("Role name is required"));
 	});
 
 	test("_assertNameAvailable should throw when existing different id", async () => {

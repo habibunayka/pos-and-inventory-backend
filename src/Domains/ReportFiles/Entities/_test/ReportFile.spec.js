@@ -32,5 +32,4 @@ describe("ReportFile", () => {
 			createdAt: "createdAt-value-8"
 		});
 	});
-
 });

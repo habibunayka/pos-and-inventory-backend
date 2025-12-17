@@ -9,12 +9,15 @@ export default class PrismaTableRepository extends TableRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.table.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.table.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Table.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.table.findUnique({ where: { id } });
+		const record = await this._prisma.table.findFirst({ where: { id, deletedAt: null } });
 		return Table.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaTableRepository extends TableRepository {
 	}
 
 	async updateTable({ id, tableData }) {
-		try {
-			const record = await this._prisma.table.update({ where: { id }, data: tableData });
-			return Table.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.table.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.table.update({ where: { id }, data: tableData });
+		return Table.fromPersistence(record);
 	}
 
 	async deleteTable(id) {
-		try {
-			await this._prisma.table.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.table.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.table.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

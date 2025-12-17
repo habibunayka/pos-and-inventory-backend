@@ -26,5 +26,4 @@ describe("DeliveryIntegration", () => {
 			settingsJson: "settingsJson-value-5"
 		});
 	});
-
 });

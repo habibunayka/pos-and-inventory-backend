@@ -1,17 +1,14 @@
 const CreateMenuVariantRequest = {
-	"type": "object",
-	"required": [
-		"menuId",
-		"name"
-	],
-	"properties": {
-		"menuId": {
-			"type": "integer",
-			"example": 1
+	type: "object",
+	required: ["menuId", "name"],
+	properties: {
+		menuId: {
+			type: "integer",
+			example: 1
 		},
-		"name": {
-			"type": "string",
-			"example": "Size"
+		name: {
+			type: "string",
+			example: "Size"
 		}
 	}
 };

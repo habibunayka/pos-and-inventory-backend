@@ -22,5 +22,4 @@ describe("MenuVariant", () => {
 			name: "name-value-3"
 		});
 	});
-
 });

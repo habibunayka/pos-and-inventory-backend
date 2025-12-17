@@ -4,7 +4,9 @@ import UserRepository from "../UserRepository.js";
 describe("UserRepository", () => {
 	it("throws for every unimplemented method", async () => {
 		const repository = new UserRepository();
-		const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(repository)).filter((name) => name !== "constructor");
+		const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(repository)).filter(
+			(name) => name !== "constructor"
+		);
 
 		for (const method of methods) {
 			// Passing an object works with both destructured and direct params

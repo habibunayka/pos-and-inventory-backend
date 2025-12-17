@@ -1,36 +1,34 @@
 const CreateMenuRequest = {
-	"type": "object",
-	"required": [
-		"name"
-	],
-	"properties": {
-		"placeId": {
-			"type": "integer",
-			"nullable": true,
-			"example": 1
+	type: "object",
+	required: ["name"],
+	properties: {
+		placeId: {
+			type: "integer",
+			nullable: true,
+			example: 1
 		},
-		"name": {
-			"type": "string",
-			"example": "Nasi Goreng"
+		name: {
+			type: "string",
+			example: "Nasi Goreng"
 		},
-		"categoryId": {
-			"type": "integer",
-			"nullable": true,
-			"example": 2
+		categoryId: {
+			type: "integer",
+			nullable: true,
+			example: 2
 		},
-		"description": {
-			"type": "string",
-			"nullable": true,
-			"example": "Menu favorit"
+		description: {
+			type: "string",
+			nullable: true,
+			example: "Menu favorit"
 		},
-		"sku": {
-			"type": "string",
-			"nullable": true,
-			"example": "MN-001"
+		sku: {
+			type: "string",
+			nullable: true,
+			example: "MN-001"
 		},
-		"isActive": {
-			"type": "boolean",
-			"example": true
+		isActive: {
+			type: "boolean",
+			example: true
 		}
 	}
 };

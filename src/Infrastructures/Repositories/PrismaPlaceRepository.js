@@ -13,14 +13,13 @@ export default class PrismaPlaceRepository extends PlaceRepository {
 
 	async findAll() {
 		return this._prisma.place.findMany({
+			where: { deletedAt: null },
 			orderBy: { id: "asc" }
 		});
 	}
 
 	async findById(id) {
-		return this._prisma.place.findUnique({
-			where: { id }
-		});
+		return this._prisma.place.findFirst({ where: { id, deletedAt: null } });
 	}
 
 	async createPlace({ placeData }) {
@@ -30,32 +29,18 @@ export default class PrismaPlaceRepository extends PlaceRepository {
 	}
 
 	async updatePlace({ id, placeData }) {
-		try {
-			return await this._prisma.place.update({
-				where: { id },
-				data: placeData
-			});
-		} catch (error) {
-			if (error?.code === "P2025") {
-				return null;
-			}
-
-			throw error;
-		}
+		const existing = await this._prisma.place.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		return this._prisma.place.update({
+			where: { id },
+			data: placeData
+		});
 	}
 
 	async deletePlace(id) {
-		try {
-			await this._prisma.place.delete({
-				where: { id }
-			});
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") {
-				return false;
-			}
-
-			throw error;
-		}
+		const existing = await this._prisma.place.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.place.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

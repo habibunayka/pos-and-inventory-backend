@@ -65,9 +65,9 @@ describe("UpdateUserUsecase", () => {
 		mockUserService.findRoleByName.mockResolvedValue({ id: 3, name: "manager" });
 		const usecase = new UpdateUserUsecase({ userService: mockUserService });
 
-		await expect(
-			usecase.execute(6, { roleName: "manager", email: "manager@example.com" })
-		).rejects.toThrow(new ValidationError("Password is required when moving a cashier to a non-cashier role"));
+		await expect(usecase.execute(6, { roleName: "manager", email: "manager@example.com" })).rejects.toThrow(
+			new ValidationError("Password is required when moving a cashier to a non-cashier role")
+		);
 	});
 
 	test("should throw when email already in use for non-cashier", async () => {
@@ -87,9 +87,9 @@ describe("UpdateUserUsecase", () => {
 		mockPlaceService.getPlace.mockResolvedValue({ id: 10 });
 		const usecase = new UpdateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
 
-		await expect(
-			usecase.execute(5, { roleName: "cashier", email: "cash@example.com" })
-		).rejects.toThrow(new ValidationError("Cashier accounts cannot have email or password"));
+		await expect(usecase.execute(5, { roleName: "cashier", email: "cash@example.com" })).rejects.toThrow(
+			new ValidationError("Cashier accounts cannot have email or password")
+		);
 	});
 
 	test("should require pin when switching to cashier role", async () => {
@@ -230,9 +230,9 @@ describe("UpdateUserUsecase", () => {
 		});
 		const usecase = new UpdateUserUsecase({ userService: mockUserService, placeService: mockPlaceService });
 
-		await expect(usecase.execute(5, { roleName: "manager", email: "old@example.com", password: "password1" })).rejects.toThrow(
-			new ValidationError("Place not found")
-		);
+		await expect(
+			usecase.execute(5, { roleName: "manager", email: "old@example.com", password: "password1" })
+		).rejects.toThrow(new ValidationError("Place not found"));
 	});
 
 	test("should rethrow unexpected update errors", async () => {

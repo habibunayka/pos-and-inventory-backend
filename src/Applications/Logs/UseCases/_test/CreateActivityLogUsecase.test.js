@@ -16,9 +16,7 @@ describe("CreateActivityLogUsecase", () => {
 	});
 
 	test("should throw when action missing", async () => {
-		await expect(usecase.execute({ action: "   " })).rejects.toThrow(
-			new ValidationError("action is required")
-		);
+		await expect(usecase.execute({ action: "   " })).rejects.toThrow(new ValidationError("action is required"));
 	});
 
 	test("should create activity log with normalized payload", async () => {

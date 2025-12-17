@@ -9,12 +9,15 @@ export default class PrismaKitchenOrderRepository extends KitchenOrderRepository
 	}
 
 	async findAll() {
-		const records = await this._prisma.kitchenOrder.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.kitchenOrder.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => KitchenOrder.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.kitchenOrder.findUnique({ where: { id } });
+		const record = await this._prisma.kitchenOrder.findFirst({ where: { id, deletedAt: null } });
 		return KitchenOrder.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaKitchenOrderRepository extends KitchenOrderRepository
 	}
 
 	async updateKitchenOrder({ id, data }) {
-		try {
-			const record = await this._prisma.kitchenOrder.update({ where: { id }, data });
-			return KitchenOrder.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.kitchenOrder.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.kitchenOrder.update({ where: { id }, data });
+		return KitchenOrder.fromPersistence(record);
 	}
 
 	async deleteKitchenOrder(id) {
-		try {
-			await this._prisma.kitchenOrder.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.kitchenOrder.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.kitchenOrder.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

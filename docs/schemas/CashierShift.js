@@ -1,63 +1,55 @@
 const CashierShift = {
-	"type": "object",
-	"required": [
-		"id",
-		"placeId",
-		"stationId",
-		"shiftId",
-		"cashierId",
-		"openedAt",
-		"status"
-	],
-	"properties": {
-		"id": {
-			"type": "integer",
-			"example": 1
+	type: "object",
+	required: ["id", "placeId", "stationId", "shiftId", "cashierId", "openedAt", "status"],
+	properties: {
+		id: {
+			type: "integer",
+			example: 1
 		},
-		"placeId": {
-			"type": "integer",
-			"example": 1
+		placeId: {
+			type: "integer",
+			example: 1
 		},
-		"stationId": {
-			"type": "integer",
-			"example": 2
+		stationId: {
+			type: "integer",
+			example: 2
 		},
-		"shiftId": {
-			"type": "integer",
-			"example": 1
+		shiftId: {
+			type: "integer",
+			example: 1
 		},
-		"cashierId": {
-			"type": "integer",
-			"example": 2
+		cashierId: {
+			type: "integer",
+			example: 2
 		},
-		"openedAt": {
-			"type": "string",
-			"format": "date-time"
+		openedAt: {
+			type: "string",
+			format: "date-time"
 		},
-		"closedAt": {
-			"type": "string",
-			"format": "date-time",
-			"nullable": true
+		closedAt: {
+			type: "string",
+			format: "date-time",
+			nullable: true
 		},
-		"openingBalance": {
-			"type": "number",
-			"example": 0
+		openingBalance: {
+			type: "number",
+			example: 0
 		},
-		"closingBalance": {
-			"type": "number",
-			"nullable": true
+		closingBalance: {
+			type: "number",
+			nullable: true
 		},
-		"systemBalance": {
-			"type": "number",
-			"nullable": true
+		systemBalance: {
+			type: "number",
+			nullable: true
 		},
-		"ipAddress": {
-			"type": "string",
-			"example": "127.0.0.1"
+		ipAddress: {
+			type: "string",
+			example: "127.0.0.1"
 		},
-		"status": {
-			"type": "string",
-			"example": "open"
+		status: {
+			type: "string",
+			example: "open"
 		}
 	}
 };

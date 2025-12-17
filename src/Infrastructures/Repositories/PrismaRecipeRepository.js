@@ -9,12 +9,15 @@ export default class PrismaRecipeRepository extends RecipeRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.recipe.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.recipe.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Recipe.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.recipe.findUnique({ where: { id } });
+		const record = await this._prisma.recipe.findFirst({ where: { id, deletedAt: null } });
 		return Recipe.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaRecipeRepository extends RecipeRepository {
 	}
 
 	async updateRecipe({ id, data }) {
-		try {
-			const record = await this._prisma.recipe.update({ where: { id }, data });
-			return Recipe.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.recipe.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.recipe.update({ where: { id }, data });
+		return Recipe.fromPersistence(record);
 	}
 
 	async deleteRecipe(id) {
-		try {
-			await this._prisma.recipe.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.recipe.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.recipe.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

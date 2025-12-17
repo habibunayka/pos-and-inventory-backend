@@ -104,9 +104,7 @@ describe("UpdateCashierShiftUsecase", () => {
 	test("should validate station/shift presence and balances/status", async () => {
 		cashierShiftService.get.mockResolvedValue(existing);
 		stationService.getStation.mockResolvedValue(null);
-		await expect(usecase.execute(5, { stationId: 9 })).rejects.toThrow(
-			new ValidationError("stationId not found")
-		);
+		await expect(usecase.execute(5, { stationId: 9 })).rejects.toThrow(new ValidationError("stationId not found"));
 
 		stationService.getStation.mockResolvedValue({ id: 2, placeId: 1 });
 		shiftService.getShift.mockResolvedValue(null);

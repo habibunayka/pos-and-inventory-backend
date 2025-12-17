@@ -1,19 +1,19 @@
 const UpdateTableRequest = {
-	"type": "object",
-	"minProperties": 1,
-	"properties": {
-		"placeId": {
-			"type": "integer",
-			"example": 2
+	type: "object",
+	minProperties: 1,
+	properties: {
+		placeId: {
+			type: "integer",
+			example: 2
 		},
-		"name": {
-			"type": "string",
-			"example": "T-02"
+		name: {
+			type: "string",
+			example: "T-02"
 		},
-		"status": {
-			"type": "string",
-			"nullable": true,
-			"example": "occupied"
+		status: {
+			type: "string",
+			nullable: true,
+			example: "occupied"
 		}
 	}
 };

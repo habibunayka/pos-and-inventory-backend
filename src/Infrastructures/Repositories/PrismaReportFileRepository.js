@@ -9,12 +9,15 @@ export default class PrismaReportFileRepository extends ReportFileRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.reportFile.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.reportFile.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => ReportFile.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.reportFile.findUnique({ where: { id } });
+		const record = await this._prisma.reportFile.findFirst({ where: { id, deletedAt: null } });
 		return ReportFile.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaReportFileRepository extends ReportFileRepository {
 	}
 
 	async updateReportFile({ id, data }) {
-		try {
-			const record = await this._prisma.reportFile.update({ where: { id }, data });
-			return ReportFile.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.reportFile.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.reportFile.update({ where: { id }, data });
+		return ReportFile.fromPersistence(record);
 	}
 
 	async deleteReportFile(id) {
-		try {
-			await this._prisma.reportFile.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.reportFile.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.reportFile.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

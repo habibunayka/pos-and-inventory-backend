@@ -13,9 +13,7 @@ describe("ListDeliveryIntegrationsUsecase", () => {
 	});
 
 	test("should throw when service is missing", () => {
-		expect(() => new ListDeliveryIntegrationsUsecase()).toThrow(
-			"DELIVERYINTEGRATION_USECASE.MISSING_SERVICE"
-		);
+		expect(() => new ListDeliveryIntegrationsUsecase()).toThrow("DELIVERYINTEGRATION_USECASE.MISSING_SERVICE");
 	});
 
 	test("should list delivery integrations", async () => {

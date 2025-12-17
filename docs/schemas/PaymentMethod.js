@@ -1,27 +1,23 @@
 const PaymentMethod = {
-	"type": "object",
-	"required": [
-		"id",
-		"name",
-		"isActive"
-	],
-	"properties": {
-		"id": {
-			"type": "integer",
-			"example": 1
+	type: "object",
+	required: ["id", "name", "isActive"],
+	properties: {
+		id: {
+			type: "integer",
+			example: 1
 		},
-		"name": {
-			"type": "string",
-			"example": "cash"
+		name: {
+			type: "string",
+			example: "cash"
 		},
-		"description": {
-			"type": "string",
-			"nullable": true,
-			"example": "Tunai"
+		description: {
+			type: "string",
+			nullable: true,
+			example: "Tunai"
 		},
-		"isActive": {
-			"type": "boolean",
-			"example": true
+		isActive: {
+			type: "boolean",
+			example: true
 		}
 	}
 };

@@ -9,12 +9,15 @@ export default class PrismaTransactionItemVariantRepository extends TransactionI
 	}
 
 	async findAll() {
-		const records = await this._prisma.transactionItemVariant.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.transactionItemVariant.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => TransactionItemVariant.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.transactionItemVariant.findUnique({ where: { id } });
+		const record = await this._prisma.transactionItemVariant.findFirst({ where: { id, deletedAt: null } });
 		return TransactionItemVariant.fromPersistence(record);
 	}
 
@@ -24,12 +27,9 @@ export default class PrismaTransactionItemVariantRepository extends TransactionI
 	}
 
 	async deleteVariant(id) {
-		try {
-			await this._prisma.transactionItemVariant.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.transactionItemVariant.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.transactionItemVariant.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

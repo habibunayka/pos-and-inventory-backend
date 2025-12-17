@@ -22,5 +22,4 @@ describe("Permission", () => {
 			description: "description-value-3"
 		});
 	});
-
 });

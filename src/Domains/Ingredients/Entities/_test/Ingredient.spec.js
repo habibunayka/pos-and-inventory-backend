@@ -22,5 +22,4 @@ describe("Ingredient", () => {
 			unitId: "unitId-value-3"
 		});
 	});
-
 });

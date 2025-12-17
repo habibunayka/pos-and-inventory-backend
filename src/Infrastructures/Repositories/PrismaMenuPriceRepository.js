@@ -9,12 +9,15 @@ export default class PrismaMenuPriceRepository extends MenuPriceRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.menuPrice.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.menuPrice.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => MenuPrice.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.menuPrice.findUnique({ where: { id } });
+		const record = await this._prisma.menuPrice.findFirst({ where: { id, deletedAt: null } });
 		return MenuPrice.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaMenuPriceRepository extends MenuPriceRepository {
 	}
 
 	async updateMenuPrice({ id, data }) {
-		try {
-			const record = await this._prisma.menuPrice.update({ where: { id }, data });
-			return MenuPrice.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.menuPrice.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.menuPrice.update({ where: { id }, data });
+		return MenuPrice.fromPersistence(record);
 	}
 
 	async deleteMenuPrice(id) {
-		try {
-			await this._prisma.menuPrice.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.menuPrice.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.menuPrice.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

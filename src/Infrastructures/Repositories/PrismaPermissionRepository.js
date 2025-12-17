@@ -11,18 +11,21 @@ export default class PrismaPermissionRepository extends PermissionRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.permission.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.permission.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Permission.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.permission.findUnique({ where: { id } });
+		const record = await this._prisma.permission.findFirst({ where: { id, deletedAt: null } });
 		return Permission.fromPersistence(record);
 	}
 
 	async findByName(name) {
 		if (!name) return null;
-		const record = await this._prisma.permission.findUnique({ where: { name } });
+		const record = await this._prisma.permission.findFirst({ where: { name, deletedAt: null } });
 		return Permission.fromPersistence(record);
 	}
 
@@ -32,26 +35,16 @@ export default class PrismaPermissionRepository extends PermissionRepository {
 	}
 
 	async updatePermission({ id, permissionData }) {
-		try {
-			const record = await this._prisma.permission.update({ where: { id }, data: permissionData });
-			return Permission.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") {
-				return null;
-			}
-			throw error;
-		}
+		const existing = await this._prisma.permission.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.permission.update({ where: { id }, data: permissionData });
+		return Permission.fromPersistence(record);
 	}
 
 	async deletePermission(id) {
-		try {
-			await this._prisma.permission.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") {
-				return false;
-			}
-			throw error;
-		}
+		const existing = await this._prisma.permission.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.permission.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

@@ -24,5 +24,4 @@ describe("PromotionRule", () => {
 			value: "value-value-4"
 		});
 	});
-
 });

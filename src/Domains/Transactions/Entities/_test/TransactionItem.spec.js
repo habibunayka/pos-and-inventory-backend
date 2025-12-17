@@ -28,5 +28,4 @@ describe("TransactionItem", () => {
 			discount: "discount-value-6"
 		});
 	});
-
 });

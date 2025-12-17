@@ -24,5 +24,4 @@ describe("IngredientPackage", () => {
 			qty: "qty-value-4"
 		});
 	});
-
 });

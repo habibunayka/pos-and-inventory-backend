@@ -9,12 +9,15 @@ export default class PrismaIngredientPackageRepository extends IngredientPackage
 	}
 
 	async findAll() {
-		const records = await this._prisma.ingredientPackage.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.ingredientPackage.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => IngredientPackage.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.ingredientPackage.findUnique({ where: { id } });
+		const record = await this._prisma.ingredientPackage.findFirst({ where: { id, deletedAt: null } });
 		return IngredientPackage.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaIngredientPackageRepository extends IngredientPackage
 	}
 
 	async updateIngredientPackage({ id, data }) {
-		try {
-			const record = await this._prisma.ingredientPackage.update({ where: { id }, data });
-			return IngredientPackage.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.ingredientPackage.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.ingredientPackage.update({ where: { id }, data });
+		return IngredientPackage.fromPersistence(record);
 	}
 
 	async deleteIngredientPackage(id) {
-		try {
-			await this._prisma.ingredientPackage.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.ingredientPackage.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.ingredientPackage.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

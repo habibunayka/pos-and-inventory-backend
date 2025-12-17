@@ -27,7 +27,15 @@ describe("UserPresenter", () => {
 
 	test("should present collection and handle null role", () => {
 		const result = presenter.presentCollection([
-			{ id: 2, name: "NoRole", email: null, status: "inactive", role: null, placeId: null, authenticationMethod: "pin" }
+			{
+				id: 2,
+				name: "NoRole",
+				email: null,
+				status: "inactive",
+				role: null,
+				placeId: null,
+				authenticationMethod: "pin"
+			}
 		]);
 
 		expect(result).toEqual([

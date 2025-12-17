@@ -21,7 +21,8 @@ export default function registerStationContainer({ container, overrides = {}, pr
 		placeService = new PlaceService({ placeRepository });
 	}
 
-	const listStationsUsecase = overrides.listStationsUsecase ?? new ListStationsUsecase({ stationService, placeService });
+	const listStationsUsecase =
+		overrides.listStationsUsecase ?? new ListStationsUsecase({ stationService, placeService });
 	const getStationUsecase = overrides.getStationUsecase ?? new GetStationUsecase({ stationService, placeService });
 	const createStationUsecase =
 		overrides.createStationUsecase ?? new CreateStationUsecase({ stationService, placeService });

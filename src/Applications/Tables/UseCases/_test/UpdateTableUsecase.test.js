@@ -28,15 +28,11 @@ describe("UpdateTableUsecase", () => {
 	});
 
 	test("should throw when name empty", async () => {
-		await expect(usecase.execute(1, { name: "  " })).rejects.toThrow(
-			new ValidationError("name cannot be empty")
-		);
+		await expect(usecase.execute(1, { name: "  " })).rejects.toThrow(new ValidationError("name cannot be empty"));
 	});
 
 	test("should throw when no fields provided", async () => {
-		await expect(usecase.execute(1, {})).rejects.toThrow(
-			new ValidationError("No updatable fields provided")
-		);
+		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No updatable fields provided"));
 	});
 
 	test("should update table with validated placeId", async () => {

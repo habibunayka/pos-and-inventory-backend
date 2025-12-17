@@ -1,6 +1,7 @@
 /// ========== GOODS RECEIPT ==========
 model GoodsReceipt {
   id             Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   purchaseOrderId Int     @map("purchase_order_id")
   receivedBy     Int?     @map("received_by")
   receivedAt     DateTime @default(now()) @map("received_at")
@@ -15,6 +16,7 @@ model GoodsReceipt {
 
 model GoodsReceiptItem {
   id                 Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   goodsReceiptId     Int     @map("goods_receipt_id")
   purchaseOrderItemId Int    @map("purchase_order_item_id")
   unitReceived       Decimal @db.Decimal(12, 2) @map("unit_received")

@@ -28,5 +28,4 @@ describe("Supplier", () => {
 			address: "address-value-6"
 		});
 	});
-
 });

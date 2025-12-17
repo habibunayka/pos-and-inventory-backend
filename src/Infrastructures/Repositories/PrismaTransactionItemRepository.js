@@ -9,12 +9,15 @@ export default class PrismaTransactionItemRepository extends TransactionItemRepo
 	}
 
 	async findAll() {
-		const records = await this._prisma.transactionItem.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.transactionItem.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => TransactionItem.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.transactionItem.findUnique({ where: { id } });
+		const record = await this._prisma.transactionItem.findFirst({ where: { id, deletedAt: null } });
 		return TransactionItem.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaTransactionItemRepository extends TransactionItemRepo
 	}
 
 	async updateItem({ id, data }) {
-		try {
-			const record = await this._prisma.transactionItem.update({ where: { id }, data });
-			return TransactionItem.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.transactionItem.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.transactionItem.update({ where: { id }, data });
+		return TransactionItem.fromPersistence(record);
 	}
 
 	async deleteItem(id) {
-		try {
-			await this._prisma.transactionItem.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.transactionItem.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.transactionItem.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

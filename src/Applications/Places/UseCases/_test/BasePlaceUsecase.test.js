@@ -21,7 +21,14 @@ describe("BasePlaceUsecase", () => {
 	test("_normalizePayload should validate shapes", () => {
 		const usecase = new DummyUsecase({ placeService: {} });
 		expect(() =>
-			usecase._normalizePayload({ name: "A", address: "  ", phone: null, logoPath: null, type: null, isActive: true })
+			usecase._normalizePayload({
+				name: "A",
+				address: "  ",
+				phone: null,
+				logoPath: null,
+				type: null,
+				isActive: true
+			})
 		).not.toThrow();
 	});
 

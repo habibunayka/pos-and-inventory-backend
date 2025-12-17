@@ -24,5 +24,4 @@ describe("PaymentMethod", () => {
 			isActive: "isActive-value-4"
 		});
 	});
-
 });

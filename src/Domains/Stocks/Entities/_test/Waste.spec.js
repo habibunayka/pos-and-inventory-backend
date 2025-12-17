@@ -28,5 +28,4 @@ describe("Waste", () => {
 			createdAt: "createdAt-value-6"
 		});
 	});
-
 });

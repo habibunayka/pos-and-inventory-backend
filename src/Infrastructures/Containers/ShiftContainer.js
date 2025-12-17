@@ -14,7 +14,8 @@ export default function registerShiftContainer({ container, overrides = {}, pris
 	const shiftRepository = overrides.shiftRepository ?? new PrismaShiftRepository({ prisma });
 	const shiftService = overrides.shiftService ?? new ShiftService({ shiftRepository });
 
-	let placeService = overrides.placeService ?? (container?.has("placeService") ? container.get("placeService") : null);
+	let placeService =
+		overrides.placeService ?? (container?.has("placeService") ? container.get("placeService") : null);
 	if (!placeService && prisma) {
 		const placeRepository = new PrismaPlaceRepository({ prisma });
 		placeService = new PlaceService({ placeRepository });

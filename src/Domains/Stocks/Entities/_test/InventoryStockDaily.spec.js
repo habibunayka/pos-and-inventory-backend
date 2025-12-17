@@ -32,5 +32,4 @@ describe("InventoryStockDaily", () => {
 			createdAt: "createdAt-value-8"
 		});
 	});
-
 });

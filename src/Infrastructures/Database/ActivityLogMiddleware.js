@@ -106,6 +106,32 @@ function extractEntityId(source) {
 	return null;
 }
 
+function resolvesToSoftDelete(args) {
+	if (!args || typeof args !== "object") {
+		return false;
+	}
+
+	const data = args.data;
+	if (!data || typeof data !== "object") {
+		return false;
+	}
+
+	if (!Object.prototype.hasOwnProperty.call(data, "deletedAt")) {
+		return false;
+	}
+
+	const deletedAt = data.deletedAt;
+	if (deletedAt === null || typeof deletedAt === "undefined") {
+		return false;
+	}
+
+	if (typeof deletedAt === "object" && deletedAt !== null && Object.prototype.hasOwnProperty.call(deletedAt, "set")) {
+		return deletedAt.set !== null && typeof deletedAt.set !== "undefined";
+	}
+
+	return true;
+}
+
 async function fetchSnapshot({ prisma, tableName, entityId, DecimalClass }) {
 	if (!tableName || !entityId) {
 		return null;
@@ -163,8 +189,9 @@ async function handleActivityLogging({ prisma, params, next, tableNameMap, Decim
 
 	const modelName = params.model;
 	const action = params.action?.toLowerCase();
+	const normalizedAction = action === "update" && resolvesToSoftDelete(params.args) ? "delete" : action;
 
-	if (!modelName || !CRUD_ACTIONS.has(action) || EXCLUDED_MODELS.has(modelName)) {
+	if (!modelName || !CRUD_ACTIONS.has(normalizedAction) || EXCLUDED_MODELS.has(modelName)) {
 		return next(params);
 	}
 
@@ -172,7 +199,7 @@ async function handleActivityLogging({ prisma, params, next, tableNameMap, Decim
 	let entityId = extractEntityId(params.args);
 	let beforeSnapshot = null;
 
-	if ((action === "update" || action === "delete") && entityId) {
+	if ((normalizedAction === "update" || normalizedAction === "delete") && entityId) {
 		beforeSnapshot = await fetchSnapshot({ prisma, tableName, entityId, DecimalClass });
 	}
 
@@ -186,13 +213,13 @@ async function handleActivityLogging({ prisma, params, next, tableNameMap, Decim
 		return result;
 	}
 
-	const afterSnapshot = action === "delete" ? null : sanitizeRecord(result, DecimalClass);
+	const afterSnapshot = normalizedAction === "delete" ? null : sanitizeRecord(result, DecimalClass);
 	const payload = buildPayload({
-		action,
+		action: normalizedAction,
 		tableName,
 		entityId,
-		before: action === "create" ? null : beforeSnapshot,
-		after: action === "delete" ? null : afterSnapshot,
+		before: normalizedAction === "create" ? null : beforeSnapshot,
+		after: normalizedAction === "delete" ? null : afterSnapshot,
 		context
 	});
 

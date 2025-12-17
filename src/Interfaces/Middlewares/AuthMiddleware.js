@@ -112,6 +112,7 @@ export function createRequireAuthMiddleware({ userService, tokenVerifier = verif
 				? domainUser.role.permissions.map((permission) => normalizePermissionName(permission)).filter(Boolean)
 				: [];
 
+			// prettier-ignore
 			req.user = {
 				id: domainUser.id,
 				name: domainUser.name,

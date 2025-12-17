@@ -1,14 +1,14 @@
 const UpdateMenuVariantRequest = {
-	"type": "object",
-	"minProperties": 1,
-	"properties": {
-		"menuId": {
-			"type": "integer",
-			"example": 1
+	type: "object",
+	minProperties: 1,
+	properties: {
+		menuId: {
+			type: "integer",
+			example: 1
 		},
-		"name": {
-			"type": "string",
-			"example": "Tingkat Pedas"
+		name: {
+			type: "string",
+			example: "Tingkat Pedas"
 		}
 	}
 };

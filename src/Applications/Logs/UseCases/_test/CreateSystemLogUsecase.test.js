@@ -16,9 +16,7 @@ describe("CreateSystemLogUsecase", () => {
 	});
 
 	test("should throw when message missing", async () => {
-		await expect(usecase.execute({ message: "   " })).rejects.toThrow(
-			new ValidationError("message is required")
-		);
+		await expect(usecase.execute({ message: "   " })).rejects.toThrow(new ValidationError("message is required"));
 	});
 
 	test("should create system log with normalized payload", async () => {

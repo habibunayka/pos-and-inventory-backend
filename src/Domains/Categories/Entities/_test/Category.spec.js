@@ -20,5 +20,4 @@ describe("Category", () => {
 			name: "name-value-2"
 		});
 	});
-
 });

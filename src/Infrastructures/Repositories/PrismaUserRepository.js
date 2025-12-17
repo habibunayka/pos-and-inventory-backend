@@ -2,11 +2,19 @@ import UserRepository from "../../Domains/Users/Repositories/UserRepository.js";
 
 const userInclude = {
 	userRoles: {
+		where: {
+			deletedAt: null,
+			role: { deletedAt: null }
+		},
 		orderBy: { id: "asc" },
 		include: {
 			role: {
 				include: {
 					rolePermissions: {
+						where: {
+							deletedAt: null,
+							permission: { deletedAt: null }
+						},
 						include: { permission: true }
 					}
 				}
@@ -28,23 +36,25 @@ export default class PrismaUserRepository extends UserRepository {
 
 	async findAll() {
 		return this._prisma.user.findMany({
+			where: { deletedAt: null },
 			include: userInclude,
 			orderBy: { id: "asc" }
 		});
 	}
 
 	async findById(id) {
-		return this._prisma.user.findUnique({
-			where: { id },
-			include: userInclude
-		});
+		return this._prisma.user.findFirst({ where: { id, deletedAt: null }, include: userInclude });
 	}
 
 	async findRoleByName(roleName) {
-		return this._prisma.role.findUnique({
-			where: { name: roleName.toLowerCase() },
+		return this._prisma.role.findFirst({
+			where: { name: roleName.toLowerCase(), deletedAt: null },
 			include: {
 				rolePermissions: {
+					where: {
+						deletedAt: null,
+						permission: { deletedAt: null }
+					},
 					include: { permission: true }
 				}
 			}
@@ -56,10 +66,7 @@ export default class PrismaUserRepository extends UserRepository {
 			return null;
 		}
 
-		return this._prisma.user.findUnique({
-			where: { email },
-			include: userInclude
-		});
+		return this._prisma.user.findFirst({ where: { email, deletedAt: null }, include: userInclude });
 	}
 
 	async findByName(name) {
@@ -69,6 +76,7 @@ export default class PrismaUserRepository extends UserRepository {
 
 		return this._prisma.user.findFirst({
 			where: {
+				deletedAt: null,
 				name: {
 					equals: name,
 					mode: "insensitive"
@@ -90,22 +98,24 @@ export default class PrismaUserRepository extends UserRepository {
 				}
 			});
 
-			return tx.user.findUnique({
-				where: { id: createdUser.id },
-				include: userInclude
-			});
+			return tx.user.findFirst({ where: { id: createdUser.id, deletedAt: null }, include: userInclude });
 		});
 	}
 
 	async updateUser({ id, userData, roleId, placeId }) {
 		return this._prisma.$transaction(async (tx) => {
+			const existing = await tx.user.findFirst({ where: { id, deletedAt: null } });
+			if (!existing) {
+				return null;
+			}
+
 			const savedUser = await tx.user.update({
 				where: { id },
 				data: userData
 			});
 
 			const assignment = await tx.userRole.findFirst({
-				where: { userId: savedUser.id }
+				where: { userId: savedUser.id, deletedAt: null }
 			});
 
 			if (assignment) {
@@ -126,10 +136,7 @@ export default class PrismaUserRepository extends UserRepository {
 				});
 			}
 
-			return tx.user.findUnique({
-				where: { id: savedUser.id },
-				include: userInclude
-			});
+			return tx.user.findFirst({ where: { id: savedUser.id, deletedAt: null }, include: userInclude });
 		});
 	}
 }

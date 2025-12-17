@@ -19,9 +19,7 @@ describe("BaseDeliveryIntegrationUsecase", () => {
 		const usecase = new DummyUsecase({ deliveryIntegrationService: {} });
 
 		expect(() => usecase._toInt("abc")).toThrow(new ValidationError("id must be a positive integer"));
-		expect(() => usecase._toInt(0, "placeId")).toThrow(
-			new ValidationError("placeId must be a positive integer")
-		);
+		expect(() => usecase._toInt(0, "placeId")).toThrow(new ValidationError("placeId must be a positive integer"));
 		expect(() => usecase._toInt(-1)).toThrow(new ValidationError("id must be a positive integer"));
 	});
 });

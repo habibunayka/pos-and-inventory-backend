@@ -30,5 +30,4 @@ describe("Shift", () => {
 			isActive: "isActive-value-7"
 		});
 	});
-
 });

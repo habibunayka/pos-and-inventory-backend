@@ -11,7 +11,9 @@ describe("ListTransactionItemVariantsUsecase", () => {
 	});
 
 	test("should throw when service missing", () => {
-		expect(() => new ListTransactionItemVariantsUsecase()).toThrow("LIST_TRANSACTION_ITEM_VARIANTS.MISSING_SERVICE");
+		expect(() => new ListTransactionItemVariantsUsecase()).toThrow(
+			"LIST_TRANSACTION_ITEM_VARIANTS.MISSING_SERVICE"
+		);
 	});
 
 	test("should list transaction item variants", async () => {
