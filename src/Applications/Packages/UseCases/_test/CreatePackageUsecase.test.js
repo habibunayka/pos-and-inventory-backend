@@ -20,9 +20,7 @@ describe("CreatePackageUsecase", () => {
 	});
 
 	test("should throw when name is empty", async () => {
-		await expect(usecase.execute({ name: "   " })).rejects.toThrow(
-			new ValidationError("Package name is required")
-		);
+		await expect(usecase.execute({ name: "   " })).rejects.toThrow(new ValidationError("Package name is required"));
 	});
 
 	test("should throw when package already exists", async () => {

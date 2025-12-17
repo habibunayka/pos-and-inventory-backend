@@ -16,9 +16,7 @@ describe("BaseUnitUsecase", () => {
 
 	test("_assertNameAvailable should throw when name missing", async () => {
 		const usecase = new DummyUsecase({ unitService: { getUnitByName: jest.fn() } });
-		await expect(usecase._assertNameAvailable("  ")).rejects.toThrow(
-			new ValidationError("Unit name is required")
-		);
+		await expect(usecase._assertNameAvailable("  ")).rejects.toThrow(new ValidationError("Unit name is required"));
 	});
 
 	test("_assertNameAvailable should throw when name exists", async () => {

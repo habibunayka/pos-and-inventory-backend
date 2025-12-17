@@ -26,5 +26,4 @@ describe("Promotion", () => {
 			endAt: "endAt-value-5"
 		});
 	});
-
 });

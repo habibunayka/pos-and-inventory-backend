@@ -10,7 +10,7 @@ export default class LoginUsecase {
 		userService,
 		tokenSigner = defaultSignToken,
 		tokenExpiresIn = process.env.JWT_EXPIRES_IN ?? process.env.JWT_EXPIRATION ?? "1h",
-		verifySecretFn = verifySecret 
+		verifySecretFn = verifySecret
 	} = {}) {
 		if (!userService) {
 			throw new Error("LOGIN_USECASE.MISSING_USER_SERVICE");

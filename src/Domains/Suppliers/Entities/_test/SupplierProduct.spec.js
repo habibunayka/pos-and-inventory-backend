@@ -32,5 +32,4 @@ describe("SupplierProduct", () => {
 			isActive: "isActive-value-8"
 		});
 	});
-
 });

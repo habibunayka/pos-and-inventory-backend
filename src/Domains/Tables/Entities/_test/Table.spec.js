@@ -24,5 +24,4 @@ describe("Table", () => {
 			status: "status-value-4"
 		});
 	});
-
 });

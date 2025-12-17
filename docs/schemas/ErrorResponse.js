@@ -1,16 +1,14 @@
 const ErrorResponse = {
-	"type": "object",
-	"required": [
-		"message"
-	],
-	"properties": {
-		"message": {
-			"type": "string",
-			"example": "Validation error"
+	type: "object",
+	required: ["message"],
+	properties: {
+		message: {
+			type: "string",
+			example: "Validation error"
 		},
-		"details": {
-			"nullable": true,
-			"description": "Detail tambahan terkait kesalahan (jika ada)"
+		details: {
+			nullable: true,
+			description: "Detail tambahan terkait kesalahan (jika ada)"
 		}
 	}
 };

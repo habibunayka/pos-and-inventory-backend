@@ -24,5 +24,4 @@ describe("MenuPrice", () => {
 			effectiveDate: "effectiveDate-value-4"
 		});
 	});
-
 });

@@ -1,7 +1,7 @@
 const defaultServers = [
 	{
-		"url": "http://localhost:3000",
-		"description": "POS Backend server"
+		url: "http://localhost:3000",
+		description: "POS Backend server"
 	}
 ];
 

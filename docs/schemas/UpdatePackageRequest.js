@@ -1,15 +1,15 @@
 const UpdatePackageRequest = {
-	"type": "object",
-	"minProperties": 1,
-	"properties": {
-		"name": {
-			"type": "string",
-			"example": "pack"
+	type: "object",
+	minProperties: 1,
+	properties: {
+		name: {
+			type: "string",
+			example: "pack"
 		},
-		"description": {
-			"type": "string",
-			"nullable": true,
-			"example": "Isi 1kg"
+		description: {
+			type: "string",
+			nullable: true,
+			example: "Isi 1kg"
 		}
 	}
 };

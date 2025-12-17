@@ -28,5 +28,4 @@ describe("KitchenOrder", () => {
 			note: "note-value-6"
 		});
 	});
-
 });

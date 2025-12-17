@@ -1,27 +1,22 @@
 const CreatePlaceStockRequest = {
-	"type": "object",
-	"required": [
-		"placeId",
-		"ingredientId",
-		"qty",
-		"unitId"
-	],
-	"properties": {
-		"placeId": {
-			"type": "integer",
-			"example": 1
+	type: "object",
+	required: ["placeId", "ingredientId", "qty", "unitId"],
+	properties: {
+		placeId: {
+			type: "integer",
+			example: 1
 		},
-		"ingredientId": {
-			"type": "integer",
-			"example": 2
+		ingredientId: {
+			type: "integer",
+			example: 2
 		},
-		"qty": {
-			"type": "number",
-			"example": 100
+		qty: {
+			type: "number",
+			example: 100
 		},
-		"unitId": {
-			"type": "integer",
-			"example": 1
+		unitId: {
+			type: "integer",
+			example: 1
 		}
 	}
 };

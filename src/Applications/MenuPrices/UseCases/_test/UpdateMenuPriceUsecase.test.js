@@ -32,16 +32,18 @@ describe("UpdateMenuPriceUsecase", () => {
 	test("should throw when record not found", async () => {
 		menuPriceService.updateMenuPrice.mockResolvedValue(null);
 
-		await expect(usecase.execute(1, { price: 10 })).rejects.toThrow(
-			new ValidationError("Menu price not found")
-		);
+		await expect(usecase.execute(1, { price: 10 })).rejects.toThrow(new ValidationError("Menu price not found"));
 	});
 
 	test("should update menu price with normalized data", async () => {
 		const updated = { id: 2, price: 150 };
 		menuPriceService.updateMenuPrice.mockResolvedValue(updated);
 
-		const result = await usecase.execute("2", { menuId: "3", price: "150", effectiveDate: "2023-01-01T00:00:00.000Z" });
+		const result = await usecase.execute("2", {
+			menuId: "3",
+			price: "150",
+			effectiveDate: "2023-01-01T00:00:00.000Z"
+		});
 
 		expect(menuPriceService.updateMenuPrice).toHaveBeenCalledWith({
 			id: 2,

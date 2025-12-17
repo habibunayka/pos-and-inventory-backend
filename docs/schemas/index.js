@@ -211,7 +211,7 @@ const schemas = {
 	IngredientPackage,
 	Supplier,
 	SupplierProduct,
-	Permission,
+	Permission
 };
 
 export default schemas;

@@ -28,5 +28,4 @@ describe("Menu", () => {
 			isActive: "isActive-value-6"
 		});
 	});
-
 });

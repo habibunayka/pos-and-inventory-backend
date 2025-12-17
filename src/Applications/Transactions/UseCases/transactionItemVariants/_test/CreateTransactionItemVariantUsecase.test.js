@@ -51,6 +51,8 @@ describe("CreateTransactionItemVariantUsecase", () => {
 		await usecase.execute({ transactionItemId: 1, menuVariantId: 2 });
 		expect(mockService.createVariant).toHaveBeenCalledWith({ transactionItemId: 1, menuVariantId: 2 });
 
-		await expect(usecase.execute()).rejects.toThrow(new ValidationError("transactionItemId must be a positive integer"));
+		await expect(usecase.execute()).rejects.toThrow(
+			new ValidationError("transactionItemId must be a positive integer")
+		);
 	});
 });

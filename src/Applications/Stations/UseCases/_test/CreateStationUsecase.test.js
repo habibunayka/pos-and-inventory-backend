@@ -83,7 +83,10 @@ describe("CreateStationUsecase", () => {
 			new ValidationError("placeId not found")
 		);
 
-		const noValidation = new CreateStationUsecase({ stationService, placeService: { supportsPlaceValidation: false } });
+		const noValidation = new CreateStationUsecase({
+			stationService,
+			placeService: { supportsPlaceValidation: false }
+		});
 		await noValidation.execute({ placeId: 3, name: "X" });
 		expect(stationService.createStation).toHaveBeenLastCalledWith({ placeId: 3, name: "X", description: null });
 	});

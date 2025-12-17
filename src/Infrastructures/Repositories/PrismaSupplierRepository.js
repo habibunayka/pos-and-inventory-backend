@@ -9,12 +9,15 @@ export default class PrismaSupplierRepository extends SupplierRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.supplier.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.supplier.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Supplier.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.supplier.findUnique({ where: { id } });
+		const record = await this._prisma.supplier.findFirst({ where: { id, deletedAt: null } });
 		return Supplier.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaSupplierRepository extends SupplierRepository {
 	}
 
 	async updateSupplier({ id, data }) {
-		try {
-			const record = await this._prisma.supplier.update({ where: { id }, data });
-			return Supplier.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.supplier.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.supplier.update({ where: { id }, data });
+		return Supplier.fromPersistence(record);
 	}
 
 	async deleteSupplier(id) {
-		try {
-			await this._prisma.supplier.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.supplier.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.supplier.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

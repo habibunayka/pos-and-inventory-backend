@@ -9,12 +9,15 @@ export default class PrismaDeliveryIntegrationRepository extends DeliveryIntegra
 	}
 
 	async findAll() {
-		const records = await this._prisma.deliveryIntegration.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.deliveryIntegration.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => DeliveryIntegration.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.deliveryIntegration.findUnique({ where: { id } });
+		const record = await this._prisma.deliveryIntegration.findFirst({ where: { id, deletedAt: null } });
 		return DeliveryIntegration.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaDeliveryIntegrationRepository extends DeliveryIntegra
 	}
 
 	async updateDeliveryIntegration({ id, data }) {
-		try {
-			const record = await this._prisma.deliveryIntegration.update({ where: { id }, data });
-			return DeliveryIntegration.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.deliveryIntegration.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.deliveryIntegration.update({ where: { id }, data });
+		return DeliveryIntegration.fromPersistence(record);
 	}
 
 	async deleteDeliveryIntegration(id) {
-		try {
-			await this._prisma.deliveryIntegration.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.deliveryIntegration.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.deliveryIntegration.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

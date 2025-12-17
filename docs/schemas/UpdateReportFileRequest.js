@@ -1,27 +1,27 @@
 const UpdateReportFileRequest = {
-	"type": "object",
-	"minProperties": 1,
-	"properties": {
-		"reportType": {
-			"type": "string"
+	type: "object",
+	minProperties: 1,
+	properties: {
+		reportType: {
+			type: "string"
 		},
-		"reportScope": {
-			"type": "string"
+		reportScope: {
+			type: "string"
 		},
-		"reportDate": {
-			"type": "string",
-			"format": "date-time",
-			"nullable": true
+		reportDate: {
+			type: "string",
+			format: "date-time",
+			nullable: true
 		},
-		"placeId": {
-			"type": "integer",
-			"nullable": true
+		placeId: {
+			type: "integer",
+			nullable: true
 		},
-		"fileName": {
-			"type": "string"
+		fileName: {
+			type: "string"
 		},
-		"filePath": {
-			"type": "string"
+		filePath: {
+			type: "string"
 		}
 	}
 };

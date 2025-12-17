@@ -15,7 +15,12 @@ describe("UpdateRoleUsecase", () => {
 			findPermissionsByNames: jest.fn(),
 			updateRole: jest.fn()
 		};
-		existing = { id: 1, name: "admin", description: "desc", rolePermissions: [{ permission: { id: 10, name: "read" } }] };
+		existing = {
+			id: 1,
+			name: "admin",
+			description: "desc",
+			rolePermissions: [{ permission: { id: 10, name: "read" } }]
+		};
 		roleService.getRoleById.mockResolvedValue(existing);
 		usecase = new UpdateRoleUsecase({ roleService });
 	});

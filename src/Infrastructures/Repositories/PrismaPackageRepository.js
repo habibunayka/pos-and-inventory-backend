@@ -9,18 +9,21 @@ export default class PrismaPackageRepository extends PackageRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.package.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.package.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Package.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.package.findUnique({ where: { id } });
+		const record = await this._prisma.package.findFirst({ where: { id, deletedAt: null } });
 		return Package.fromPersistence(record);
 	}
 
 	async findByName(name) {
 		if (!name) return null;
-		const record = await this._prisma.package.findUnique({ where: { name } });
+		const record = await this._prisma.package.findFirst({ where: { name, deletedAt: null } });
 		return Package.fromPersistence(record);
 	}
 
@@ -30,22 +33,16 @@ export default class PrismaPackageRepository extends PackageRepository {
 	}
 
 	async updatePackage({ id, data }) {
-		try {
-			const record = await this._prisma.package.update({ where: { id }, data });
-			return Package.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.package.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.package.update({ where: { id }, data });
+		return Package.fromPersistence(record);
 	}
 
 	async deletePackage(id) {
-		try {
-			await this._prisma.package.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.package.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.package.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

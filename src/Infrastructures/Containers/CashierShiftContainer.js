@@ -34,7 +34,8 @@ export default function registerCashierShiftContainer({ container, overrides = {
 		stationService = new StationService({ stationRepository });
 	}
 
-	let shiftService = overrides.shiftService ?? (container?.has("shiftService") ? container.get("shiftService") : null);
+	let shiftService =
+		overrides.shiftService ?? (container?.has("shiftService") ? container.get("shiftService") : null);
 	if (!shiftService && prisma) {
 		const shiftRepository = new PrismaShiftRepository({ prisma });
 		shiftService = new ShiftService({ shiftRepository });

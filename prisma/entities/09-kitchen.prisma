@@ -1,6 +1,7 @@
 /// ========== KITCHEN ==========
 model KitchenOrder {
   id                Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   transactionItemId Int      @map("transaction_item_id")
   status            String   @default("waiting")
   startedAt         DateTime? @map("started_at")

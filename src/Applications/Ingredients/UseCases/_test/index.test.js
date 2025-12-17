@@ -19,10 +19,18 @@ describe("Ingredients Usecases index exports", () => {
 
 describe("IngredientPackages index exports", () => {
 	test("should export ingredient package usecases", () => {
-		expect(packagesExports.ListIngredientPackagesUsecase).toBe(ingredientPackagesIndex.ListIngredientPackagesUsecase);
+		expect(packagesExports.ListIngredientPackagesUsecase).toBe(
+			ingredientPackagesIndex.ListIngredientPackagesUsecase
+		);
 		expect(packagesExports.GetIngredientPackageUsecase).toBe(ingredientPackagesIndex.GetIngredientPackageUsecase);
-		expect(packagesExports.CreateIngredientPackageUsecase).toBe(ingredientPackagesIndex.CreateIngredientPackageUsecase);
-		expect(packagesExports.UpdateIngredientPackageUsecase).toBe(ingredientPackagesIndex.UpdateIngredientPackageUsecase);
-		expect(packagesExports.DeleteIngredientPackageUsecase).toBe(ingredientPackagesIndex.DeleteIngredientPackageUsecase);
+		expect(packagesExports.CreateIngredientPackageUsecase).toBe(
+			ingredientPackagesIndex.CreateIngredientPackageUsecase
+		);
+		expect(packagesExports.UpdateIngredientPackageUsecase).toBe(
+			ingredientPackagesIndex.UpdateIngredientPackageUsecase
+		);
+		expect(packagesExports.DeleteIngredientPackageUsecase).toBe(
+			ingredientPackagesIndex.DeleteIngredientPackageUsecase
+		);
 	});
 });

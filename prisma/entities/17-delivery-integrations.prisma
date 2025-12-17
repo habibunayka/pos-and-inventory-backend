@@ -1,6 +1,7 @@
 /// ========== DELIVERY INTEGRATIONS ==========
 model DeliveryIntegration {
   id           Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId      Int    @map("place_id")
   platformName String @map("platform_name")
   apiKey       String? @map("api_key")

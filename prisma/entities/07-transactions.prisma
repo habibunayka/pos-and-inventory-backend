@@ -1,6 +1,7 @@
 /// ========== TRANSACTIONS ==========
 model Transaction {
   id              Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   cashierId       Int      @map("cashier_id")
   placeId         Int?     @map("place_id")
   tableId         Int?     @map("table_id")
@@ -23,6 +24,7 @@ model Transaction {
 
 model TransactionItem {
   id            Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   transactionId Int     @map("transaction_id")
   menuId        Int     @map("menu_id")
   qty           Int
@@ -40,6 +42,7 @@ model TransactionItem {
 
 model TransactionItemVariant {
   id                Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   transactionItemId Int     @map("transaction_item_id")
   menuVariantId     Int     @map("menu_variant_id")
   extraPrice        Decimal @db.Decimal(12, 2) @default(0) @map("extra_price")

@@ -14,9 +14,7 @@ describe("CreateDeliveryIntegrationUsecase", () => {
 	});
 
 	test("should throw when service is missing", () => {
-		expect(() => new CreateDeliveryIntegrationUsecase()).toThrow(
-			"DELIVERYINTEGRATION_USECASE.MISSING_SERVICE"
-		);
+		expect(() => new CreateDeliveryIntegrationUsecase()).toThrow("DELIVERYINTEGRATION_USECASE.MISSING_SERVICE");
 	});
 
 	test("should throw when placeId is invalid", async () => {

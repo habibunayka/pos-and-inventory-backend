@@ -33,7 +33,12 @@ describe("BaseSupplierProductUsecase", () => {
 	});
 
 	test("_validateSupplierId should throw when invalid or not found", async () => {
-		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+		const usecase = new DummyUsecase({
+			supplierProductService: {},
+			supplierService,
+			ingredientService,
+			packageService
+		});
 		await expect(usecase._validateSupplierId("abc")).rejects.toThrow(
 			new ValidationError("supplierId must be a positive integer")
 		);
@@ -43,14 +48,24 @@ describe("BaseSupplierProductUsecase", () => {
 
 	test("_validateIngredientId should validate and check existence", async () => {
 		ingredientService.getIngredient.mockResolvedValue({ id: 2 });
-		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+		const usecase = new DummyUsecase({
+			supplierProductService: {},
+			supplierService,
+			ingredientService,
+			packageService
+		});
 
 		await expect(usecase._validateIngredientId("2")).resolves.toBe(2);
 		expect(ingredientService.getIngredient).toHaveBeenCalledWith(2);
 	});
 
 	test("_validateIngredientId should reject invalid values", async () => {
-		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+		const usecase = new DummyUsecase({
+			supplierProductService: {},
+			supplierService,
+			ingredientService,
+			packageService
+		});
 
 		await expect(usecase._validateIngredientId("abc")).rejects.toThrow(
 			new ValidationError("ingredientId must be a positive integer")
@@ -59,14 +74,24 @@ describe("BaseSupplierProductUsecase", () => {
 
 	test("_validatePackageId should validate and check existence", async () => {
 		packageService.getPackage.mockResolvedValue({ id: 3 });
-		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+		const usecase = new DummyUsecase({
+			supplierProductService: {},
+			supplierService,
+			ingredientService,
+			packageService
+		});
 
 		await expect(usecase._validatePackageId("3")).resolves.toBe(3);
 		expect(packageService.getPackage).toHaveBeenCalledWith(3);
 	});
 
 	test("_validatePackageId should reject invalid or missing package", async () => {
-		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+		const usecase = new DummyUsecase({
+			supplierProductService: {},
+			supplierService,
+			ingredientService,
+			packageService
+		});
 
 		await expect(usecase._validatePackageId("abc")).rejects.toThrow(
 			new ValidationError("packageId must be a positive integer")
@@ -90,7 +115,12 @@ describe("BaseSupplierProductUsecase", () => {
 	});
 
 	test("_validateIngredientId should throw when ingredient not found", async () => {
-		const usecase = new DummyUsecase({ supplierProductService: {}, supplierService, ingredientService, packageService });
+		const usecase = new DummyUsecase({
+			supplierProductService: {},
+			supplierService,
+			ingredientService,
+			packageService
+		});
 		ingredientService.getIngredient.mockResolvedValue(null);
 
 		await expect(usecase._validateIngredientId(2)).rejects.toThrow(new ValidationError("ingredientId not found"));

@@ -1,10 +1,10 @@
 const UpdateCategoryRequest = {
-	"type": "object",
-	"minProperties": 1,
-	"properties": {
-		"name": {
-			"type": "string",
-			"example": "food"
+	type: "object",
+	minProperties: 1,
+	properties: {
+		name: {
+			type: "string",
+			example: "food"
 		}
 	}
 };

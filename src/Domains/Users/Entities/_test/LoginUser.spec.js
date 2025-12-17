@@ -6,7 +6,9 @@ describe("LoginUser", () => {
 	it("validates payload structure and required fields", () => {
 		expect(() => new LoginUser(null)).toThrow("LOGIN_USER.PAYLOAD_NOT_OBJECT");
 		expect(() => new LoginUser({ username: "user" })).toThrow("LOGIN_USER.NOT_CONTAIN_NEEDED_PROPERTY");
-		expect(() => new LoginUser({ username: 123, password: {} })).toThrow("LOGIN_USER.NOT_MEET_DATA_TYPE_SPECIFICATION");
+		expect(() => new LoginUser({ username: 123, password: {} })).toThrow(
+			"LOGIN_USER.NOT_MEET_DATA_TYPE_SPECIFICATION"
+		);
 		expect(() => new LoginUser({ username: "   ", password: "secret" })).toThrow("LOGIN_USER.USERNAME_EMPTY");
 	});
 

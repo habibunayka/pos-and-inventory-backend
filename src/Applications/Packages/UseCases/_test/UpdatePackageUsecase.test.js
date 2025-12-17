@@ -33,9 +33,7 @@ describe("UpdatePackageUsecase", () => {
 		packageService.getPackageByName.mockResolvedValue(null);
 		packageService.updatePackage.mockResolvedValue(null);
 
-		await expect(usecase.execute(1, { name: "Box" })).rejects.toThrow(
-			new ValidationError("Package not found")
-		);
+		await expect(usecase.execute(1, { name: "Box" })).rejects.toThrow(new ValidationError("Package not found"));
 	});
 
 	test("should update package with normalized name", async () => {

@@ -9,12 +9,15 @@ export default class PrismaWasteRepository extends WasteRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.waste.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.waste.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Waste.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.waste.findUnique({ where: { id } });
+		const record = await this._prisma.waste.findFirst({ where: { id, deletedAt: null } });
 		return Waste.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaWasteRepository extends WasteRepository {
 	}
 
 	async updateWaste({ id, data }) {
-		try {
-			const record = await this._prisma.waste.update({ where: { id }, data });
-			return Waste.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.waste.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.waste.update({ where: { id }, data });
+		return Waste.fromPersistence(record);
 	}
 
 	async deleteWaste(id) {
-		try {
-			await this._prisma.waste.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.waste.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.waste.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

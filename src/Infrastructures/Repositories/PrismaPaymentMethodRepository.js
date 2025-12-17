@@ -9,18 +9,21 @@ export default class PrismaPaymentMethodRepository extends PaymentMethodReposito
 	}
 
 	async findAll() {
-		const records = await this._prisma.paymentMethod.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.paymentMethod.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => PaymentMethod.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.paymentMethod.findUnique({ where: { id } });
+		const record = await this._prisma.paymentMethod.findFirst({ where: { id, deletedAt: null } });
 		return PaymentMethod.fromPersistence(record);
 	}
 
 	async findByName(name) {
 		if (!name) return null;
-		const record = await this._prisma.paymentMethod.findUnique({ where: { name } });
+		const record = await this._prisma.paymentMethod.findFirst({ where: { name, deletedAt: null } });
 		return PaymentMethod.fromPersistence(record);
 	}
 
@@ -30,22 +33,16 @@ export default class PrismaPaymentMethodRepository extends PaymentMethodReposito
 	}
 
 	async updatePaymentMethod({ id, data }) {
-		try {
-			const record = await this._prisma.paymentMethod.update({ where: { id }, data });
-			return PaymentMethod.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.paymentMethod.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.paymentMethod.update({ where: { id }, data });
+		return PaymentMethod.fromPersistence(record);
 	}
 
 	async deletePaymentMethod(id) {
-		try {
-			await this._prisma.paymentMethod.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.paymentMethod.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.paymentMethod.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

@@ -1,34 +1,34 @@
 const UpdateMenuRequest = {
-	"type": "object",
-	"minProperties": 1,
-	"properties": {
-		"placeId": {
-			"type": "integer",
-			"nullable": true,
-			"example": 1
+	type: "object",
+	minProperties: 1,
+	properties: {
+		placeId: {
+			type: "integer",
+			nullable: true,
+			example: 1
 		},
-		"name": {
-			"type": "string",
-			"example": "Nasi Goreng Spesial"
+		name: {
+			type: "string",
+			example: "Nasi Goreng Spesial"
 		},
-		"categoryId": {
-			"type": "integer",
-			"nullable": true,
-			"example": 2
+		categoryId: {
+			type: "integer",
+			nullable: true,
+			example: 2
 		},
-		"description": {
-			"type": "string",
-			"nullable": true,
-			"example": "Pedas"
+		description: {
+			type: "string",
+			nullable: true,
+			example: "Pedas"
 		},
-		"sku": {
-			"type": "string",
-			"nullable": true,
-			"example": "MN-001"
+		sku: {
+			type: "string",
+			nullable: true,
+			example: "MN-001"
 		},
-		"isActive": {
-			"type": "boolean",
-			"example": true
+		isActive: {
+			type: "boolean",
+			example: true
 		}
 	}
 };

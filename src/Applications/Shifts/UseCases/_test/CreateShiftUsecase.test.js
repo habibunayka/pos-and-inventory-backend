@@ -108,15 +108,15 @@ describe("CreateShiftUsecase", () => {
 	});
 
 	test("should throw when time types invalid", async () => {
-		await expect(
-			usecase.execute({ placeId: 1, name: "Name", startTime: 123, endTime: "08:00" })
-		).rejects.toThrow(new ValidationError("startTime must be a string"));
+		await expect(usecase.execute({ placeId: 1, name: "Name", startTime: 123, endTime: "08:00" })).rejects.toThrow(
+			new ValidationError("startTime must be a string")
+		);
 	});
 
 	test("should reject empty or malformed time strings", async () => {
-		await expect(
-			usecase.execute({ placeId: 1, name: "Name", startTime: "   ", endTime: "08:00" })
-		).rejects.toThrow(new ValidationError("startTime is required"));
+		await expect(usecase.execute({ placeId: 1, name: "Name", startTime: "   ", endTime: "08:00" })).rejects.toThrow(
+			new ValidationError("startTime is required")
+		);
 		await expect(
 			usecase.execute({ placeId: 1, name: "Name", startTime: "8:00", endTime: "09:00" })
 		).rejects.toThrow(new ValidationError("startTime must match HH:mm or HH:mm:ss"));
@@ -126,8 +126,8 @@ describe("CreateShiftUsecase", () => {
 		await expect(usecase.execute({ name: "Name", startTime: "08:00", endTime: "09:00" })).rejects.toThrow(
 			new ValidationError("placeId is required")
 		);
-		await expect(usecase.execute({ placeId: "abc", name: "Name", startTime: "08:00", endTime: "09:00" })).rejects.toThrow(
-			new ValidationError("placeId must be a positive integer")
-		);
+		await expect(
+			usecase.execute({ placeId: "abc", name: "Name", startTime: "08:00", endTime: "09:00" })
+		).rejects.toThrow(new ValidationError("placeId must be a positive integer"));
 	});
 });

@@ -26,5 +26,4 @@ describe("SystemLog", () => {
 			createdAt: "createdAt-value-5"
 		});
 	});
-
 });

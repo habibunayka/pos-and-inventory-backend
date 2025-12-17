@@ -28,5 +28,4 @@ describe("StockTransfer", () => {
 			createdAt: "createdAt-value-6"
 		});
 	});
-
 });

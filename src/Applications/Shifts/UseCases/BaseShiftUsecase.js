@@ -19,7 +19,8 @@ export default class BaseShiftUsecase {
 
 	_positiveInt(value, fieldName) {
 		const intVal = Number(value);
-		if (!Number.isInteger(intVal) || intVal <= 0) throw new ValidationError(`${fieldName} must be a positive integer`);
+		if (!Number.isInteger(intVal) || intVal <= 0)
+			throw new ValidationError(`${fieldName} must be a positive integer`);
 		return intVal;
 	}
 

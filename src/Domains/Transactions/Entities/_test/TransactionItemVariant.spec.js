@@ -24,5 +24,4 @@ describe("TransactionItemVariant", () => {
 			extraPrice: "extraPrice-value-4"
 		});
 	});
-
 });

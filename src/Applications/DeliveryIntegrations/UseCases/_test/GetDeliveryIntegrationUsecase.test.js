@@ -24,9 +24,7 @@ describe("GetDeliveryIntegrationUsecase", () => {
 	test("should throw when record not found", async () => {
 		mockService.getDeliveryIntegration.mockResolvedValue(null);
 
-		await expect(usecase.execute(1)).rejects.toThrow(
-			new ValidationError("Delivery integration not found")
-		);
+		await expect(usecase.execute(1)).rejects.toThrow(new ValidationError("Delivery integration not found"));
 	});
 
 	test("should return delivery integration when found", async () => {
