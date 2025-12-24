@@ -3,13 +3,26 @@ const PERMISSION_GROUPS = [
 		domain: "menus",
 		manage: {
 			name: "manage_menus",
-			description: "Create, edit, and archive menu items and categories."
+			description: "Create, edit, and archive menu items."
 		},
 		actions: [
-			{ key: "view", name: "view_menus", description: "View menu items and categories." },
-			{ key: "add", name: "add_menus", description: "Create new menu items and categories." },
-			{ key: "edit", name: "edit_menus", description: "Update existing menu items and categories." },
-			{ key: "delete", name: "delete_menus", description: "Remove menu items and categories." }
+			{ key: "view", name: "view_menus", description: "View menu items." },
+			{ key: "add", name: "add_menus", description: "Create new menu items." },
+			{ key: "edit", name: "edit_menus", description: "Update existing menu items." },
+			{ key: "delete", name: "delete_menus", description: "Remove menu items." }
+		]
+	},
+	{
+		domain: "categories",
+		manage: {
+			name: "manage_categories",
+			description: "Create, edit, and archive menu categories."
+		},
+		actions: [
+			{ key: "view", name: "view_categories", description: "View menu categories." },
+			{ key: "add", name: "add_categories", description: "Create new menu categories." },
+			{ key: "edit", name: "edit_categories", description: "Update existing menu categories." },
+			{ key: "delete", name: "delete_categories", description: "Remove menu categories." }
 		]
 	},
 	{
