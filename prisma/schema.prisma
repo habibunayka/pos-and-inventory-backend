@@ -342,6 +342,9 @@ model Transaction {
   placeId         Int?     @map("place_id")
   tableId         Int?     @map("table_id")
   orderType       String?  @map("order_type")
+  customerName    String?  @map("customer_name")
+  status          String?
+  itemsJson       Json?    @map("items_json") @db.JsonB
   total           Decimal  @db.Decimal(12, 2)
   tax             Decimal? @db.Decimal(12, 2)
   discount        Decimal? @db.Decimal(12, 2)
@@ -397,8 +400,8 @@ model Table {
   id      Int    @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
   placeId Int    @map("place_id")
-  name    String
-  capacity Int
+  name    String 
+  capacity Int @default(0)
   status  String?
 
   place        Place        @relation(fields: [placeId], references: [id], onDelete: Restrict)

@@ -124,6 +124,9 @@ describe("Entity branch coverage fallbacks", () => {
 			placeId: null,
 			tableId: null,
 			orderType: null,
+			customerName: null,
+			status: null,
+			items: null,
 			tax: null,
 			discount: null,
 			paymentMethodId: null
@@ -137,6 +140,9 @@ describe("Entity branch coverage fallbacks", () => {
 			placeId: 3,
 			tableId: 4,
 			orderType: "dine-in",
+			customerName: "Budi",
+			status: "paid",
+			itemsJson: [{ menuId: 1, qty: 2 }],
 			total: 2000,
 			tax: 100,
 			discount: 50,
@@ -149,6 +155,9 @@ describe("Entity branch coverage fallbacks", () => {
 			placeId: 3,
 			tableId: 4,
 			orderType: "dine-in",
+			customerName: "Budi",
+			status: "paid",
+			items: [{ menuId: 1, qty: 2 }],
 			tax: 100,
 			discount: 50,
 			paymentMethodId: 5
@@ -403,7 +412,13 @@ describe("Entity branch coverage fallbacks", () => {
 			{
 				Entity: Transaction,
 				props: { cashierId: 1, total: 100, createdAt: "now" },
-				expected: { placeId: null, discount: null }
+				expected: {
+					placeId: null,
+					discount: null,
+					customerName: null,
+					status: null,
+					items: null
+				}
 			},
 			{
 				Entity: User,

@@ -33,6 +33,9 @@ describe("CreateTransactionUsecase", () => {
 		const result = await usecase.execute({
 			cashierId: "1",
 			orderType: "   ",
+			customerName: "   ",
+			status: null,
+			items: [],
 			total: "50",
 			tax: null,
 			discount: "5",
@@ -42,6 +45,9 @@ describe("CreateTransactionUsecase", () => {
 		expect(mockService.createTransaction).toHaveBeenCalledWith({
 			cashierId: 1,
 			orderType: null,
+			customerName: null,
+			status: null,
+			itemsJson: [],
 			total: 50,
 			tax: null,
 			discount: 5,
@@ -56,6 +62,9 @@ describe("CreateTransactionUsecase", () => {
 			placeId: "2",
 			tableId: "3",
 			orderType: " dine-in ",
+			customerName: " Budi ",
+			status: " paid ",
+			items: [{ menuId: 1, qty: 2 }],
 			total: "100",
 			tax: "10",
 			discount: null,
@@ -71,6 +80,9 @@ describe("CreateTransactionUsecase", () => {
 			placeId: 2,
 			tableId: 3,
 			orderType: "dine-in",
+			customerName: "Budi",
+			status: "paid",
+			itemsJson: [{ menuId: 1, qty: 2 }],
 			total: 100,
 			tax: 10,
 			discount: null,
@@ -93,6 +105,9 @@ describe("CreateTransactionUsecase", () => {
 
 		const result = await usecase.execute({
 			orderType: null,
+			customerName: null,
+			status: null,
+			items: null,
 			tax: undefined,
 			discount: undefined,
 			paymentMethodId: null
@@ -100,12 +115,21 @@ describe("CreateTransactionUsecase", () => {
 
 		expect(mockService.createTransaction).toHaveBeenCalledWith({
 			orderType: null,
+			customerName: null,
+			status: null,
+			itemsJson: null,
 			paymentMethodId: null
 		});
 		expect(result).toEqual(created);
 
 		await expect(usecase.execute({ paymentMethodId: "abc" })).rejects.toThrow(
 			new ValidationError("paymentMethodId must be a positive integer")
+		);
+	});
+
+	test("should throw when items is not an array", async () => {
+		await expect(usecase.execute({ items: "bad" })).rejects.toThrow(
+			new ValidationError("items must be an array")
 		);
 	});
 });

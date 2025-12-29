@@ -39,6 +39,9 @@ describe("UpdateTransactionUsecase", () => {
 			placeId: "4",
 			tableId: null,
 			orderType: " takeout ",
+			customerName: " Budi ",
+			status: " paid ",
+			items: [{ menuId: 1, qty: 2 }],
 			total: "150",
 			tax: "10",
 			discount: null,
@@ -52,6 +55,9 @@ describe("UpdateTransactionUsecase", () => {
 				placeId: 4,
 				tableId: null,
 				orderType: "takeout",
+				customerName: "Budi",
+				status: "paid",
+				itemsJson: [{ menuId: 1, qty: 2 }],
 				total: 150,
 				tax: 10,
 				discount: null,
@@ -67,6 +73,7 @@ describe("UpdateTransactionUsecase", () => {
 
 		const result = await usecase.execute(7, {
 			orderType: null,
+			items: null,
 			paymentMethodId: null,
 			placeId: undefined,
 			tableId: undefined,
@@ -78,6 +85,7 @@ describe("UpdateTransactionUsecase", () => {
 			id: 7,
 			data: {
 				orderType: null,
+				itemsJson: null,
 				paymentMethodId: null
 			}
 		});
@@ -113,5 +121,11 @@ describe("UpdateTransactionUsecase", () => {
 			id: 4,
 			data: { placeId: null, tableId: 6, tax: null }
 		});
+	});
+
+	test("should throw when items is not an array", async () => {
+		await expect(usecase.execute(1, { items: "bad" })).rejects.toThrow(
+			new ValidationError("items must be an array")
+		);
 	});
 });

@@ -5,6 +5,9 @@ export default class Transaction {
 		placeId = null,
 		tableId = null,
 		orderType = null,
+		customerName = null,
+		status = null,
+		items = null,
 		total,
 		tax = null,
 		discount = null,
@@ -16,6 +19,9 @@ export default class Transaction {
 		this.placeId = placeId;
 		this.tableId = tableId;
 		this.orderType = orderType;
+		this.customerName = customerName;
+		this.status = status;
+		this.items = items;
 		this.total = total;
 		this.tax = tax;
 		this.discount = discount;
@@ -31,6 +37,9 @@ export default class Transaction {
 			placeId: record.placeId ?? null,
 			tableId: record.tableId ?? null,
 			orderType: record.orderType ?? null,
+			customerName: record.customerName ?? null,
+			status: record.status ?? null,
+			items: record.itemsJson ?? null,
 			total: record.total,
 			tax: record.tax ?? null,
 			discount: record.discount ?? null,

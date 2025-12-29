@@ -21,6 +21,23 @@ const UpdateTransactionRequest = {
 			nullable: true,
 			example: "takeaway"
 		},
+		customerName: {
+			type: "string",
+			nullable: true,
+			example: "Budi"
+		},
+		status: {
+			type: "string",
+			nullable: true,
+			example: "paid"
+		},
+		items: {
+			type: "array",
+			nullable: true,
+			items: {
+				type: "object"
+			}
+		},
 		total: {
 			type: "number",
 			example: 75000

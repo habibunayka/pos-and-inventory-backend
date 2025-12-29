@@ -3,8 +3,8 @@ model Table {
   id      Int    @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
   placeId Int    @map("place_id")
-  name    String
-  capacity Int
+  name    String 
+  capacity Int @default(0)
   status  String?
 
   place        Place        @relation(fields: [placeId], references: [id], onDelete: Restrict)
