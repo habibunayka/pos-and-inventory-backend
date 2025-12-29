@@ -313,7 +313,7 @@ describe("Entity branch coverage fallbacks", () => {
 
 	it("Table applies defaults", () => {
 		const entity = Table.fromPersistence({ name: "T1", placeId: 1 });
-		expect(entity).toMatchObject({ id: null, status: null });
+		expect(entity).toMatchObject({ id: null, status: null, capacity: null });
 	});
 
 	it("TransactionItem nulls optionals", () => {
@@ -484,7 +484,7 @@ describe("Entity branch coverage fallbacks", () => {
 				props: { supplierId: 1, ingredientId: 2, packageId: 3, qty: 4, price: 5 },
 				expected: { leadTime: null, isActive: true }
 			},
-			{ Entity: Table, props: { placeId: 1, name: "T1" }, expected: { status: null } },
+			{ Entity: Table, props: { placeId: 1, name: "T1" }, expected: { status: null, capacity: null } },
 			{
 				Entity: KitchenOrder,
 				props: { transactionItemId: 1, status: "new" },

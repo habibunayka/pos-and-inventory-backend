@@ -10,6 +10,10 @@ const UpdateTableRequest = {
       "type": "string",
       "example": "T-02"
     },
+    "capacity": {
+      "type": "integer",
+      "example": 6
+    },
     "status": {
       "type": "string",
       "nullable": true,

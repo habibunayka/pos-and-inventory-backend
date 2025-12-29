@@ -42,7 +42,7 @@ describe("default branch coverage helpers", () => {
 			tableService: { createTable: jest.fn() },
 			placeService: { supportsPlaceValidation: true, getPlace: jest.fn().mockResolvedValue(null) }
 		});
-		await expect(usecase.execute({ placeId: 1, name: "Name" })).rejects.toThrow(ValidationError);
+		await expect(usecase.execute({ placeId: 1, name: "Name", capacity: 4 })).rejects.toThrow(ValidationError);
 	});
 
 	it("CreateDeliveryIntegrationUsecase defaults optional fields when omitted", async () => {

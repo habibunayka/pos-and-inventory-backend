@@ -11,7 +11,8 @@ describe("Table", () => {
 			id: "id-value-1",
 			placeId: "placeId-value-2",
 			name: "name-value-3",
-			status: "status-value-4"
+			status: "status-value-4",
+			capacity: 4
 		};
 
 		const entity = Table.fromPersistence(record);
@@ -21,7 +22,8 @@ describe("Table", () => {
 			id: "id-value-1",
 			placeId: "placeId-value-2",
 			name: "name-value-3",
-			status: "status-value-4"
+			status: "status-value-4",
+			capacity: 4
 		});
 	});
 

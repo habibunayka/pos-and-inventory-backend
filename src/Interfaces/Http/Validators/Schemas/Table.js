@@ -6,13 +6,15 @@ const nullableText = Joi.string().trim().allow(null).empty("");
 export const createTableSchema = Joi.object({
 	placeId: positiveInt.required(),
 	name: Joi.string().trim().min(1).required(),
-	status: nullableText
+	status: nullableText,
+	capacity: positiveInt.required()
 });
 
 export const updateTableSchema = Joi.object({
 	placeId: positiveInt,
 	name: Joi.string().trim().min(1),
-	status: nullableText
+	status: nullableText,
+	capacity: positiveInt
 }).min(1);
 
 export default {

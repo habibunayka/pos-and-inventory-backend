@@ -4,6 +4,7 @@ const Table = {
     "id",
     "placeId",
     "name",
+    "capacity",
     "status"
   ],
   "properties": {
@@ -18,6 +19,10 @@ const Table = {
     "name": {
       "type": "string",
       "example": "T-01"
+    },
+    "capacity": {
+      "type": "integer",
+      "example": 4
     },
     "status": {
       "type": "string",

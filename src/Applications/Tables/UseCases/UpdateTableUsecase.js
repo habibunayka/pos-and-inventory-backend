@@ -20,6 +20,13 @@ export default class UpdateTableUsecase extends BaseTableUsecase {
 		if (Object.prototype.hasOwnProperty.call(payload, "status")) {
 			update.status = payload.status === null ? null : String(payload.status).trim() || null;
 		}
+		if (Object.prototype.hasOwnProperty.call(payload, "capacity")) {
+			const capacity = Number(payload.capacity);
+			if (!Number.isInteger(capacity) || capacity <= 0) {
+				throw new ValidationError("capacity must be a positive integer");
+			}
+			update.capacity = capacity;
+		}
 		if (Object.keys(update).length === 0) throw new ValidationError("No updatable fields provided");
 		return this.tableService.updateTable({ id: numericId, tableData: update });
 	}

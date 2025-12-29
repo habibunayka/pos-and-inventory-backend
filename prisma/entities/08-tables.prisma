@@ -3,6 +3,7 @@ model Table {
   id      Int    @id @default(autoincrement())
   placeId Int    @map("place_id")
   name    String
+  capacity Int
   status  String?
 
   place        Place        @relation(fields: [placeId], references: [id], onDelete: Restrict)

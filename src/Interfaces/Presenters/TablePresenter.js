@@ -5,7 +5,8 @@ export default class TablePresenter {
 			id: table.id,
 			placeId: table.placeId,
 			name: table.name,
-			status: table.status
+			status: table.status,
+			capacity: table.capacity
 		};
 	}
 

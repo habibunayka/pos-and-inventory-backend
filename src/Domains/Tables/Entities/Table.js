@@ -1,9 +1,10 @@
 export default class Table {
-	constructor({ id = null, placeId, name, status = null }) {
+	constructor({ id = null, placeId, name, status = null, capacity = null }) {
 		this.id = id;
 		this.placeId = placeId;
 		this.name = name;
 		this.status = status;
+		this.capacity = capacity;
 	}
 
 	static fromPersistence(record) {
@@ -12,7 +13,8 @@ export default class Table {
 			id: record.id ?? null,
 			placeId: record.placeId,
 			name: record.name,
-			status: record.status ?? null
+			status: record.status ?? null,
+			capacity: record.capacity ?? null
 		});
 	}
 }

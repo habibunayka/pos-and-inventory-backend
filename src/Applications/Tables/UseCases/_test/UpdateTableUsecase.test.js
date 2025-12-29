@@ -33,6 +33,12 @@ describe("UpdateTableUsecase", () => {
 		);
 	});
 
+	test("should throw when capacity invalid", async () => {
+		await expect(usecase.execute(1, { capacity: 0 })).rejects.toThrow(
+			new ValidationError("capacity must be a positive integer")
+		);
+	});
+
 	test("should throw when no fields provided", async () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(
 			new ValidationError("No updatable fields provided")
@@ -43,11 +49,16 @@ describe("UpdateTableUsecase", () => {
 		const updated = { id: 1, name: "New" };
 		tableService.updateTable.mockResolvedValue(updated);
 
-		const result = await usecase.execute("1", { placeId: "1", name: " New ", status: " busy " });
+		const result = await usecase.execute("1", {
+			placeId: "1",
+			name: " New ",
+			capacity: "4",
+			status: " busy "
+		});
 
 		expect(tableService.updateTable).toHaveBeenCalledWith({
 			id: 1,
-			tableData: { placeId: 1, name: "New", status: "busy" }
+			tableData: { placeId: 1, name: "New", capacity: 4, status: "busy" }
 		});
 		expect(result).toEqual(updated);
 	});

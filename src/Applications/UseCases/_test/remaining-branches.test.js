@@ -196,6 +196,8 @@ describe("Remaining branch coverage helpers", () => {
 		const usecase = new CreateTableUsecase({ tableService, placeService });
 
 		await expect(usecase.execute()).rejects.toThrow(new ValidationError("placeId must be a positive integer"));
-		await expect(usecase.execute({ placeId: 1 })).rejects.toThrow(new ValidationError("name is required"));
+		await expect(usecase.execute({ placeId: 1, capacity: 2 })).rejects.toThrow(
+			new ValidationError("name is required")
+		);
 	});
 });
