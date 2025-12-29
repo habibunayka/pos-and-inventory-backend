@@ -39,7 +39,7 @@ const Transaction = {
 			type: "array",
 			nullable: true,
 			items: {
-				type: "object"
+				$ref: "#/components/schemas/TransactionItem"
 			}
 		},
 		total: {

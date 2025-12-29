@@ -11,13 +11,43 @@ export default class PrismaTransactionRepository extends TransactionRepository {
 	async findAll() {
 		const records = await this._prisma.transaction.findMany({
 			where: { deletedAt: null },
-			orderBy: { id: "asc" }
+			orderBy: { id: "asc" },
+			include: {
+				items: {
+					where: { deletedAt: null },
+					orderBy: { id: "asc" },
+					include: {
+						menu: true,
+						variants: {
+							where: { deletedAt: null },
+							orderBy: { id: "asc" },
+							include: { menuVariant: true }
+						}
+					}
+				}
+			}
 		});
 		return records.map((record) => Transaction.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.transaction.findFirst({ where: { id, deletedAt: null } });
+		const record = await this._prisma.transaction.findFirst({
+			where: { id, deletedAt: null },
+			include: {
+				items: {
+					where: { deletedAt: null },
+					orderBy: { id: "asc" },
+					include: {
+						menu: true,
+						variants: {
+							where: { deletedAt: null },
+							orderBy: { id: "asc" },
+							include: { menuVariant: true }
+						}
+					}
+				}
+			}
+		});
 		return Transaction.fromPersistence(record);
 	}
 

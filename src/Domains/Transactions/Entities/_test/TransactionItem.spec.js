@@ -13,7 +13,28 @@ describe("TransactionItem", () => {
 			menuId: "menuId-value-3",
 			qty: "qty-value-4",
 			price: "price-value-5",
-			discount: "discount-value-6"
+			discount: "discount-value-6",
+			menu: {
+				id: "menu-id-1",
+				placeId: "place-id-1",
+				name: "menu-name-1",
+				categoryId: "category-id-1",
+				description: "desc-1",
+				isActive: false
+			},
+			variants: [
+				{
+					id: "variant-id-1",
+					transactionItemId: "transactionItemId-value-2",
+					menuVariantId: "menuVariantId-value-3",
+					extraPrice: "extraPrice-value-4",
+					menuVariant: {
+						id: "menuVariantId-value-3",
+						menuId: "menu-id-1",
+						name: "Variant 1"
+					}
+				}
+			]
 		};
 
 		const entity = TransactionItem.fromPersistence(record);
@@ -25,7 +46,28 @@ describe("TransactionItem", () => {
 			menuId: "menuId-value-3",
 			qty: "qty-value-4",
 			price: "price-value-5",
-			discount: "discount-value-6"
+			discount: "discount-value-6",
+			menu: {
+				id: "menu-id-1",
+				placeId: "place-id-1",
+				name: "menu-name-1",
+				categoryId: "category-id-1",
+				description: "desc-1",
+				isActive: false
+			},
+			variants: [
+				{
+					id: "variant-id-1",
+					transactionItemId: "transactionItemId-value-2",
+					menuVariantId: "menuVariantId-value-3",
+					extraPrice: "extraPrice-value-4",
+					menuVariant: {
+						id: "menuVariantId-value-3",
+						menuId: "menu-id-1",
+						name: "Variant 1"
+					}
+				}
+			]
 		});
 	});
 });

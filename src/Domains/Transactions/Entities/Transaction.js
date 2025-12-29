@@ -1,3 +1,5 @@
+import TransactionItem from "./TransactionItem.js";
+
 export default class Transaction {
 	constructor({
 		id = null,
@@ -7,7 +9,8 @@ export default class Transaction {
 		orderType = null,
 		customerName = null,
 		status = null,
-		items = null,
+		items = [],
+		itemsSnapshot = null,
 		total,
 		tax = null,
 		discount = null,
@@ -22,6 +25,7 @@ export default class Transaction {
 		this.customerName = customerName;
 		this.status = status;
 		this.items = items;
+		this.itemsSnapshot = itemsSnapshot;
 		this.total = total;
 		this.tax = tax;
 		this.discount = discount;
@@ -39,7 +43,10 @@ export default class Transaction {
 			orderType: record.orderType ?? null,
 			customerName: record.customerName ?? null,
 			status: record.status ?? null,
-			items: record.itemsJson ?? null,
+			items: Array.isArray(record.items)
+				? record.items.map((item) => TransactionItem.fromPersistence(item))
+				: [],
+			itemsSnapshot: record.itemsJson ?? null,
 			total: record.total,
 			tax: record.tax ?? null,
 			discount: record.discount ?? null,

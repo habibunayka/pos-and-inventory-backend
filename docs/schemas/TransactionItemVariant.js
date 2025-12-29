@@ -17,6 +17,10 @@ const TransactionItemVariant = {
 		extraPrice: {
 			type: "number",
 			example: 3000
+		},
+		menuVariant: {
+			$ref: "#/components/schemas/MenuVariant",
+			nullable: true
 		}
 	}
 };

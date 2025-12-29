@@ -26,6 +26,16 @@ const TransactionItem = {
 			type: "number",
 			nullable: true,
 			example: 0
+		},
+		menu: {
+			$ref: "#/components/schemas/Menu",
+			nullable: true
+		},
+		variants: {
+			type: "array",
+			items: {
+				$ref: "#/components/schemas/TransactionItemVariant"
+			}
 		}
 	}
 };

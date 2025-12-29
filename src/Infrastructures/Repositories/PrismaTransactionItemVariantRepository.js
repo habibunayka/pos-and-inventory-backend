@@ -11,13 +11,17 @@ export default class PrismaTransactionItemVariantRepository extends TransactionI
 	async findAll() {
 		const records = await this._prisma.transactionItemVariant.findMany({
 			where: { deletedAt: null },
-			orderBy: { id: "asc" }
+			orderBy: { id: "asc" },
+			include: { menuVariant: true }
 		});
 		return records.map((record) => TransactionItemVariant.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.transactionItemVariant.findFirst({ where: { id, deletedAt: null } });
+		const record = await this._prisma.transactionItemVariant.findFirst({
+			where: { id, deletedAt: null },
+			include: { menuVariant: true }
+		});
 		return TransactionItemVariant.fromPersistence(record);
 	}
 

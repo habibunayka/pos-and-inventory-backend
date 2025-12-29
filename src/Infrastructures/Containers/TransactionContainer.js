@@ -34,6 +34,8 @@ import TransactionPresenter from "../../Interfaces/Presenters/TransactionPresent
 import TransactionItemPresenter from "../../Interfaces/Presenters/TransactionItemPresenter.js";
 import TransactionItemVariantPresenter from "../../Interfaces/Presenters/TransactionItemVariantPresenter.js";
 import KitchenOrderPresenter from "../../Interfaces/Presenters/KitchenOrderPresenter.js";
+import MenuPresenter from "../../Interfaces/Presenters/MenuPresenter.js";
+import MenuVariantPresenter from "../../Interfaces/Presenters/MenuVariantPresenter.js";
 import TransactionController from "../../Interfaces/Controllers/TransactionController.js";
 
 export default function registerTransactionContainer({ container, overrides = {}, prisma }) {
@@ -97,10 +99,16 @@ export default function registerTransactionContainer({ container, overrides = {}
 	const deleteKitchenOrderUsecase =
 		overrides.deleteKitchenOrderUsecase ?? new DeleteKitchenOrderUsecase({ kitchenOrderService });
 
-	const transactionPresenter = overrides.transactionPresenter ?? new TransactionPresenter();
-	const transactionItemPresenter = overrides.transactionItemPresenter ?? new TransactionItemPresenter();
+	const menuPresenter = overrides.menuPresenter ?? new MenuPresenter();
+	const menuVariantPresenter = overrides.menuVariantPresenter ?? new MenuVariantPresenter();
+
 	const transactionItemVariantPresenter =
-		overrides.transactionItemVariantPresenter ?? new TransactionItemVariantPresenter();
+		overrides.transactionItemVariantPresenter ?? new TransactionItemVariantPresenter({ menuVariantPresenter });
+	const transactionItemPresenter =
+		overrides.transactionItemPresenter ??
+		new TransactionItemPresenter({ menuPresenter, transactionItemVariantPresenter });
+	const transactionPresenter =
+		overrides.transactionPresenter ?? new TransactionPresenter({ transactionItemPresenter });
 	const kitchenOrderPresenter = overrides.kitchenOrderPresenter ?? new KitchenOrderPresenter();
 
 	const transactionController =

@@ -11,7 +11,12 @@ describe("TransactionItemVariant", () => {
 			id: "id-value-1",
 			transactionItemId: "transactionItemId-value-2",
 			menuVariantId: "menuVariantId-value-3",
-			extraPrice: "extraPrice-value-4"
+			extraPrice: "extraPrice-value-4",
+			menuVariant: {
+				id: "menuVariantId-value-3",
+				menuId: "menu-id-1",
+				name: "Variant 1"
+			}
 		};
 
 		const entity = TransactionItemVariant.fromPersistence(record);
@@ -21,7 +26,12 @@ describe("TransactionItemVariant", () => {
 			id: "id-value-1",
 			transactionItemId: "transactionItemId-value-2",
 			menuVariantId: "menuVariantId-value-3",
-			extraPrice: "extraPrice-value-4"
+			extraPrice: "extraPrice-value-4",
+			menuVariant: {
+				id: "menuVariantId-value-3",
+				menuId: "menu-id-1",
+				name: "Variant 1"
+			}
 		});
 	});
 });

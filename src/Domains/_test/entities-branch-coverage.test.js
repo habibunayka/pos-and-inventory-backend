@@ -126,7 +126,8 @@ describe("Entity branch coverage fallbacks", () => {
 			orderType: null,
 			customerName: null,
 			status: null,
-			items: null,
+			items: [],
+			itemsSnapshot: null,
 			tax: null,
 			discount: null,
 			paymentMethodId: null
@@ -157,7 +158,8 @@ describe("Entity branch coverage fallbacks", () => {
 			orderType: "dine-in",
 			customerName: "Budi",
 			status: "paid",
-			items: [{ menuId: 1, qty: 2 }],
+			items: [],
+			itemsSnapshot: [{ menuId: 1, qty: 2 }],
 			tax: 100,
 			discount: 50,
 			paymentMethodId: 5
@@ -327,7 +329,7 @@ describe("Entity branch coverage fallbacks", () => {
 
 	it("TransactionItem nulls optionals", () => {
 		const entity = TransactionItem.fromPersistence({ transactionId: 1, menuId: 2, qty: 1, price: 100 });
-		expect(entity).toMatchObject({ id: null, discount: null });
+		expect(entity).toMatchObject({ id: null, discount: null, menu: null, variants: [] });
 	});
 
 	it("Category uses null and active defaults", () => {
@@ -366,8 +368,8 @@ describe("Entity branch coverage fallbacks", () => {
 	});
 
 	it("TransactionItemVariant nulls note", () => {
-		const entity = TransactionItemVariant.fromPersistence({ transactionItemId: 1, menuVariantItemId: 2, qty: 1 });
-		expect(entity).toMatchObject({ id: null, extraPrice: undefined });
+		const entity = TransactionItemVariant.fromPersistence({ transactionItemId: 1, menuVariantId: 2 });
+		expect(entity).toMatchObject({ id: null, extraPrice: undefined, menuVariant: null });
 	});
 
 	it("Unit uses defaults", () => {
@@ -417,7 +419,8 @@ describe("Entity branch coverage fallbacks", () => {
 					discount: null,
 					customerName: null,
 					status: null,
-					items: null
+					items: [],
+					itemsSnapshot: null
 				}
 			},
 			{
@@ -516,12 +519,12 @@ describe("Entity branch coverage fallbacks", () => {
 			{
 				Entity: TransactionItem,
 				props: { transactionId: 1, menuId: 2, qty: 1, price: 10 },
-				expected: { discount: null }
+				expected: { discount: null, menu: null, variants: [] }
 			},
 			{
 				Entity: TransactionItemVariant,
 				props: { transactionItemId: 1, menuVariantId: 2, extraPrice: 1 },
-				expected: { id: null }
+				expected: { id: null, menuVariant: null }
 			},
 			{ Entity: Unit, props: { name: "gram", abbreviation: "gr" }, expected: { id: null } }
 		];
