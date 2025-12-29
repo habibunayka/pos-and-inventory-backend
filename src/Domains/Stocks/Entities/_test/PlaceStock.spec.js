@@ -26,5 +26,4 @@ describe("PlaceStock", () => {
 			unitId: "unitId-value-5"
 		});
 	});
-
 });

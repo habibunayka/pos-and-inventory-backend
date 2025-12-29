@@ -24,9 +24,7 @@ describe("DeleteTransactionItemVariantUsecase", () => {
 	test("should throw when deletion fails", async () => {
 		mockService.deleteVariant.mockResolvedValue(false);
 
-		await expect(usecase.execute(1)).rejects.toThrow(
-			new ValidationError("Transaction item variant not found")
-		);
+		await expect(usecase.execute(1)).rejects.toThrow(new ValidationError("Transaction item variant not found"));
 	});
 
 	test("should delete variant", async () => {

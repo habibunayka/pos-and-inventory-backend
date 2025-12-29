@@ -1,6 +1,7 @@
 /// ========== STOCK OPS ==========
 model StockTransfer {
   id           Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   ingredientId Int     @map("ingredient_id")
   fromPlaceId Int?    @map("from_place_id")
   toPlaceId   Int?    @map("to_place_id")
@@ -16,6 +17,7 @@ model StockTransfer {
 
 model Waste {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   ingredientId Int   @map("ingredient_id")
   placeId    Int?   @map("place_id")
   qty         Decimal @db.Decimal(12, 2)
@@ -30,6 +32,7 @@ model Waste {
 
 model InventoryStockDaily {
   id           Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId      Int     @map("place_id")
   ingredientId Int     @map("ingredient_id")
   date         DateTime @db.Date

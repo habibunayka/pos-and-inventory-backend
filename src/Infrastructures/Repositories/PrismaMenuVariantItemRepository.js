@@ -9,12 +9,15 @@ export default class PrismaMenuVariantItemRepository extends MenuVariantItemRepo
 	}
 
 	async findAll() {
-		const records = await this._prisma.menuVariantItem.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.menuVariantItem.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => MenuVariantItem.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.menuVariantItem.findUnique({ where: { id } });
+		const record = await this._prisma.menuVariantItem.findFirst({ where: { id, deletedAt: null } });
 		return MenuVariantItem.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaMenuVariantItemRepository extends MenuVariantItemRepo
 	}
 
 	async updateMenuVariantItem({ id, data }) {
-		try {
-			const record = await this._prisma.menuVariantItem.update({ where: { id }, data });
-			return MenuVariantItem.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.menuVariantItem.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.menuVariantItem.update({ where: { id }, data });
+		return MenuVariantItem.fromPersistence(record);
 	}
 
 	async deleteMenuVariantItem(id) {
-		try {
-			await this._prisma.menuVariantItem.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.menuVariantItem.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.menuVariantItem.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

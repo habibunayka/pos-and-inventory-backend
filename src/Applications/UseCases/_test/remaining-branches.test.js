@@ -31,9 +31,9 @@ describe("Remaining branch coverage helpers", () => {
 		const placeService = { supportsPlaceValidation: false, getPlace: jest.fn() };
 		const usecase = new CreateShiftUsecase({ shiftService, placeService });
 
-		await expect(
-			usecase.execute({ placeId: 1, startTime: "08:00", endTime: "09:00" })
-		).rejects.toThrow(new ValidationError("name is required"));
+		await expect(usecase.execute({ placeId: 1, startTime: "08:00", endTime: "09:00" })).rejects.toThrow(
+			new ValidationError("name is required")
+		);
 
 		await usecase.execute({
 			placeId: 1,
@@ -53,7 +53,10 @@ describe("Remaining branch coverage helpers", () => {
 	});
 
 	test("CreatePermissionUsecase handles missing/blank description branches", async () => {
-		const permissionService = { getPermissionByName: jest.fn().mockResolvedValue(null), createPermission: jest.fn() };
+		const permissionService = {
+			getPermissionByName: jest.fn().mockResolvedValue(null),
+			createPermission: jest.fn()
+		};
 		const usecase = new CreatePermissionUsecase({ permissionService });
 
 		await usecase.execute({ name: "view" });
@@ -79,9 +82,9 @@ describe("Remaining branch coverage helpers", () => {
 			shiftService: null
 		});
 
-		await expect(
-			usecase.execute({ placeId: 1, stationId: 2, shiftId: 3, cashierId: 4 })
-		).rejects.toThrow(new ValidationError("ipAddress is required"));
+		await expect(usecase.execute({ placeId: 1, stationId: 2, shiftId: 3, cashierId: 4 })).rejects.toThrow(
+			new ValidationError("ipAddress is required")
+		);
 
 		await expect(
 			usecase.execute({ placeId: 1, stationId: 2, shiftId: 3, cashierId: 4, ipAddress: "1.1.1.1", status: null })
@@ -158,9 +161,9 @@ describe("Remaining branch coverage helpers", () => {
 		const placeService = { supportsPlaceValidation: false, getPlace: jest.fn() };
 		const usecase = new UpdateUserUsecase({ userService, placeService });
 
-		await expect(
-			usecase.execute(7, { roleName: "manager", email: "new@example.com" })
-		).rejects.toThrow(new ValidationError("Password is required for non-cashier roles"));
+		await expect(usecase.execute(7, { roleName: "manager", email: "new@example.com" })).rejects.toThrow(
+			new ValidationError("Password is required for non-cashier roles")
+		);
 	});
 
 	test("CreateKitchenOrderUsecase handles falsy startedAt and note null", async () => {

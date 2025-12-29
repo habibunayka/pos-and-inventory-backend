@@ -25,15 +25,11 @@ describe("UpdateIngredientUsecase", () => {
 	test("should throw when record not found", async () => {
 		ingredientService.getIngredient.mockResolvedValue(null);
 
-		await expect(usecase.execute(1, { name: "New" })).rejects.toThrow(
-			new ValidationError("Ingredient not found")
-		);
+		await expect(usecase.execute(1, { name: "New" })).rejects.toThrow(new ValidationError("Ingredient not found"));
 	});
 
 	test("should throw when name empty", async () => {
-		await expect(usecase.execute(1, { name: "   " })).rejects.toThrow(
-			new ValidationError("name cannot be empty")
-		);
+		await expect(usecase.execute(1, { name: "   " })).rejects.toThrow(new ValidationError("name cannot be empty"));
 	});
 
 	test("should throw when no updatable fields", async () => {

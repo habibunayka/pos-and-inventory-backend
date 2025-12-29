@@ -73,7 +73,11 @@ import ActivityLogRepository from "../../../Domains/Logs/Repositories/ActivityLo
 describe("Service constructors accept concrete repositories", () => {
 	const cases = [
 		{ Service: CategoryService, Repo: CategoryRepository, key: "categoryRepository" },
-		{ Service: DeliveryIntegrationService, Repo: DeliveryIntegrationRepository, key: "deliveryIntegrationRepository" },
+		{
+			Service: DeliveryIntegrationService,
+			Repo: DeliveryIntegrationRepository,
+			key: "deliveryIntegrationRepository"
+		},
 		{ Service: IngredientPackageService, Repo: IngredientPackageRepository, key: "ingredientPackageRepository" },
 		{ Service: IngredientService, Repo: IngredientRepository, key: "ingredientRepository" },
 		{ Service: ActivityLogService, Repo: ActivityLogRepository, key: "activityLogRepository" },
@@ -94,7 +98,11 @@ describe("Service constructors accept concrete repositories", () => {
 		{ Service: ShiftService, Repo: ShiftRepository, key: "shiftRepository" },
 		{ Service: StationService, Repo: StationRepository, key: "stationRepository" },
 		{ Service: CashierShiftService, Repo: CashierShiftRepository, key: "cashierShiftRepository" },
-		{ Service: InventoryStockDailyService, Repo: InventoryStockDailyRepository, key: "inventoryStockDailyRepository" },
+		{
+			Service: InventoryStockDailyService,
+			Repo: InventoryStockDailyRepository,
+			key: "inventoryStockDailyRepository"
+		},
 		{ Service: PlaceStockService, Repo: PlaceStockRepository, key: "placeStockRepository" },
 		{ Service: StockTransferService, Repo: StockTransferRepository, key: "stockTransferRepository" },
 		{ Service: WasteService, Repo: WasteRepository, key: "wasteRepository" },

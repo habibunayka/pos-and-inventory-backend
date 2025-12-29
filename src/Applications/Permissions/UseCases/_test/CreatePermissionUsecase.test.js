@@ -20,7 +20,9 @@ describe("CreatePermissionUsecase", () => {
 	});
 
 	test("should require name", async () => {
-		await expect(usecase.execute({ name: "   " })).rejects.toThrow(new ValidationError("Permission name is required"));
+		await expect(usecase.execute({ name: "   " })).rejects.toThrow(
+			new ValidationError("Permission name is required")
+		);
 	});
 
 	test("should throw when name exists", async () => {

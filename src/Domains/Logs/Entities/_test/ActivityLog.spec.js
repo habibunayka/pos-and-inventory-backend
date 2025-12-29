@@ -30,5 +30,4 @@ describe("ActivityLog", () => {
 			createdAt: "createdAt-value-7"
 		});
 	});
-
 });

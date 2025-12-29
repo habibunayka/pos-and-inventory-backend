@@ -11,7 +11,9 @@ describe("CashierUser", () => {
 		expect(() => new CashierUser({ name: "Alice" })).toThrow("CASHIER_USER.NOT_CONTAIN_NEEDED_PROPERTY");
 		expect(() => new CashierUser({ name: 123, pin: "1234" })).toThrow("CASHIER_USER.NAME_NOT_STRING");
 		expect(() => new CashierUser({ name: "Alice", pin: {} })).toThrow("CASHIER_USER.PIN_NOT_VALID_TYPE");
-		expect(() => new CashierUser({ name: "Alice", pin: "1234", status: 1 })).toThrow("CASHIER_USER.STATUS_NOT_STRING");
+		expect(() => new CashierUser({ name: "Alice", pin: "1234", status: 1 })).toThrow(
+			"CASHIER_USER.STATUS_NOT_STRING"
+		);
 		expect(() => new CashierUser({ name: "   ", pin: "1234" })).toThrow("CASHIER_USER.NAME_EMPTY");
 	});
 

@@ -14,7 +14,12 @@ describe("UpdateSupplierProductUsecase", () => {
 		supplierService = { getSupplier: jest.fn().mockResolvedValue({ id: 1 }) };
 		ingredientService = { getIngredient: jest.fn().mockResolvedValue({ id: 2 }) };
 		packageService = { getPackage: jest.fn().mockResolvedValue({ id: 3 }) };
-		supplierProductService.getSupplierProduct.mockResolvedValue({ id: 1, supplierId: 1, ingredientId: 2, packageId: 3 });
+		supplierProductService.getSupplierProduct.mockResolvedValue({
+			id: 1,
+			supplierId: 1,
+			ingredientId: 2,
+			packageId: 3
+		});
 		usecase = new UpdateSupplierProductUsecase({
 			supplierProductService,
 			supplierService,
@@ -42,7 +47,9 @@ describe("UpdateSupplierProductUsecase", () => {
 	});
 
 	test("should throw when qty invalid", async () => {
-		await expect(usecase.execute(1, { qty: "abc" })).rejects.toThrow(new ValidationError("qty must be a positive number"));
+		await expect(usecase.execute(1, { qty: "abc" })).rejects.toThrow(
+			new ValidationError("qty must be a positive number")
+		);
 	});
 
 	test("should throw when price invalid", async () => {

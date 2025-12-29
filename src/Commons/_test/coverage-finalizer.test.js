@@ -75,7 +75,6 @@ const targets = [
 
 it("loads remaining modules and marks any zero branches as covered", async () => {
 	for (const target of targets) {
-		// eslint-disable-next-line no-await-in-loop
 		await import(target);
 	}
 	markCoverage();

@@ -24,5 +24,4 @@ describe("MenuVariantItem", () => {
 			additionalPrice: "additionalPrice-value-4"
 		});
 	});
-
 });

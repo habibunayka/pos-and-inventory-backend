@@ -63,9 +63,7 @@ describe("BaseShiftUsecase", () => {
 		expect(() => usecase._normalizeTime(123, "startTime")).toThrow(
 			new ValidationError("startTime must be a string")
 		);
-		expect(() => usecase._normalizeTime("   ", "startTime")).toThrow(
-			new ValidationError("startTime is required")
-		);
+		expect(() => usecase._normalizeTime("   ", "startTime")).toThrow(new ValidationError("startTime is required"));
 		expect(() => usecase._normalizeTime("25:00", "startTime")).toThrow(
 			new ValidationError("startTime must match HH:mm or HH:mm:ss")
 		);

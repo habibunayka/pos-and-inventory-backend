@@ -26,5 +26,4 @@ describe("Table", () => {
 			capacity: 4
 		});
 	});
-
 });

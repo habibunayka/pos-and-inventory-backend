@@ -26,5 +26,4 @@ describe("Station", () => {
 			isActive: "isActive-value-5"
 		});
 	});
-
 });

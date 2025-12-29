@@ -25,7 +25,9 @@ describe("UpdatePlaceUsecase", () => {
 	});
 
 	test("should throw when no fields provided", async () => {
-		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("At least one field must be provided"));
+		await expect(usecase.execute(1, {})).rejects.toThrow(
+			new ValidationError("At least one field must be provided")
+		);
 	});
 
 	test("should throw when place not found", async () => {

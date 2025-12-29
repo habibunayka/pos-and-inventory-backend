@@ -42,6 +42,11 @@ describe("GetUserUsecase", () => {
 		const result = await usecase.execute("2");
 
 		expect(mockUserService.getUser).toHaveBeenCalledWith(2);
-		expect(result).toMatchObject({ id: 2, name: "John", email: "john@example.com", authenticationMethod: "password" });
+		expect(result).toMatchObject({
+			id: 2,
+			name: "John",
+			email: "john@example.com",
+			authenticationMethod: "password"
+		});
 	});
 });

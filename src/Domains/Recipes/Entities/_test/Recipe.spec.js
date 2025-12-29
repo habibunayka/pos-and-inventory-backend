@@ -24,5 +24,4 @@ describe("Recipe", () => {
 			qty: "qty-value-4"
 		});
 	});
-
 });

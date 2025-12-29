@@ -38,7 +38,14 @@ describe("CreateCashierShiftUsecase", () => {
 
 	test("should throw when openingBalance is invalid", async () => {
 		await expect(
-			usecase.execute({ placeId: 1, stationId: 2, shiftId: 3, cashierId: 4, ipAddress: "1.1.1.1", openingBalance: "abc" })
+			usecase.execute({
+				placeId: 1,
+				stationId: 2,
+				shiftId: 3,
+				cashierId: 4,
+				ipAddress: "1.1.1.1",
+				openingBalance: "abc"
+			})
 		).rejects.toThrow(new ValidationError("openingBalance must be a number"));
 	});
 

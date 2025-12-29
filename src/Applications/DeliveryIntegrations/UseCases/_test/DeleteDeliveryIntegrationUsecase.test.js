@@ -14,9 +14,7 @@ describe("DeleteDeliveryIntegrationUsecase", () => {
 	});
 
 	test("should throw when service is missing", () => {
-		expect(() => new DeleteDeliveryIntegrationUsecase()).toThrow(
-			"DELIVERYINTEGRATION_USECASE.MISSING_SERVICE"
-		);
+		expect(() => new DeleteDeliveryIntegrationUsecase()).toThrow("DELIVERYINTEGRATION_USECASE.MISSING_SERVICE");
 	});
 
 	test("should throw when id is invalid", async () => {
@@ -26,9 +24,7 @@ describe("DeleteDeliveryIntegrationUsecase", () => {
 	test("should throw when deletion failed", async () => {
 		mockService.deleteDeliveryIntegration.mockResolvedValue(false);
 
-		await expect(usecase.execute(1)).rejects.toThrow(
-			new ValidationError("Delivery integration not found")
-		);
+		await expect(usecase.execute(1)).rejects.toThrow(new ValidationError("Delivery integration not found"));
 	});
 
 	test("should delete delivery integration", async () => {

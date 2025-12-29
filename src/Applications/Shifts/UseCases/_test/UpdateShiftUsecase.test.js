@@ -40,15 +40,11 @@ describe("UpdateShiftUsecase", () => {
 
 	test("should throw when place invalid", async () => {
 		placeService.getPlace.mockResolvedValue(null);
-		await expect(usecase.execute(1, { placeId: "2" })).rejects.toThrow(
-			new ValidationError("placeId not found")
-		);
+		await expect(usecase.execute(1, { placeId: "2" })).rejects.toThrow(new ValidationError("placeId not found"));
 	});
 
 	test("should throw when name empty", async () => {
-		await expect(usecase.execute(1, { name: "  " })).rejects.toThrow(
-			new ValidationError("name cannot be empty")
-		);
+		await expect(usecase.execute(1, { name: "  " })).rejects.toThrow(new ValidationError("name cannot be empty"));
 	});
 
 	test("should throw when time invalid", async () => {

@@ -1,6 +1,7 @@
 /// ========== PROMOTIONS ==========
 model Promotion {
   id            Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId       Int?     @map("place_id")
   name          String
   startAt       DateTime? @map("start_at")
@@ -15,6 +16,7 @@ model Promotion {
 
 model PromotionRule {
   id          Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   promotionId Int    @map("promotion_id")
   ruleType    String? @map("rule_type")
   value       String?

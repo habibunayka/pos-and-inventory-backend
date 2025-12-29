@@ -20,7 +20,9 @@ describe("CreatePlaceUsecase", () => {
 	});
 
 	test("should throw when name not provided at all", async () => {
-		await expect(usecase.execute({ address: "Somewhere" })).rejects.toThrow(new ValidationError("name is required"));
+		await expect(usecase.execute({ address: "Somewhere" })).rejects.toThrow(
+			new ValidationError("name is required")
+		);
 	});
 
 	test("should create place with normalized payload", async () => {

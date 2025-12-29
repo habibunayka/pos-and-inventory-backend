@@ -30,5 +30,4 @@ describe("Place", () => {
 			isActive: "isActive-value-7"
 		});
 	});
-
 });

@@ -79,9 +79,7 @@ describe("PackageService", () => {
 	test("getPackageByName should throw when repository cannot search by name", async () => {
 		const service = new PackageService({ packageRepository: { ...mockRepo, findByName: undefined } });
 
-		expect(() => service.getPackageByName("box")).toThrow(
-			"PACKAGE_SERVICE.REPOSITORY_MISSING_FIND_BY_NAME"
-		);
+		expect(() => service.getPackageByName("box")).toThrow("PACKAGE_SERVICE.REPOSITORY_MISSING_FIND_BY_NAME");
 	});
 
 	test("getPackageByName should delegate when repository supports lookup", async () => {

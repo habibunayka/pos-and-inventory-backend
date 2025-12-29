@@ -175,6 +175,7 @@ const roleDefinitions = [
 			"manage_places",
 			"manage_staff",
 			"manage_menus",
+			"manage_categories",
 			"manage_inventory",
 			"manage_suppliers",
 			"manage_promotions",
@@ -195,6 +196,7 @@ const roleDefinitions = [
 			"manage_places",
 			"manage_staff",
 			"manage_menus",
+			"manage_categories",
 			"manage_inventory",
 			"manage_suppliers",
 			"manage_promotions",
@@ -212,6 +214,7 @@ const roleDefinitions = [
 			"manage_tables",
 			"manage_kitchen_operations",
 			"manage_menus",
+			"manage_categories",
 			"manage_inventory",
 			"manage_suppliers",
 			"manage_customer_data",
@@ -318,7 +321,7 @@ async function main() {
 		});
 
 		if (existing) {
-			const updateData = buildPlacePersistenceData({ ...existing, ...place });
+			const updateData = { ...buildPlacePersistenceData({ ...existing, ...place }), deletedAt: null };
 			await prisma.place.update({
 				where: { id: existing.id },
 				data: updateData
@@ -334,7 +337,7 @@ async function main() {
 	for (const permission of permissionCatalog) {
 		const record = await prisma.permission.upsert({
 			where: { name: permission.name },
-			update: { description: permission.description },
+			update: { description: permission.description, deletedAt: null },
 			create: permission
 		});
 		permissionRecords[permission.name] = record;
@@ -344,7 +347,7 @@ async function main() {
 	for (const roleDefinition of roleDefinitions) {
 		const record = await prisma.role.upsert({
 			where: { name: roleDefinition.name },
-			update: { description: roleDefinition.description },
+			update: { description: roleDefinition.description, deletedAt: null },
 			create: {
 				name: roleDefinition.name,
 				description: roleDefinition.description
@@ -353,15 +356,26 @@ async function main() {
 
 		roleRecords[roleDefinition.name] = record;
 
-		await prisma.rolePermission.deleteMany({ where: { roleId: record.id } });
+		await prisma.rolePermission.updateMany({
+			where: { roleId: record.id, deletedAt: null },
+			data: { deletedAt: new Date() }
+		});
 		if (roleDefinition.permissions.length > 0) {
-			await prisma.rolePermission.createMany({
-				data: roleDefinition.permissions.map((permissionName) => ({
-					roleId: record.id,
-					permissionId: permissionRecords[permissionName].id
-				})),
-				skipDuplicates: true
-			});
+			for (const permissionName of roleDefinition.permissions) {
+				await prisma.rolePermission.upsert({
+					where: {
+						roleId_permissionId: {
+							roleId: record.id,
+							permissionId: permissionRecords[permissionName].id
+						}
+					},
+					update: { deletedAt: null },
+					create: {
+						roleId: record.id,
+						permissionId: permissionRecords[permissionName].id
+					}
+				});
+			}
 		}
 	}
 
@@ -383,7 +397,7 @@ async function main() {
 		if (userData.email) {
 			user = await prisma.user.upsert({
 				where: { email: userData.email },
-				update: userData,
+				update: { ...userData, deletedAt: null },
 				create: userData
 			});
 		} else {
@@ -397,7 +411,7 @@ async function main() {
 			if (existingCashier) {
 				user = await prisma.user.update({
 					where: { id: existingCashier.id },
-					data: userData
+					data: { ...userData, deletedAt: null }
 				});
 			} else {
 				user = await prisma.user.create({ data: userData });
@@ -412,7 +426,14 @@ async function main() {
 			}
 		});
 
-		if (!existingUserRole) {
+		if (existingUserRole) {
+			if (existingUserRole.deletedAt !== null) {
+				await prisma.userRole.update({
+					where: { id: existingUserRole.id },
+					data: { deletedAt: null }
+				});
+			}
+		} else {
 			await prisma.userRole.create({
 				data: {
 					userId: user.id,
@@ -436,7 +457,7 @@ async function main() {
 	for (const u of unitDefs) {
 		const rec = await prisma.unit.upsert({
 			where: { name: u.name },
-			update: { abbreviation: u.abbreviation },
+			update: { abbreviation: u.abbreviation, deletedAt: null },
 			create: u
 		});
 		unitRecords[u.name] = rec;
@@ -458,7 +479,10 @@ async function main() {
 		const existing = await prisma.ingredient.findFirst({ where: { name: ing.name } });
 		let rec;
 		if (existing) {
-			rec = await prisma.ingredient.update({ where: { id: existing.id }, data: { unitId: unit.id } });
+			rec = await prisma.ingredient.update({
+				where: { id: existing.id },
+				data: { unitId: unit.id, deletedAt: null }
+			});
 		} else {
 			rec = await prisma.ingredient.create({ data: { name: ing.name, unitId: unit.id } });
 		}
@@ -476,7 +500,7 @@ async function main() {
 	for (const p of packageDefs) {
 		const rec = await prisma.package.upsert({
 			where: { name: p.name },
-			update: { description: p.description ?? null },
+			update: { description: p.description ?? null, deletedAt: null },
 			create: p
 		});
 		packageRecords[p.name] = rec;
@@ -501,7 +525,7 @@ async function main() {
 		if (existing) {
 			await prisma.ingredientPackage.update({
 				where: { id: existing.id },
-				data: { qty: ip.qty }
+				data: { qty: ip.qty, deletedAt: null }
 			});
 		} else {
 			await prisma.ingredientPackage.create({
@@ -521,7 +545,7 @@ async function main() {
 		const existing = await prisma.supplier.findFirst({ where: { name: s.name } });
 		let rec;
 		if (existing) {
-			rec = await prisma.supplier.update({ where: { id: existing.id }, data: s });
+			rec = await prisma.supplier.update({ where: { id: existing.id }, data: { ...s, deletedAt: null } });
 		} else {
 			rec = await prisma.supplier.create({ data: s });
 		}
@@ -573,14 +597,17 @@ async function main() {
 		};
 
 		if (existing) {
-			await prisma.supplierProduct.update({ where: { id: existing.id }, data: payload });
+			await prisma.supplierProduct.update({
+				where: { id: existing.id },
+				data: { ...payload, deletedAt: null }
+			});
 		} else {
 			await prisma.supplierProduct.create({ data: payload });
 		}
 	}
 
 	// Tables (need a place)
-	const mainPlace = await prisma.place.findFirst({ orderBy: { id: "asc" } });
+	const mainPlace = await prisma.place.findFirst({ where: { deletedAt: null }, orderBy: { id: "asc" } });
 	const stationRecords = {};
 	const shiftRecords = {};
 	if (mainPlace) {
@@ -593,7 +620,10 @@ async function main() {
 		for (const t of tableDefs) {
 			const existing = await prisma.table.findFirst({ where: { placeId: t.placeId, name: t.name } });
 			if (existing) {
-				await prisma.table.update({ where: { id: existing.id }, data: { status: t.status } });
+				await prisma.table.update({
+					where: { id: existing.id },
+					data: { status: t.status, deletedAt: null }
+				});
 			} else {
 				await prisma.table.create({ data: t });
 			}
@@ -617,7 +647,7 @@ async function main() {
 
 			let record;
 			if (existing) {
-				record = await prisma.station.update({ where: { id: existing.id }, data: payload });
+				record = await prisma.station.update({ where: { id: existing.id }, data: { ...payload, deletedAt: null } });
 			} else {
 				record = await prisma.station.create({ data: payload });
 			}
@@ -656,7 +686,7 @@ async function main() {
 
 			let record;
 			if (existing) {
-				record = await prisma.shift.update({ where: { id: existing.id }, data: payload });
+				record = await prisma.shift.update({ where: { id: existing.id }, data: { ...payload, deletedAt: null } });
 			} else {
 				record = await prisma.shift.create({ data: payload });
 			}
@@ -672,7 +702,7 @@ async function main() {
 	for (const c of categoryDefs) {
 		const rec = await prisma.category.upsert({
 			where: { name: c.name },
-			update: {},
+			update: { deletedAt: null },
 			create: c
 		});
 		categoryRecords[c.name] = rec;
@@ -710,7 +740,7 @@ async function main() {
 		const existing = await prisma.menu.findFirst({ where: { name: m.name } });
 		let rec;
 		if (existing) {
-			rec = await prisma.menu.update({ where: { id: existing.id }, data });
+			rec = await prisma.menu.update({ where: { id: existing.id }, data: { ...data, deletedAt: null } });
 		} else {
 			rec = await prisma.menu.create({ data });
 		}
@@ -731,7 +761,10 @@ async function main() {
 			where: { menuId: menu.id, effectiveDate: new Date(p.effectiveDate) }
 		});
 		if (exist) {
-			await prisma.menuPrice.update({ where: { id: exist.id }, data: { price: p.price } });
+			await prisma.menuPrice.update({
+				where: { id: exist.id },
+				data: { price: p.price, deletedAt: null }
+			});
 		} else {
 			await prisma.menuPrice.create({
 				data: { menuId: menu.id, price: p.price, effectiveDate: new Date(p.effectiveDate) }
@@ -752,7 +785,10 @@ async function main() {
 		const exist = await prisma.menuVariant.findFirst({ where: { menuId: menu.id, name: v.name } });
 		let rec;
 		if (exist) {
-			rec = exist;
+			rec = await prisma.menuVariant.update({
+				where: { id: exist.id },
+				data: { deletedAt: null }
+			});
 		} else {
 			rec = await prisma.menuVariant.create({ data: { menuId: menu.id, name: v.name } });
 		}
@@ -774,7 +810,7 @@ async function main() {
 		if (exist) {
 			await prisma.menuVariantItem.update({
 				where: { id: exist.id },
-				data: { additionalPrice: vi.additionalPrice }
+				data: { additionalPrice: vi.additionalPrice, deletedAt: null }
 			});
 		} else {
 			await prisma.menuVariantItem.create({
@@ -796,7 +832,7 @@ async function main() {
 		if (!menu || !ingredient) continue;
 		const exist = await prisma.recipe.findFirst({ where: { menuId: menu.id, ingredientId: ingredient.id } });
 		if (exist) {
-			await prisma.recipe.update({ where: { id: exist.id }, data: { qty: r.qty } });
+			await prisma.recipe.update({ where: { id: exist.id }, data: { qty: r.qty, deletedAt: null } });
 		} else {
 			await prisma.recipe.create({ data: { menuId: menu.id, ingredientId: ingredient.id, qty: r.qty } });
 		}
@@ -810,7 +846,7 @@ async function main() {
 	for (const pm of pmDefs) {
 		await prisma.paymentMethod.upsert({
 			where: { name: pm.name },
-			update: { description: pm.description, isActive: pm.isActive },
+			update: { description: pm.description, isActive: pm.isActive, deletedAt: null },
 			create: pm
 		});
 	}
@@ -824,7 +860,10 @@ async function main() {
 				where: { placeId: di.placeId, platformName: di.platformName }
 			});
 			if (exist) {
-				await prisma.deliveryIntegration.update({ where: { id: exist.id }, data: di });
+				await prisma.deliveryIntegration.update({
+					where: { id: exist.id },
+					data: { ...di, deletedAt: null }
+				});
 			} else {
 				await prisma.deliveryIntegration.create({ data: di });
 			}
@@ -833,7 +872,7 @@ async function main() {
 
 	// ==== Report files (dummy) ====
 	// Seed a couple of generated report entries if table is empty
-	const reportFileCount = await prisma.reportFile.count();
+	const reportFileCount = await prisma.reportFile.count({ where: { deletedAt: null } });
 	if (reportFileCount === 0) {
 		const baseDate = new Date();
 		const rfSeeds = [
@@ -858,7 +897,7 @@ async function main() {
 		for (const rf of rfSeeds) {
 			const exist = await prisma.reportFile.findFirst({ where: { filePath: rf.filePath } });
 			if (exist) {
-				await prisma.reportFile.update({ where: { id: exist.id }, data: rf });
+				await prisma.reportFile.update({ where: { id: exist.id }, data: { ...rf, deletedAt: null } });
 			} else {
 				await prisma.reportFile.create({ data: rf });
 			}
@@ -867,14 +906,14 @@ async function main() {
 
 	// ==== Activity logs (dummy) ====
 	// Only insert sample logs when table is empty to keep the seed idempotent
-	const activityLogCount = await prisma.activityLog.count();
+	const activityLogCount = await prisma.activityLog.count({ where: { deletedAt: null } });
 	if (activityLogCount === 0) {
 		// Try to attach to an existing seeded user (brand owner)
 		const brandOwnerEmail = envOrDefault(
 			"SEED_BRAND_OWNER_EMAIL",
 			envOrDefault("SEED_OWNER_EMAIL", "brand.owner@example.com")
 		)?.toLowerCase();
-		const ownerUser = await prisma.user.findFirst({ where: { email: brandOwnerEmail } });
+		const ownerUser = await prisma.user.findFirst({ where: { email: brandOwnerEmail, deletedAt: null } });
 		const uid = ownerUser?.id ?? null;
 
 		const alSeeds = [
@@ -893,7 +932,7 @@ async function main() {
 	}
 
 	// ==== System logs (dummy) ====
-	const systemLogCount = await prisma.systemLog.count();
+	const systemLogCount = await prisma.systemLog.count({ where: { deletedAt: null } });
 	if (systemLogCount === 0) {
 		const slSeeds = [
 			{ level: "info", message: "Server started", contextJson: { env: process.env.NODE_ENV ?? "development" } },
@@ -909,9 +948,9 @@ async function main() {
 	}
 
 	// ==== Transactions seed (transactions, transaction_items, transaction_item_variants, kitchen_orders)
-	const trxCount = await prisma.transaction.count();
+	const trxCount = await prisma.transaction.count({ where: { deletedAt: null } });
 	if (trxCount === 0) {
-		const anyUser = await prisma.user.findFirst({ orderBy: { id: "asc" } });
+		const anyUser = await prisma.user.findFirst({ where: { deletedAt: null }, orderBy: { id: "asc" } });
 		const table = mainPlace
 			? await prisma.table.findFirst({ where: { placeId: mainPlace.id }, orderBy: { id: "asc" } })
 			: null;
@@ -936,6 +975,7 @@ async function main() {
 			const esTeh = menuRecords?.["Es Teh"];
 			const nasiGoreng = menuRecords?.["Nasi Goreng"];
 
+			/* prettier-ignore-start */
 			const item1 = esTeh
 				? await prisma.transactionItem.create({
 					data: { transactionId: trx1.id, menuId: esTeh.id, qty: 1, price: 8000, discount: 0 }
@@ -946,6 +986,7 @@ async function main() {
 					data: { transactionId: trx1.id, menuId: nasiGoreng.id, qty: 1, price: 22000, discount: 0 }
 				})
 				: null;
+			/* prettier-ignore-end */
 
 			// Variants (link to MenuVariant)
 			if (item1 && typeof variantRecords !== "undefined") {
@@ -1000,7 +1041,7 @@ async function main() {
 	}
 
 	// ==== Place Stocks ====
-	const placeStockCount = await prisma.placeStock.count();
+	const placeStockCount = await prisma.placeStock.count({ where: { deletedAt: null } });
 	if (placeStockCount === 0 && mainPlace) {
 		const targetIngredients = ["Gula", "Minyak", "Telur"].map((n) => ingredientRecords[n]).filter(Boolean);
 		for (const ing of targetIngredients) {
@@ -1010,7 +1051,7 @@ async function main() {
 			});
 			const data = { placeId: mainPlace.id, ingredientId: ing.id, unitId, qty: 100 };
 			if (existing) {
-				await prisma.placeStock.update({ where: { id: existing.id }, data });
+				await prisma.placeStock.update({ where: { id: existing.id }, data: { ...data, deletedAt: null } });
 			} else {
 				await prisma.placeStock.create({ data });
 			}
@@ -1018,7 +1059,7 @@ async function main() {
 	}
 
 	// ==== Inventory stock daily ====
-	const isdCount = await prisma.inventoryStockDaily.count();
+	const isdCount = await prisma.inventoryStockDaily.count({ where: { deletedAt: null } });
 	if (isdCount === 0 && mainPlace) {
 		const today = new Date();
 		const dateOnly = new Date(today.toISOString().slice(0, 10));
@@ -1036,7 +1077,10 @@ async function main() {
 				diffQty: -10
 			};
 			if (existing) {
-				await prisma.inventoryStockDaily.update({ where: { id: existing.id }, data: payload });
+				await prisma.inventoryStockDaily.update({
+					where: { id: existing.id },
+					data: { ...payload, deletedAt: null }
+				});
 			} else {
 				await prisma.inventoryStockDaily.create({ data: payload });
 			}
@@ -1044,7 +1088,7 @@ async function main() {
 	}
 
 	// ==== Stock transfers ====
-	const stCount = await prisma.stockTransfer.count();
+	const stCount = await prisma.stockTransfer.count({ where: { deletedAt: null } });
 	if (stCount === 0) {
 		const places = await prisma.place.findMany({ orderBy: { id: "asc" } });
 		if (places.length >= 2) {
@@ -1058,7 +1102,7 @@ async function main() {
 	}
 
 	// ==== Wastes ====
-	const wasteCount = await prisma.waste.count();
+	const wasteCount = await prisma.waste.count({ where: { deletedAt: null } });
 	if (wasteCount === 0 && mainPlace) {
 		const ing = ingredientRecords["Telur"] ?? null;
 		if (ing) {
@@ -1069,9 +1113,9 @@ async function main() {
 	}
 
 	// ==== Cashier shifts ====
-	const csCount = await prisma.cashierShift.count();
+	const csCount = await prisma.cashierShift.count({ where: { deletedAt: null } });
 	if (csCount === 0 && mainPlace) {
-		const cashier = await prisma.user.findFirst({ orderBy: { id: "asc" } });
+		const cashier = await prisma.user.findFirst({ where: { deletedAt: null }, orderBy: { id: "asc" } });
 		const station =
 			stationRecords["Front Counter"] ??
 			(await prisma.station.findFirst({ where: { placeId: mainPlace.id }, orderBy: { id: "asc" } }));
@@ -1094,7 +1138,7 @@ async function main() {
 	}
 
 	// ==== Promotions & rules ====
-	const promoCount = await prisma.promotion.count();
+	const promoCount = await prisma.promotion.count({ where: { deletedAt: null } });
 	if (promoCount === 0) {
 		const promo = await prisma.promotion.create({
 			data: {

@@ -9,12 +9,15 @@ export default class PrismaShiftRepository extends ShiftRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.shift.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.shift.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Shift.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.shift.findUnique({ where: { id } });
+		const record = await this._prisma.shift.findFirst({ where: { id, deletedAt: null } });
 		return Shift.fromPersistence(record);
 	}
 
@@ -24,22 +27,16 @@ export default class PrismaShiftRepository extends ShiftRepository {
 	}
 
 	async updateShift({ id, data }) {
-		try {
-			const record = await this._prisma.shift.update({ where: { id }, data });
-			return Shift.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.shift.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.shift.update({ where: { id }, data });
+		return Shift.fromPersistence(record);
 	}
 
 	async deleteShift(id) {
-		try {
-			await this._prisma.shift.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.shift.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.shift.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

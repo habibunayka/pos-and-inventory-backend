@@ -85,6 +85,8 @@ describe("CreateTransactionItemUsecase", () => {
 	});
 
 	test("should cover default payload branch", async () => {
-		await expect(usecase.execute()).rejects.toThrow(new ValidationError("transactionId must be a positive integer"));
+		await expect(usecase.execute()).rejects.toThrow(
+			new ValidationError("transactionId must be a positive integer")
+		);
 	});
 });

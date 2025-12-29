@@ -29,4 +29,3 @@ export default class BaseStationUsecase {
 		return id;
 	}
 }
-

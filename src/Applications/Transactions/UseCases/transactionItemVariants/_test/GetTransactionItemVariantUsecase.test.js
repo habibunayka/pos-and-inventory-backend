@@ -22,9 +22,7 @@ describe("GetTransactionItemVariantUsecase", () => {
 	test("should throw when variant not found", async () => {
 		mockService.getVariant.mockResolvedValue(null);
 
-		await expect(usecase.execute(1)).rejects.toThrow(
-			new ValidationError("Transaction item variant not found")
-		);
+		await expect(usecase.execute(1)).rejects.toThrow(new ValidationError("Transaction item variant not found"));
 	});
 
 	test("should return variant when found", async () => {

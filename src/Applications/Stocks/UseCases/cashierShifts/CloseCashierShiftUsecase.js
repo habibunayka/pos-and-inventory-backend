@@ -19,14 +19,14 @@ export default class CloseCashierShiftUsecase extends BaseCashierShiftUsecase {
 			throw new ValidationError("Cashier shift already closed");
 		}
 
-		const closedAt =
-			payload.closedAt === undefined || payload.closedAt === null
-				? new Date()
-				: (() => {
-						const date = new Date(payload.closedAt);
-						if (Number.isNaN(date.getTime())) throw new ValidationError("closedAt must be a valid date");
-						return date;
-				  })();
+		let closedAt;
+		if (payload.closedAt === undefined || payload.closedAt === null) {
+			closedAt = new Date();
+		} else {
+			const date = new Date(payload.closedAt);
+			if (Number.isNaN(date.getTime())) throw new ValidationError("closedAt must be a valid date");
+			closedAt = date;
+		}
 
 		const data = {
 			closedAt,

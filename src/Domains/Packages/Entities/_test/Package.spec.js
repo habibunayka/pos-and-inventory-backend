@@ -22,5 +22,4 @@ describe("Package", () => {
 			description: "description-value-3"
 		});
 	});
-
 });

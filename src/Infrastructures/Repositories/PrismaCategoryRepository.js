@@ -9,18 +9,21 @@ export default class PrismaCategoryRepository extends CategoryRepository {
 	}
 
 	async findAll() {
-		const records = await this._prisma.category.findMany({ orderBy: { id: "asc" } });
+		const records = await this._prisma.category.findMany({
+			where: { deletedAt: null },
+			orderBy: { id: "asc" }
+		});
 		return records.map((record) => Category.fromPersistence(record));
 	}
 
 	async findById(id) {
-		const record = await this._prisma.category.findUnique({ where: { id } });
+		const record = await this._prisma.category.findFirst({ where: { id, deletedAt: null } });
 		return Category.fromPersistence(record);
 	}
 
 	async findByName(name) {
 		if (!name) return null;
-		const record = await this._prisma.category.findUnique({ where: { name } });
+		const record = await this._prisma.category.findFirst({ where: { name, deletedAt: null } });
 		return Category.fromPersistence(record);
 	}
 
@@ -30,22 +33,16 @@ export default class PrismaCategoryRepository extends CategoryRepository {
 	}
 
 	async updateCategory({ id, data }) {
-		try {
-			const record = await this._prisma.category.update({ where: { id }, data });
-			return Category.fromPersistence(record);
-		} catch (error) {
-			if (error?.code === "P2025") return null;
-			throw error;
-		}
+		const existing = await this._prisma.category.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return null;
+		const record = await this._prisma.category.update({ where: { id }, data });
+		return Category.fromPersistence(record);
 	}
 
 	async deleteCategory(id) {
-		try {
-			await this._prisma.category.delete({ where: { id } });
-			return true;
-		} catch (error) {
-			if (error?.code === "P2025") return false;
-			throw error;
-		}
+		const existing = await this._prisma.category.findFirst({ where: { id, deletedAt: null } });
+		if (!existing) return false;
+		await this._prisma.category.update({ where: { id }, data: { deletedAt: new Date() } });
+		return true;
 	}
 }

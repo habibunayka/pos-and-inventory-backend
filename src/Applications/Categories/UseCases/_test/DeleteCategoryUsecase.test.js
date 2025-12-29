@@ -15,17 +15,11 @@ describe("DeleteCategoryUsecase", () => {
 	});
 
 	test("should throw when id is not a positive integer", async () => {
-		await expect(usecase.execute("abc")).rejects.toThrow(
-			new ValidationError("id must be a positive integer")
-		);
+		await expect(usecase.execute("abc")).rejects.toThrow(new ValidationError("id must be a positive integer"));
 
-		await expect(usecase.execute(0)).rejects.toThrow(
-			new ValidationError("id must be a positive integer")
-		);
+		await expect(usecase.execute(0)).rejects.toThrow(new ValidationError("id must be a positive integer"));
 
-		await expect(usecase.execute(-5)).rejects.toThrow(
-			new ValidationError("id must be a positive integer")
-		);
+		await expect(usecase.execute(-5)).rejects.toThrow(new ValidationError("id must be a positive integer"));
 	});
 
 	test("should call service.deleteCategory with converted int id", async () => {
@@ -39,9 +33,7 @@ describe("DeleteCategoryUsecase", () => {
 	test("should throw ValidationError if deleteCategory returns false", async () => {
 		mockService.deleteCategory.mockResolvedValue(false);
 
-		await expect(usecase.execute(10)).rejects.toThrow(
-			new ValidationError("Category not found")
-		);
+		await expect(usecase.execute(10)).rejects.toThrow(new ValidationError("Category not found"));
 	});
 
 	test("should return true when deletion succeeds", async () => {

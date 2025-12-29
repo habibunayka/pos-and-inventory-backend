@@ -40,5 +40,4 @@ describe("CashierShift", () => {
 			status: "status-value-12"
 		});
 	});
-
 });

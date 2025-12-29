@@ -22,6 +22,7 @@ datasource db {
 /// ========== USERS & RBAC ==========
 model User {
   id            Int       @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name          String
   email         String?   @unique
   passwordHash  String?   @map("password_hash")
@@ -41,6 +42,7 @@ model User {
 
 model Role {
   id          Int           @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name        String        @unique
   description String?
 
@@ -53,6 +55,7 @@ model Role {
 
 model Permission {
   id          Int              @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name        String           @unique
   description String?
 
@@ -63,6 +66,7 @@ model Permission {
 
 model RolePermission {
   id           Int @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   roleId       Int @map("role_id")
   permissionId Int @map("permission_id")
 
@@ -75,6 +79,7 @@ model RolePermission {
 
 model UserRole {
   id      Int  @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   userId  Int  @map("user_id")
   roleId  Int  @map("role_id")
   placeId Int? @map("place_id")
@@ -92,6 +97,7 @@ model UserRole {
 /// ========== PLACES ==========
 model Place {
   id       Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name     String
   address  String?
   phone    String?
@@ -122,6 +128,7 @@ model Place {
 
 model PlaceStock {
   id           Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId      Int     @map("place_id")
   ingredientId Int     @map("ingredient_id")
   qty          Decimal @db.Decimal(12, 2) @default(0)
@@ -140,6 +147,7 @@ model PlaceStock {
 /// ========== CASHIER SHIFTS ==========
 model CashierShift {
   id             Int       @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId        Int       @map("place_id")
   stationId      Int       @map("station_id")
   shiftId        Int       @map("shift_id")
@@ -162,6 +170,7 @@ model CashierShift {
 
 model Station {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId     Int     @map("place_id")
   name        String
   description String?
@@ -176,6 +185,7 @@ model Station {
 
 model Shift {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId     Int     @map("place_id")
   name        String
   startTime   String  @map("start_time")
@@ -195,6 +205,7 @@ model Shift {
 /// ========== MENUS ==========
 model Menu {
   id          Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId     Int?     @map("place_id")
   name        String
   categoryId  Int?     @map("category_id")
@@ -213,6 +224,7 @@ model Menu {
 
 model Category {
   id   Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name String @unique
 
   menus Menu[]
@@ -222,6 +234,7 @@ model Category {
 
 model MenuVariant {
   id     Int @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   menuId Int @map("menu_id")
   name   String
 
@@ -234,6 +247,7 @@ model MenuVariant {
 
 model MenuPrice {
   id        Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   menuId    Int      @map("menu_id")
   price     Decimal  @db.Decimal(12, 2)
   effectiveDate DateTime @map("effective_date") @db.Date
@@ -245,6 +259,7 @@ model MenuPrice {
 
 model MenuVariantItem {
   id             Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   menuVariantId  Int     @map("menu_variant_id")
   name           String
   additionalPrice Decimal @db.Decimal(12, 2) @default(0) @map("additional_price")
@@ -259,6 +274,7 @@ model MenuVariantItem {
 /// ========== UNITS & INGREDIENTS ==========
 model Unit {
   id           Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name         String @unique
   abbreviation String @unique
 
@@ -271,6 +287,7 @@ model Unit {
 
 model Ingredient {
   id    Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name  String
   unitId Int    @map("unit_id")
 
@@ -288,6 +305,7 @@ model Ingredient {
 
 model Recipe {
   id           Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   menuId       Int     @map("menu_id")
   ingredientId Int     @map("ingredient_id")
   qty          Decimal @db.Decimal(12, 2)
@@ -304,6 +322,7 @@ model Recipe {
 /// ========== PAYMENTS ==========
 model PaymentMethod {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name        String  @unique
   description String?
   isActive    Boolean @default(true) @map("is_active")
@@ -318,6 +337,7 @@ model PaymentMethod {
 /// ========== TRANSACTIONS ==========
 model Transaction {
   id              Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   cashierId       Int      @map("cashier_id")
   placeId         Int?     @map("place_id")
   tableId         Int?     @map("table_id")
@@ -340,6 +360,7 @@ model Transaction {
 
 model TransactionItem {
   id            Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   transactionId Int     @map("transaction_id")
   menuId        Int     @map("menu_id")
   qty           Int
@@ -357,6 +378,7 @@ model TransactionItem {
 
 model TransactionItemVariant {
   id                Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   transactionItemId Int     @map("transaction_item_id")
   menuVariantId     Int     @map("menu_variant_id")
   extraPrice        Decimal @db.Decimal(12, 2) @default(0) @map("extra_price")
@@ -373,6 +395,7 @@ model TransactionItemVariant {
 /// ========== TABLES (DINE-IN) ==========
 model Table {
   id      Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId Int    @map("place_id")
   name    String
   capacity Int
@@ -389,6 +412,7 @@ model Table {
 /// ========== KITCHEN ==========
 model KitchenOrder {
   id                Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   transactionItemId Int      @map("transaction_item_id")
   status            String   @default("waiting")
   startedAt         DateTime? @map("started_at")
@@ -405,6 +429,7 @@ model KitchenOrder {
 /// ========== SUPPLIERS & PURCHASING ==========
 model Supplier {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name        String
   contactName String? @map("contact_name")
   phone       String?
@@ -419,6 +444,7 @@ model Supplier {
 
 model SupplierProduct {
   id           Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   supplierId   Int     @map("supplier_id")
   ingredientId Int     @map("ingredient_id")
   packageId    Int     @map("package_id")
@@ -437,6 +463,7 @@ model SupplierProduct {
 
 model PurchaseOrder {
   id         Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId    Int      @map("place_id")
   supplierId Int      @map("supplier_id")
   type       String? 
@@ -455,6 +482,7 @@ model PurchaseOrder {
 
 model PurchaseOrderItem {
   id                  Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   purchaseOrderId     Int     @map("purchase_order_id")
   ingredientPackageId Int     @map("ingredient_package_id")
   qty                 Decimal @db.Decimal(12, 2)
@@ -472,6 +500,7 @@ model PurchaseOrderItem {
 /// ========== PACKAGES & INGREDIENT_PACKAGES ==========
 model Package {
   id          Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   name        String @unique
   description String?
 
@@ -483,6 +512,7 @@ model Package {
 
 model IngredientPackage {
   id           Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   ingredientId Int     @map("ingredient_id")
   packageId    Int     @map("package_id")
   qty          Decimal @db.Decimal(12, 2)
@@ -501,6 +531,7 @@ model IngredientPackage {
 /// ========== GOODS RECEIPT ==========
 model GoodsReceipt {
   id             Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   purchaseOrderId Int     @map("purchase_order_id")
   receivedBy     Int?     @map("received_by")
   receivedAt     DateTime @default(now()) @map("received_at")
@@ -515,6 +546,7 @@ model GoodsReceipt {
 
 model GoodsReceiptItem {
   id                 Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   goodsReceiptId     Int     @map("goods_receipt_id")
   purchaseOrderItemId Int    @map("purchase_order_item_id")
   unitReceived       Decimal @db.Decimal(12, 2) @map("unit_received")
@@ -534,6 +566,7 @@ model GoodsReceiptItem {
 /// ========== STOCK OPS ==========
 model StockTransfer {
   id           Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   ingredientId Int     @map("ingredient_id")
   fromPlaceId Int?    @map("from_place_id")
   toPlaceId   Int?    @map("to_place_id")
@@ -549,6 +582,7 @@ model StockTransfer {
 
 model Waste {
   id          Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   ingredientId Int   @map("ingredient_id")
   placeId    Int?   @map("place_id")
   qty         Decimal @db.Decimal(12, 2)
@@ -563,6 +597,7 @@ model Waste {
 
 model InventoryStockDaily {
   id           Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId      Int     @map("place_id")
   ingredientId Int     @map("ingredient_id")
   date         DateTime @db.Date
@@ -583,6 +618,7 @@ model InventoryStockDaily {
 /// ========== PROMOTIONS ==========
 model Promotion {
   id            Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId       Int?     @map("place_id")
   name          String
   startAt       DateTime? @map("start_at")
@@ -597,6 +633,7 @@ model Promotion {
 
 model PromotionRule {
   id          Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   promotionId Int    @map("promotion_id")
   ruleType    String? @map("rule_type")
   value       String?
@@ -611,6 +648,7 @@ model PromotionRule {
 /// ========== LOGS ==========
 model ActivityLog {
   id         Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   userId     Int?     @map("user_id")
   action     String
   entityType String?  @map("entity_type")
@@ -625,6 +663,7 @@ model ActivityLog {
 
 model SystemLog {
   id         Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   level      String?
   message    String
   contextJson Json?   @map("context_json") @db.JsonB
@@ -638,6 +677,7 @@ model SystemLog {
 /// ========== REPORT FILES ==========
 model ReportFile {
   id          Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   reportType  String   @map("report_type")
   reportScope String   @map("report_scope")
   reportDate  DateTime? @map("report_date")
@@ -656,6 +696,7 @@ model ReportFile {
 /// ========== DELIVERY INTEGRATIONS ==========
 model DeliveryIntegration {
   id           Int    @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
   placeId      Int    @map("place_id")
   platformName String @map("platform_name")
   apiKey       String? @map("api_key")

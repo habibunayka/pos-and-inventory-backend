@@ -32,9 +32,7 @@ describe("UpdateCategoryUsecase", () => {
 		mockService.getCategoryByName.mockResolvedValue(null);
 		mockService.updateCategory.mockResolvedValue(null);
 
-		await expect(usecase.execute(1, { name: "Food" })).rejects.toThrow(
-			new ValidationError("Category not found")
-		);
+		await expect(usecase.execute(1, { name: "Food" })).rejects.toThrow(new ValidationError("Category not found"));
 	});
 
 	test("should update category with normalized name", async () => {

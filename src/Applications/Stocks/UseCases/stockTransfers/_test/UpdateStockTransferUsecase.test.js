@@ -24,9 +24,7 @@ describe("UpdateStockTransferUsecase", () => {
 	});
 
 	test("should throw when qty invalid", async () => {
-		await expect(usecase.execute(1, { qty: "abc" })).rejects.toThrow(
-			new ValidationError("qty must be a number")
-		);
+		await expect(usecase.execute(1, { qty: "abc" })).rejects.toThrow(new ValidationError("qty must be a number"));
 	});
 
 	test("should validate positive integer fields", async () => {
@@ -42,9 +40,7 @@ describe("UpdateStockTransferUsecase", () => {
 	test("should throw when record not found", async () => {
 		stockTransferService.updateStockTransfer.mockResolvedValue(null);
 
-		await expect(usecase.execute(1, { qty: 1 })).rejects.toThrow(
-			new ValidationError("Stock transfer not found")
-		);
+		await expect(usecase.execute(1, { qty: 1 })).rejects.toThrow(new ValidationError("Stock transfer not found"));
 	});
 
 	test("should update stock transfer with normalized payload", async () => {

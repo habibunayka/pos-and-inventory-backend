@@ -33,9 +33,7 @@ describe("BaseIngredientPackageUsecase", () => {
 		);
 
 		ingredientService.getIngredient.mockResolvedValue(null);
-		await expect(usecase._validateIngredientId(2)).rejects.toThrow(
-			new ValidationError("ingredientId not found")
-		);
+		await expect(usecase._validateIngredientId(2)).rejects.toThrow(new ValidationError("ingredientId not found"));
 	});
 
 	test("_validateIngredientId should skip validation when service missing", async () => {

@@ -36,5 +36,4 @@ describe("Transaction", () => {
 			createdAt: "createdAt-value-10"
 		});
 	});
-
 });

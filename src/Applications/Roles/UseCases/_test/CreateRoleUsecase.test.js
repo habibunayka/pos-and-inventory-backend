@@ -69,7 +69,11 @@ describe("CreateRoleUsecase", () => {
 		const created = { id: 2, name: "admin", rolePermissions: [{ permission: { name: "read" } }] };
 		roleService.createRole.mockResolvedValue(created);
 
-		const result = await usecase.execute({ name: "  ADMIN ", description: "  desc ", permissions: ["READ", "read"] });
+		const result = await usecase.execute({
+			name: "  ADMIN ",
+			description: "  desc ",
+			permissions: ["READ", "read"]
+		});
 
 		expect(roleService.createRole).toHaveBeenCalledWith({
 			roleData: { name: "admin", description: "desc" },
