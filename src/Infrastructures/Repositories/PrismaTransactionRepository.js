@@ -52,7 +52,51 @@ export default class PrismaTransactionRepository extends TransactionRepository {
 	}
 
 	async createTransaction(data) {
-		const record = await this._prisma.transaction.create({ data });
+		const items = Array.isArray(data.itemsJson) ? data.itemsJson : [];
+		const record = await this._prisma.$transaction(async (tx) => {
+			const created = await tx.transaction.create({ data });
+
+			for (const item of items) {
+				const itemRecord = await tx.transactionItem.create({
+					data: {
+						transactionId: created.id,
+						menuId: Number(item.menuId),
+						qty: Number(item.qty ?? 0),
+						price: Number(item.price ?? 0),
+						discount: item.discount == null ? null : Number(item.discount)
+					}
+				});
+
+				const variants = Array.isArray(item.variants) ? item.variants : [];
+				for (const variant of variants) {
+					await tx.transactionItemVariant.create({
+						data: {
+							transactionItemId: itemRecord.id,
+							menuVariantId: Number(variant.menuVariantId),
+							extraPrice: Number(variant.extraPrice ?? 0)
+						}
+					});
+				}
+			}
+
+			return tx.transaction.findFirst({
+				where: { id: created.id },
+				include: {
+					items: {
+						where: { deletedAt: null },
+						orderBy: { id: "asc" },
+						include: {
+							menu: true,
+							variants: {
+								where: { deletedAt: null },
+								orderBy: { id: "asc" },
+								include: { menuVariant: true }
+							}
+						}
+					}
+				}
+			});
+		});
 		return Transaction.fromPersistence(record);
 	}
 
