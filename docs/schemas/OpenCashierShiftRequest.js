@@ -6,10 +6,6 @@ const OpenCashierShiftRequest = {
 			type: "integer",
 			example: 1
 		},
-		cashierId: {
-			type: "integer",
-			example: 2
-		},
 		stationId: {
 			type: "integer",
 			example: 3

@@ -24,7 +24,6 @@ export const updateCashierShiftSchema = Joi.object({
 
 export const openCashierShiftSchema = Joi.object({
 	placeId: posInt,
-	cashierId: posInt,
 	stationId: posInt.required(),
 	shiftId: posInt.required(),
 	ipAddress: Joi.string().required(),
