@@ -40,7 +40,7 @@ export default function registerCashierShiftRoutes(app, { controller, requireAut
 		adapt(controller.update.bind(controller))
 	);
 	router.post(
-		"/:id/close",
+		"/:id",
 		...canUpdateCashierShifts,
 		validateRequest({ params: commonSchemas.idParam, body: csSchemas.close }),
 		adapt(controller.close.bind(controller))

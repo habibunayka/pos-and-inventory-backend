@@ -17,6 +17,7 @@ import CreateShiftRequest from "./CreateShiftRequest.js";
 import UpdateShiftRequest from "./UpdateShiftRequest.js";
 import CashierShift from "./CashierShift.js";
 import CreateCashierShiftRequest from "./CreateCashierShiftRequest.js";
+import OpenCashierShiftRequest from "./OpenCashierShiftRequest.js";
 import UpdateCashierShiftRequest from "./UpdateCashierShiftRequest.js";
 import CloseCashierShiftRequest from "./CloseCashierShiftRequest.js";
 import Promotion from "./Promotion.js";
@@ -125,6 +126,7 @@ const schemas = {
 	UpdateShiftRequest,
 	CashierShift,
 	CreateCashierShiftRequest,
+	OpenCashierShiftRequest,
 	UpdateCashierShiftRequest,
 	CloseCashierShiftRequest,
 	Promotion,

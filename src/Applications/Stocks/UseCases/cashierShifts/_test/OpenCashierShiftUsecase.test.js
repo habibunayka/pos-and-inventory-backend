@@ -72,6 +72,51 @@ describe("OpenCashierShiftUsecase", () => {
 		expect(result).toBe(created);
 	});
 
+	test("should inherit cashier and place from user context", async () => {
+		cashierShiftService.create.mockResolvedValue({ id: 15 });
+
+		const result = await usecase.execute(
+			{
+				stationId: 2,
+				shiftId: 3,
+				ipAddress: "1.1.1.1",
+				openingBalance: "250"
+			},
+			{ user: { id: 4, placeId: 1 } }
+		);
+
+		expect(placeService.getPlace).toHaveBeenCalledWith(1);
+		expect(cashierShiftService.create).toHaveBeenCalledWith({
+			placeId: 1,
+			stationId: 2,
+			shiftId: 3,
+			cashierId: 4,
+			ipAddress: "1.1.1.1",
+			openingBalance: 250,
+			status: "open",
+			closedAt: null
+		});
+		expect(result).toEqual({ id: 15 });
+	});
+
+	test("should reject mismatched placeId when user provided", async () => {
+		await expect(
+			usecase.execute(
+				{ placeId: 2, stationId: 2, shiftId: 3, cashierId: 4, ipAddress: "1.1.1.1" },
+				{ user: { id: 4, placeId: 1 } }
+			)
+		).rejects.toThrow(new ValidationError("placeId does not match cashier account"));
+	});
+
+	test("should reject mismatched cashierId when user provided", async () => {
+		await expect(
+			usecase.execute(
+				{ placeId: 1, stationId: 2, shiftId: 3, cashierId: 9, ipAddress: "1.1.1.1" },
+				{ user: { id: 4, placeId: 1 } }
+			)
+		).rejects.toThrow(new ValidationError("cashierId does not match authenticated user"));
+	});
+
 	test("allows missing optional openingBalance", async () => {
 		cashierShiftService.create.mockResolvedValue({ id: 11 });
 
