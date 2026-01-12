@@ -9,6 +9,7 @@ export default class Transaction {
 		orderType = null,
 		customerName = null,
 		status = null,
+		note = null,
 		items = [],
 		itemsSnapshot = null,
 		total,
@@ -24,6 +25,7 @@ export default class Transaction {
 		this.orderType = orderType;
 		this.customerName = customerName;
 		this.status = status;
+		this.note = note;
 		this.items = items;
 		this.itemsSnapshot = itemsSnapshot;
 		this.total = total;
@@ -43,6 +45,7 @@ export default class Transaction {
 			orderType: record.orderType ?? null,
 			customerName: record.customerName ?? null,
 			status: record.status ?? null,
+			note: record.note ?? null,
 			items: Array.isArray(record.items)
 				? record.items.map((item) => TransactionItem.fromPersistence(item))
 				: [],

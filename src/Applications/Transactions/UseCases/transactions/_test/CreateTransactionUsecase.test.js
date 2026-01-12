@@ -34,6 +34,7 @@ describe("CreateTransactionUsecase", () => {
 			cashierId: "1",
 			orderType: "   ",
 			customerName: "   ",
+			note: "   ",
 			items: [],
 			total: "50",
 			tax: null,
@@ -45,6 +46,7 @@ describe("CreateTransactionUsecase", () => {
 			cashierId: 1,
 			orderType: null,
 			customerName: null,
+			note: null,
 			itemsJson: [],
 			status: "proses",
 			total: 50,
@@ -62,6 +64,7 @@ describe("CreateTransactionUsecase", () => {
 			tableId: "3",
 			orderType: " dine-in ",
 			customerName: " Budi ",
+			note: "  split bill ",
 			items: [{ menuId: 1, qty: 2 }],
 			total: "100",
 			tax: "10",
@@ -79,6 +82,7 @@ describe("CreateTransactionUsecase", () => {
 			tableId: 3,
 			orderType: "dine-in",
 			customerName: "Budi",
+			note: "split bill",
 			itemsJson: [{ menuId: 1, qty: 2 }],
 			status: "proses",
 			total: 100,
@@ -104,6 +108,7 @@ describe("CreateTransactionUsecase", () => {
 		const result = await usecase.execute({
 			orderType: null,
 			customerName: null,
+			note: null,
 			items: null,
 			tax: undefined,
 			discount: undefined,
@@ -113,6 +118,7 @@ describe("CreateTransactionUsecase", () => {
 		expect(mockService.createTransaction).toHaveBeenCalledWith({
 			orderType: null,
 			customerName: null,
+			note: null,
 			itemsJson: null,
 			status: "proses",
 			paymentMethodId: null

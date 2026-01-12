@@ -31,6 +31,11 @@ const UpdateTransactionRequest = {
 			nullable: true,
 			example: "paid"
 		},
+		note: {
+			type: "string",
+			nullable: true,
+			example: "Customer requested split bills"
+		},
 		items: {
 			type: "array",
 			nullable: true,

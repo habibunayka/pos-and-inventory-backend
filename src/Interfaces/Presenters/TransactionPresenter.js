@@ -17,6 +17,7 @@ export default class TransactionPresenter {
 			orderType: record.orderType,
 			customerName: record.customerName,
 			status: record.status,
+			note: record.note ?? null,
 			items: presentedItems,
 			total: Number(record.total),
 			tax: record.tax == null ? null : Number(record.tax),

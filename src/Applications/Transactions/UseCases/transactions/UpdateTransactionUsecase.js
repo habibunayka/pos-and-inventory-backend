@@ -22,6 +22,9 @@ export default class UpdateTransactionUsecase extends BaseTransactionUsecase {
 		if (payload.customerName !== undefined) {
 			data.customerName = payload.customerName === null ? null : String(payload.customerName).trim() || null;
 		}
+		if (payload.note !== undefined) {
+			data.note = payload.note == null ? null : String(payload.note).trim() || null;
+		}
 		if (payload.status !== undefined) {
 			data.status = payload.status == null ? null : String(payload.status).trim() || null;
 		}

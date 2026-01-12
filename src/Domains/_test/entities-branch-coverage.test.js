@@ -126,6 +126,7 @@ describe("Entity branch coverage fallbacks", () => {
 			orderType: null,
 			customerName: null,
 			status: null,
+			note: null,
 			items: [],
 			itemsSnapshot: null,
 			tax: null,
@@ -143,6 +144,7 @@ describe("Entity branch coverage fallbacks", () => {
 			orderType: "dine-in",
 			customerName: "Budi",
 			status: "paid",
+			note: "split bill",
 			itemsJson: [{ menuId: 1, qty: 2 }],
 			total: 2000,
 			tax: 100,
@@ -158,6 +160,7 @@ describe("Entity branch coverage fallbacks", () => {
 			orderType: "dine-in",
 			customerName: "Budi",
 			status: "paid",
+			note: "split bill",
 			items: [],
 			itemsSnapshot: [{ menuId: 1, qty: 2 }],
 			tax: 100,
@@ -419,6 +422,7 @@ describe("Entity branch coverage fallbacks", () => {
 					discount: null,
 					customerName: null,
 					status: null,
+					note: null,
 					items: [],
 					itemsSnapshot: null
 				}

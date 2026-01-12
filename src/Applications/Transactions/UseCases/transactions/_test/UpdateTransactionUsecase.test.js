@@ -40,6 +40,7 @@ describe("UpdateTransactionUsecase", () => {
 			tableId: null,
 			orderType: " takeout ",
 			customerName: " Budi ",
+			note: "  split bill ",
 			status: " paid ",
 			items: [{ menuId: 1, qty: 2 }],
 			total: "150",
@@ -56,6 +57,7 @@ describe("UpdateTransactionUsecase", () => {
 				tableId: null,
 				orderType: "takeout",
 				customerName: "Budi",
+				note: "split bill",
 				status: "paid",
 				itemsJson: [{ menuId: 1, qty: 2 }],
 				total: 150,
@@ -73,6 +75,7 @@ describe("UpdateTransactionUsecase", () => {
 
 		const result = await usecase.execute(7, {
 			orderType: null,
+			note: null,
 			items: null,
 			paymentMethodId: null,
 			placeId: undefined,
@@ -85,6 +88,7 @@ describe("UpdateTransactionUsecase", () => {
 			id: 7,
 			data: {
 				orderType: null,
+				note: null,
 				itemsJson: null,
 				paymentMethodId: null
 			}
