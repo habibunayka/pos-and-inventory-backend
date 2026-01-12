@@ -67,7 +67,7 @@ const cashierShiftsPaths = {
 				content: {
 					"application/json": {
 						schema: {
-							$ref: "#/components/schemas/CreateCashierShiftRequest"
+							$ref: "#/components/schemas/OpenCashierShiftRequest"
 						}
 					}
 				}

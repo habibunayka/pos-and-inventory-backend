@@ -29,7 +29,10 @@ describe("OpenCashierShiftUsecase", () => {
 
 	test("should throw validation error when ipAddress is empty", async () => {
 		await expect(
-			usecase.execute({ placeId: 1, stationId: 2, shiftId: 3, cashierId: 4, ipAddress: "   " })
+			usecase.execute(
+				{ stationId: 2, shiftId: 3, ipAddress: "   " },
+				{ user: { id: 4, placeId: 1 } }
+			)
 		).rejects.toThrow(new ValidationError("ipAddress is required"));
 	});
 
@@ -37,7 +40,10 @@ describe("OpenCashierShiftUsecase", () => {
 		stationService.getStation.mockResolvedValue({ id: 2, placeId: 99 });
 
 		await expect(
-			usecase.execute({ placeId: 1, stationId: 2, shiftId: 3, cashierId: 4, ipAddress: "1.1.1.1" })
+			usecase.execute(
+				{ placeId: 1, stationId: 2, shiftId: 3, ipAddress: "1.1.1.1" },
+				{ user: { id: 4, placeId: 1 } }
+			)
 		).rejects.toThrow(new ValidationError("stationId does not belong to placeId"));
 	});
 
@@ -46,7 +52,6 @@ describe("OpenCashierShiftUsecase", () => {
 			placeId: 1,
 			stationId: 2,
 			shiftId: 3,
-			cashierId: 4,
 			ipAddress: " 127.0.0.1 ",
 			openingBalance: "500"
 		};
@@ -54,7 +59,7 @@ describe("OpenCashierShiftUsecase", () => {
 		const created = { id: 10, ...payload, ipAddress: "127.0.0.1", status: "open", closedAt: null };
 		cashierShiftService.create.mockResolvedValue(created);
 
-		const result = await usecase.execute(payload);
+		const result = await usecase.execute(payload, { user: { id: 4, placeId: 1 } });
 
 		expect(placeService.getPlace).toHaveBeenCalledWith(1);
 		expect(stationService.getStation).toHaveBeenCalledWith(2);
@@ -72,16 +77,54 @@ describe("OpenCashierShiftUsecase", () => {
 		expect(result).toBe(created);
 	});
 
-	test("allows missing optional openingBalance", async () => {
-		cashierShiftService.create.mockResolvedValue({ id: 11 });
+	test("should inherit cashier and place from user context", async () => {
+		cashierShiftService.create.mockResolvedValue({ id: 15 });
 
-		const result = await usecase.execute({
+		const result = await usecase.execute(
+			{
+				stationId: 2,
+				shiftId: 3,
+				ipAddress: "1.1.1.1",
+				openingBalance: "250"
+			},
+			{ user: { id: 4, placeId: 1 } }
+		);
+
+		expect(placeService.getPlace).toHaveBeenCalledWith(1);
+		expect(cashierShiftService.create).toHaveBeenCalledWith({
 			placeId: 1,
 			stationId: 2,
 			shiftId: 3,
 			cashierId: 4,
-			ipAddress: "1.1.1.1"
+			ipAddress: "1.1.1.1",
+			openingBalance: 250,
+			status: "open",
+			closedAt: null
 		});
+		expect(result).toEqual({ id: 15 });
+	});
+
+	test("should reject mismatched placeId when user provided", async () => {
+		await expect(
+			usecase.execute(
+				{ placeId: 2, stationId: 2, shiftId: 3, ipAddress: "1.1.1.1" },
+				{ user: { id: 4, placeId: 1 } }
+			)
+		).rejects.toThrow(new ValidationError("placeId does not match cashier account"));
+	});
+
+	test("allows missing optional openingBalance", async () => {
+		cashierShiftService.create.mockResolvedValue({ id: 11 });
+
+		const result = await usecase.execute(
+			{
+				placeId: 1,
+				stationId: 2,
+				shiftId: 3,
+				ipAddress: "1.1.1.1"
+			},
+			{ user: { id: 4, placeId: 1 } }
+		);
 
 		expect(cashierShiftService.create).toHaveBeenCalledWith({
 			placeId: 1,
@@ -99,14 +142,16 @@ describe("OpenCashierShiftUsecase", () => {
 		await expect(usecase.execute(1)).rejects.toThrow(new ValidationError("Payload must be an object"));
 
 		await expect(
-			usecase.execute({
-				placeId: 1,
-				stationId: 2,
-				shiftId: 3,
-				cashierId: 4,
-				ipAddress: "1.1.1.1",
-				openingBalance: "NaN"
-			})
+			usecase.execute(
+				{
+					placeId: 1,
+					stationId: 2,
+					shiftId: 3,
+					ipAddress: "1.1.1.1",
+					openingBalance: "NaN"
+				},
+				{ user: { id: 4, placeId: 1 } }
+			)
 		).rejects.toThrow(new ValidationError("openingBalance must be a number"));
 	});
 });

@@ -22,7 +22,13 @@ export const updateCashierShiftSchema = Joi.object({
 	status: Joi.string()
 }).min(1);
 
-export const openCashierShiftSchema = createCashierShiftSchema;
+export const openCashierShiftSchema = Joi.object({
+	placeId: posInt,
+	stationId: posInt.required(),
+	shiftId: posInt.required(),
+	ipAddress: Joi.string().required(),
+	openingBalance: Joi.number()
+});
 
 export const closeCashierShiftSchema = Joi.object({
 	closedAt: Joi.date().iso().allow(null),

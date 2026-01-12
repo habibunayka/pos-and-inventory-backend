@@ -47,8 +47,8 @@ export default class CashierShiftController {
 		return { status: HttpStatus.NO_CONTENT };
 	}
 
-	async open({ body }) {
-		const rec = await this.openUsecase.execute(body);
+	async open({ body, user }) {
+		const rec = await this.openUsecase.execute(body, { user });
 		return { status: HttpStatus.CREATED, data: this.presenter.present(rec) };
 	}
 
