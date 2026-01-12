@@ -32,7 +32,7 @@ describe("CreateKitchenOrderUsecase", () => {
 
 		expect(mockService.createKitchenOrder).toHaveBeenCalledWith({
 			transactionItemId: 1,
-			status: "waiting"
+			status: "queued"
 		});
 		expect(result).toEqual({ id: 6 });
 	});
@@ -43,7 +43,7 @@ describe("CreateKitchenOrderUsecase", () => {
 
 		const result = await usecase.execute({
 			transactionItemId: "10",
-			status: " cooking ",
+			status: " done ",
 			startedAt: "2023-01-01T00:00:00.000Z",
 			finishedAt: null,
 			note: "  extra spicy "
@@ -51,7 +51,7 @@ describe("CreateKitchenOrderUsecase", () => {
 
 		expect(mockService.createKitchenOrder).toHaveBeenCalledWith({
 			transactionItemId: 10,
-			status: "cooking",
+			status: "done",
 			startedAt: expect.any(Date),
 			finishedAt: null,
 			note: "extra spicy"
@@ -71,7 +71,7 @@ describe("CreateKitchenOrderUsecase", () => {
 
 		expect(mockService.createKitchenOrder).toHaveBeenCalledWith({
 			transactionItemId: 1,
-			status: null
+			status: "queued"
 		});
 	});
 

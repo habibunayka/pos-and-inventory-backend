@@ -10,7 +10,7 @@ export default class PrismaKitchenOrderRepository extends KitchenOrderRepository
 
 	async findAll() {
 		const records = await this._prisma.kitchenOrder.findMany({
-			where: { deletedAt: null },
+			where: { deletedAt: null, status: { in: ["queued", "proses", "done"] } },
 			orderBy: { id: "asc" }
 		});
 		return records.map((record) => KitchenOrder.fromPersistence(record));
@@ -19,6 +19,18 @@ export default class PrismaKitchenOrderRepository extends KitchenOrderRepository
 	async findById(id) {
 		const record = await this._prisma.kitchenOrder.findFirst({ where: { id, deletedAt: null } });
 		return KitchenOrder.fromPersistence(record);
+	}
+
+	async findByTransactionId(transactionId) {
+		const records = await this._prisma.kitchenOrder.findMany({
+			where: {
+				deletedAt: null,
+				status: { in: ["queued", "proses", "done"] },
+				transactionItem: { transactionId }
+			},
+			orderBy: { id: "asc" }
+		});
+		return records.map((record) => KitchenOrder.fromPersistence(record));
 	}
 
 	async createKitchenOrder(data) {

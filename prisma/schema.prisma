@@ -210,6 +210,7 @@ model Menu {
   name        String
   categoryId  Int?     @map("category_id")
   description String?
+  sku         String?
   isActive    Boolean  @default(true) @map("is_active")
 
   place     Place?    @relation(fields: [placeId], references: [id], onDelete: SetNull)
@@ -417,7 +418,7 @@ model KitchenOrder {
   id                Int      @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
   transactionItemId Int      @map("transaction_item_id")
-  status            String   @default("waiting")
+  status            String   @default("queued")
   startedAt         DateTime? @map("started_at")
   finishedAt        DateTime? @map("finished_at")
   note              String?

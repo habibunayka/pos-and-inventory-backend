@@ -19,9 +19,7 @@ export default class CreateTransactionUsecase extends BaseTransactionUsecase {
 		if (payload.customerName !== undefined) {
 			data.customerName = payload.customerName === null ? null : String(payload.customerName).trim() || null;
 		}
-		if (payload.status !== undefined) {
-			data.status = payload.status === null ? null : String(payload.status).trim() || null;
-		}
+		data.status = "proses";
 		if (payload.items !== undefined) {
 			if (payload.items === null) {
 				data.itemsJson = null;

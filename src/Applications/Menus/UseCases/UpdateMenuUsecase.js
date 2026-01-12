@@ -7,6 +7,7 @@ export default class UpdateMenuUsecase extends BaseMenuUsecase {
 		const data = {};
 		if (typeof payload.name !== "undefined") data.name = String(payload.name).trim();
 		if (typeof payload.description !== "undefined") data.description = payload.description ?? null;
+		if (typeof payload.sku !== "undefined") data.sku = payload.sku ?? null;
 		if (typeof payload.isActive === "boolean") data.isActive = payload.isActive;
 		if (typeof payload.placeId !== "undefined") data.placeId = Number(payload.placeId);
 		if (typeof payload.categoryId !== "undefined") data.categoryId = Number(payload.categoryId);

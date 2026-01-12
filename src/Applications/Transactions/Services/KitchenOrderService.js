@@ -17,6 +17,9 @@ export default class KitchenOrderService {
 	getKitchenOrder(id) {
 		return this._repo.findById(id);
 	}
+	listKitchenOrdersByTransactionId(transactionId) {
+		return this._repo.findByTransactionId(transactionId);
+	}
 	createKitchenOrder(data) {
 		return this._repo.createKitchenOrder(data);
 	}

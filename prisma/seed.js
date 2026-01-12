@@ -224,7 +224,7 @@ const roleDefinitions = [
 	{
 		name: "cashier",
 		description: "Point of sale operator using PIN authentication.",
-		permissions: ["manage_orders", "manage_payments", "manage_customer_data"]
+		permissions: ["manage_orders", "manage_payments", "manage_customer_data","view_kitchen_operations","view_tables","view_menus","view_categories","view_promotions"]
 	},
 	{
 		name: "chef",
@@ -715,6 +715,7 @@ async function main() {
 			placeId: mainPlace?.id ?? null,
 			categoryName: "beverages",
 			description: "Teh manis dingin",
+			sku: "MN-ES-TEH-001",
 			isActive: true
 		},
 		{
@@ -722,6 +723,7 @@ async function main() {
 			placeId: mainPlace?.id ?? null,
 			categoryName: "food",
 			description: "Nasi goreng spesial",
+			sku: "MN-NASGOR-001",
 			isActive: true
 		}
 	];
@@ -731,13 +733,22 @@ async function main() {
 		const category = m.categoryName ? categoryRecords[m.categoryName] : null;
 		const data = {
 			name: m.name,
-			placeId: m.placeId ?? null,
-			categoryId: category ? category.id : null,
 			description: m.description ?? null,
+			sku: m.sku ?? null,
 			isActive: m.isActive !== false
 		};
 
 		const existing = await prisma.menu.findFirst({ where: { name: m.name } });
+		if (m.placeId != null) {
+			data.place = { connect: { id: m.placeId } };
+		} else if (existing) {
+			data.place = { disconnect: true };
+		}
+		if (category) {
+			data.category = { connect: { id: category.id } };
+		} else if (existing) {
+			data.category = { disconnect: true };
+		}
 		let rec;
 		if (existing) {
 			rec = await prisma.menu.update({ where: { id: existing.id }, data: { ...data, deletedAt: null } });
@@ -1009,12 +1020,12 @@ async function main() {
 			// Kitchen orders for each item
 			if (item1) {
 				await prisma.kitchenOrder.create({
-					data: { transactionItemId: item1.id, status: "waiting", note: "Ice please" }
+					data: { transactionItemId: item1.id, status: "queued", note: "Ice please" }
 				});
 			}
 			if (item2) {
 				await prisma.kitchenOrder.create({
-					data: { transactionItemId: item2.id, status: "waiting", note: "Less oil" }
+					data: { transactionItemId: item2.id, status: "queued", note: "Less oil" }
 				});
 			}
 

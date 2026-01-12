@@ -8,8 +8,8 @@ const CreateKitchenOrderRequest = {
 		},
 		status: {
 			type: "string",
-			nullable: true,
-			example: "waiting"
+			enum: ["queued", "proses", "done"],
+			example: "queued"
 		},
 		startedAt: {
 			type: "string",

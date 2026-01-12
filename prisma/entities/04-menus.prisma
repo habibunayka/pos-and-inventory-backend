@@ -6,6 +6,7 @@ model Menu {
   name        String
   categoryId  Int?     @map("category_id")
   description String?
+  sku         String?
   isActive    Boolean  @default(true) @map("is_active")
 
   place     Place?    @relation(fields: [placeId], references: [id], onDelete: SetNull)

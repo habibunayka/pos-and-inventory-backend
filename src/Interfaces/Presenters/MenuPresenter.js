@@ -7,6 +7,7 @@ export default class MenuPresenter {
 			name: model.name,
 			categoryId: model.categoryId ?? null,
 			description: model.description ?? null,
+			sku: model.sku ?? null,
 			isActive: model.isActive
 		};
 	}

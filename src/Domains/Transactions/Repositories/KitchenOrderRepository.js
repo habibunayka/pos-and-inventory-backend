@@ -5,6 +5,9 @@ export default class KitchenOrderRepository {
 	async findById(id) {
 		throw new Error("KITCHEN_ORDER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}
+	async findByTransactionId(transactionId) {
+		throw new Error("KITCHEN_ORDER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
+	}
 	async createKitchenOrder(data) {
 		throw new Error("KITCHEN_ORDER_REPOSITORY.METHOD_NOT_IMPLEMENTED");
 	}

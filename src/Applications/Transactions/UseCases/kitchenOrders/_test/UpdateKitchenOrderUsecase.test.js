@@ -3,16 +3,39 @@ import UpdateKitchenOrderUsecase from "../UpdateKitchenOrderUsecase.js";
 import ValidationError from "../../../../../Commons/Errors/ValidationError.js";
 
 describe("UpdateKitchenOrderUsecase", () => {
-	let mockService;
+	let kitchenOrderService;
+	let transactionItemService;
+	let transactionService;
 	let usecase;
 
 	beforeEach(() => {
-		mockService = { updateKitchenOrder: jest.fn() };
-		usecase = new UpdateKitchenOrderUsecase({ kitchenOrderService: mockService });
+		kitchenOrderService = {
+			updateKitchenOrder: jest.fn(),
+			listKitchenOrdersByTransactionId: jest.fn()
+		};
+		transactionItemService = { getItem: jest.fn() };
+		transactionService = { updateTransaction: jest.fn() };
+		usecase = new UpdateKitchenOrderUsecase({
+			kitchenOrderService,
+			transactionItemService,
+			transactionService
+		});
 	});
 
 	test("should throw when service missing", () => {
 		expect(() => new UpdateKitchenOrderUsecase()).toThrow("UPDATE_KITCHEN_ORDER.MISSING_SERVICE");
+	});
+
+	test("should throw when transaction item service missing", () => {
+		expect(() => new UpdateKitchenOrderUsecase({ kitchenOrderService })).toThrow(
+			"UPDATE_KITCHEN_ORDER.MISSING_TRANSACTION_ITEM_SERVICE"
+		);
+	});
+
+	test("should throw when transaction service missing", () => {
+		expect(() =>
+			new UpdateKitchenOrderUsecase({ kitchenOrderService, transactionItemService })
+		).toThrow("UPDATE_KITCHEN_ORDER.MISSING_TRANSACTION_SERVICE");
 	});
 
 	test("should throw when id invalid", async () => {
@@ -24,8 +47,8 @@ describe("UpdateKitchenOrderUsecase", () => {
 	});
 
 	test("should update kitchen order with normalized payload", async () => {
-		const updated = { id: 2, status: "done" };
-		mockService.updateKitchenOrder.mockResolvedValue(updated);
+		const updated = { id: 2, status: "done", transactionItemId: 3 };
+		kitchenOrderService.updateKitchenOrder.mockResolvedValue(updated);
 
 		const result = await usecase.execute("2", {
 			transactionItemId: "3",
@@ -35,7 +58,7 @@ describe("UpdateKitchenOrderUsecase", () => {
 			note: "  note "
 		});
 
-		expect(mockService.updateKitchenOrder).toHaveBeenCalledWith({
+		expect(kitchenOrderService.updateKitchenOrder).toHaveBeenCalledWith({
 			id: 2,
 			data: {
 				transactionItemId: 3,
@@ -49,7 +72,7 @@ describe("UpdateKitchenOrderUsecase", () => {
 	});
 
 	test("should allow nullables and fallback status when empty", async () => {
-		mockService.updateKitchenOrder.mockResolvedValue({ id: 5 });
+		kitchenOrderService.updateKitchenOrder.mockResolvedValue({ id: 5 });
 
 		const result = await usecase.execute(5, {
 			status: "   ",
@@ -58,25 +81,62 @@ describe("UpdateKitchenOrderUsecase", () => {
 			note: null
 		});
 
-		expect(mockService.updateKitchenOrder).toHaveBeenCalledWith({
+		expect(kitchenOrderService.updateKitchenOrder).toHaveBeenCalledWith({
 			id: 5,
-			data: { status: "waiting", startedAt: null, note: null }
+			data: { status: "queued", startedAt: null, note: null }
 		});
 		expect(result).toEqual({ id: 5 });
 	});
 
 	test("should skip optional fields when not provided and handle nullables", async () => {
-		mockService.updateKitchenOrder.mockResolvedValue({ id: 6 });
+		kitchenOrderService.updateKitchenOrder.mockResolvedValue({ id: 6 });
 
 		await usecase.execute(6, {
 			status: null,
 			finishedAt: null
 		});
 
-		expect(mockService.updateKitchenOrder).toHaveBeenCalledWith({
+		expect(kitchenOrderService.updateKitchenOrder).toHaveBeenCalledWith({
 			id: 6,
-			data: { status: null, finishedAt: null }
+			data: { status: "queued", finishedAt: null }
 		});
+	});
+
+	test("should update transaction when all kitchen orders done", async () => {
+		kitchenOrderService.updateKitchenOrder.mockResolvedValue({ id: 1, status: "done", transactionItemId: 11 });
+		transactionItemService.getItem.mockResolvedValue({ id: 11, transactionId: 22 });
+		kitchenOrderService.listKitchenOrdersByTransactionId.mockResolvedValue([
+			{ id: 1, status: "done" },
+			{ id: 2, status: "done" }
+		]);
+
+		await usecase.execute(1, { status: "done" });
+
+		expect(transactionService.updateTransaction).toHaveBeenCalledWith({
+			id: 22,
+			data: { status: "ready_to_pickup" }
+		});
+	});
+
+	test("should not update transaction when any kitchen order not done", async () => {
+		kitchenOrderService.updateKitchenOrder.mockResolvedValue({ id: 1, status: "done", transactionItemId: 11 });
+		transactionItemService.getItem.mockResolvedValue({ id: 11, transactionId: 22 });
+		kitchenOrderService.listKitchenOrdersByTransactionId.mockResolvedValue([
+			{ id: 1, status: "done" },
+			{ id: 2, status: "queued" }
+		]);
+
+		await usecase.execute(1, { status: "done" });
+
+		expect(transactionService.updateTransaction).not.toHaveBeenCalled();
+	});
+
+	test("should skip transaction update when status is not done", async () => {
+		kitchenOrderService.updateKitchenOrder.mockResolvedValue({ id: 1, status: "proses", transactionItemId: 11 });
+
+		await usecase.execute(1, { status: "proses" });
+
+		expect(transactionService.updateTransaction).not.toHaveBeenCalled();
 	});
 
 	test("should validate transactionItemId when provided", async () => {

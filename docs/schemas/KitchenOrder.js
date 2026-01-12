@@ -12,7 +12,8 @@ const KitchenOrder = {
 		},
 		status: {
 			type: "string",
-			example: "waiting"
+			enum: ["queued", "proses", "done"],
+			example: "queued"
 		},
 		startedAt: {
 			type: "string",

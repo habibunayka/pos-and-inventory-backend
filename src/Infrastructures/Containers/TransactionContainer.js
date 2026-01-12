@@ -95,7 +95,8 @@ export default function registerTransactionContainer({ container, overrides = {}
 	const createKitchenOrderUsecase =
 		overrides.createKitchenOrderUsecase ?? new CreateKitchenOrderUsecase({ kitchenOrderService });
 	const updateKitchenOrderUsecase =
-		overrides.updateKitchenOrderUsecase ?? new UpdateKitchenOrderUsecase({ kitchenOrderService });
+		overrides.updateKitchenOrderUsecase ??
+		new UpdateKitchenOrderUsecase({ kitchenOrderService, transactionItemService, transactionService });
 	const deleteKitchenOrderUsecase =
 		overrides.deleteKitchenOrderUsecase ?? new DeleteKitchenOrderUsecase({ kitchenOrderService });
 

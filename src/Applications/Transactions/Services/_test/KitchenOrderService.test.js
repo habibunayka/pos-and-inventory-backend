@@ -60,9 +60,9 @@ describe("KitchenOrderService", () => {
 		mockRepo.updateKitchenOrder.mockResolvedValue({ id: 4 });
 		const service = new KitchenOrderService({ kitchenOrderRepository: mockRepo });
 
-		const result = service.updateKitchenOrder({ id: 4, data: { status: "cooking" } });
+		const result = service.updateKitchenOrder({ id: 4, data: { status: "proses" } });
 
-		expect(mockRepo.updateKitchenOrder).toHaveBeenCalledWith({ id: 4, data: { status: "cooking" } });
+		expect(mockRepo.updateKitchenOrder).toHaveBeenCalledWith({ id: 4, data: { status: "proses" } });
 		await expect(result).resolves.toEqual({ id: 4 });
 	});
 

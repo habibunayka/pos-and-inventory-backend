@@ -8,6 +8,7 @@ export const createMenuSchema = Joi.object({
 	name: Joi.string().trim().min(1).required(),
 	categoryId: positiveInt.allow(null),
 	description: nullableText,
+	sku: nullableText,
 	isActive: Joi.boolean()
 });
 
@@ -16,6 +17,7 @@ export const updateMenuSchema = Joi.object({
 	name: Joi.string().trim().min(1),
 	categoryId: positiveInt.allow(null),
 	description: nullableText,
+	sku: nullableText,
 	isActive: Joi.boolean()
 }).min(1);
 

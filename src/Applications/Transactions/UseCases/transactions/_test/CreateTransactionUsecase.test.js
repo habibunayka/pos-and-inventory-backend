@@ -34,7 +34,6 @@ describe("CreateTransactionUsecase", () => {
 			cashierId: "1",
 			orderType: "   ",
 			customerName: "   ",
-			status: null,
 			items: [],
 			total: "50",
 			tax: null,
@@ -46,8 +45,8 @@ describe("CreateTransactionUsecase", () => {
 			cashierId: 1,
 			orderType: null,
 			customerName: null,
-			status: null,
 			itemsJson: [],
+			status: "proses",
 			total: 50,
 			tax: null,
 			discount: 5,
@@ -63,7 +62,6 @@ describe("CreateTransactionUsecase", () => {
 			tableId: "3",
 			orderType: " dine-in ",
 			customerName: " Budi ",
-			status: " paid ",
 			items: [{ menuId: 1, qty: 2 }],
 			total: "100",
 			tax: "10",
@@ -81,8 +79,8 @@ describe("CreateTransactionUsecase", () => {
 			tableId: 3,
 			orderType: "dine-in",
 			customerName: "Budi",
-			status: "paid",
 			itemsJson: [{ menuId: 1, qty: 2 }],
+			status: "proses",
 			total: 100,
 			tax: 10,
 			discount: null,
@@ -96,7 +94,7 @@ describe("CreateTransactionUsecase", () => {
 
 		await usecase.execute({});
 
-		expect(mockService.createTransaction).toHaveBeenCalledWith({});
+		expect(mockService.createTransaction).toHaveBeenCalledWith({ status: "proses" });
 	});
 
 	test("should handle nullables and validate paymentMethodId", async () => {
@@ -106,7 +104,6 @@ describe("CreateTransactionUsecase", () => {
 		const result = await usecase.execute({
 			orderType: null,
 			customerName: null,
-			status: null,
 			items: null,
 			tax: undefined,
 			discount: undefined,
@@ -116,8 +113,8 @@ describe("CreateTransactionUsecase", () => {
 		expect(mockService.createTransaction).toHaveBeenCalledWith({
 			orderType: null,
 			customerName: null,
-			status: null,
 			itemsJson: null,
+			status: "proses",
 			paymentMethodId: null
 		});
 		expect(result).toEqual(created);

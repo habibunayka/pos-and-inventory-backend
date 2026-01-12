@@ -8,6 +8,7 @@ export default class CreateMenuUsecase extends BaseMenuUsecase {
 		if (payload.placeId != null) data.placeId = Number(payload.placeId);
 		if (payload.categoryId != null) data.categoryId = Number(payload.categoryId);
 		if (typeof payload.description !== "undefined") data.description = payload.description ?? null;
+		if (typeof payload.sku !== "undefined") data.sku = payload.sku ?? null;
 		if (typeof payload.isActive === "boolean") data.isActive = payload.isActive;
 		return this.menuService.createMenu(data);
 	}
