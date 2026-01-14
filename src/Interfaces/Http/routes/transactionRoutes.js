@@ -32,6 +32,12 @@ export default function registerTransactionRoutes(app, { controller, requireAuth
 		validateRequest({ params: commonSchemas.idParam, body: trxSchemas.update }),
 		adapt(controller.updateTransaction.bind(controller))
 	);
+	router.post(
+		"/void/:id",
+		...canUpdateTransactions,
+		validateRequest({ params: commonSchemas.idParam, body: trxSchemas.void }),
+		adapt(controller.voidTransaction.bind(controller))
+	);
 	router.delete(
 		"/:id",
 		...canDeleteTransactions,

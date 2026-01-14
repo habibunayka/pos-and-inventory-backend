@@ -33,4 +33,8 @@ export const updateTransactionSchema = Joi.object({
 	paymentMethodId: posInt.allow(null)
 }).min(1);
 
-export default { create: createTransactionSchema, update: updateTransactionSchema };
+export const voidTransactionSchema = Joi.object({
+	password: Joi.string().trim().min(1).required()
+});
+
+export default { create: createTransactionSchema, update: updateTransactionSchema, void: voidTransactionSchema };

@@ -29,6 +29,7 @@ import UpdatePromotionRuleRequest from "./UpdatePromotionRuleRequest.js";
 import Transaction from "./Transaction.js";
 import CreateTransactionRequest from "./CreateTransactionRequest.js";
 import UpdateTransactionRequest from "./UpdateTransactionRequest.js";
+import VoidTransactionRequest from "./VoidTransactionRequest.js";
 import TransactionItem from "./TransactionItem.js";
 import CreateTransactionItemRequest from "./CreateTransactionItemRequest.js";
 import UpdateTransactionItemRequest from "./UpdateTransactionItemRequest.js";
@@ -138,6 +139,7 @@ const schemas = {
 	Transaction,
 	CreateTransactionRequest,
 	UpdateTransactionRequest,
+	VoidTransactionRequest,
 	TransactionItem,
 	CreateTransactionItemRequest,
 	UpdateTransactionItemRequest,

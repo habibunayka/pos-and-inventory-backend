@@ -150,6 +150,56 @@ const transactionsPaths = {
 				}
 			}
 		}
+	},
+	"/api/transactions/void/{id}": {
+		parameters: [
+			{
+				name: "id",
+				in: "path",
+				required: true,
+				schema: {
+					type: "integer",
+					minimum: 1
+				}
+			}
+		],
+		post: {
+			tags: ["Transactions"],
+			summary: "Batalkan transaksi",
+			operationId: "voidTransaction",
+			requestBody: {
+				required: true,
+				content: {
+					"application/json": {
+						schema: {
+							$ref: "#/components/schemas/VoidTransactionRequest"
+						}
+					}
+				},
+				description: "Isi password atau PIN pengguna yang sedang login."
+			},
+			responses: {
+				200: {
+					description: "Transaksi dibatalkan",
+					content: {
+						"application/json": {
+							schema: {
+								$ref: "#/components/schemas/Transaction"
+							}
+						}
+					}
+				},
+				400: {
+					$ref: "#/components/responses/BadRequest"
+				},
+				404: {
+					$ref: "#/components/responses/NotFound"
+				},
+				500: {
+					$ref: "#/components/responses/InternalServerError"
+				}
+			}
+		}
 	}
 };
 

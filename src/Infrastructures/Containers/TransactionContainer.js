@@ -2,11 +2,13 @@ import PrismaTransactionRepository from "../Repositories/PrismaTransactionReposi
 import PrismaTransactionItemRepository from "../Repositories/PrismaTransactionItemRepository.js";
 import PrismaTransactionItemVariantRepository from "../Repositories/PrismaTransactionItemVariantRepository.js";
 import PrismaKitchenOrderRepository from "../Repositories/PrismaKitchenOrderRepository.js";
+import PrismaUserRepository from "../Repositories/PrismaUserRepository.js";
 
 import TransactionService from "../../Applications/Transactions/Services/TransactionService.js";
 import TransactionItemService from "../../Applications/Transactions/Services/TransactionItemService.js";
 import TransactionItemVariantService from "../../Applications/Transactions/Services/TransactionItemVariantService.js";
 import KitchenOrderService from "../../Applications/Transactions/Services/KitchenOrderService.js";
+import UserService from "../../Applications/Users/Services/UserService.js";
 
 import {
 	ListTransactionsUsecase,
@@ -14,6 +16,7 @@ import {
 	CreateTransactionUsecase,
 	UpdateTransactionUsecase,
 	DeleteTransactionUsecase,
+	VoidTransactionUsecase,
 	ListTransactionItemsUsecase,
 	GetTransactionItemUsecase,
 	CreateTransactionItemUsecase,
@@ -54,6 +57,12 @@ export default function registerTransactionContainer({ container, overrides = {}
 		new TransactionItemVariantService({ transactionItemVariantRepository });
 	const kitchenOrderService = overrides.kitchenOrderService ?? new KitchenOrderService({ kitchenOrderRepository });
 
+	let userService = overrides.userService ?? (container?.has("userService") ? container.get("userService") : null);
+	if (!userService && prisma) {
+		const userRepository = overrides.userRepository ?? new PrismaUserRepository({ prisma });
+		userService = new UserService({ userRepository });
+	}
+
 	const listTransactionsUsecase =
 		overrides.listTransactionsUsecase ?? new ListTransactionsUsecase({ transactionService });
 	const getTransactionUsecase = overrides.getTransactionUsecase ?? new GetTransactionUsecase({ transactionService });
@@ -63,6 +72,8 @@ export default function registerTransactionContainer({ container, overrides = {}
 		overrides.updateTransactionUsecase ?? new UpdateTransactionUsecase({ transactionService });
 	const deleteTransactionUsecase =
 		overrides.deleteTransactionUsecase ?? new DeleteTransactionUsecase({ transactionService });
+	const voidTransactionUsecase =
+		overrides.voidTransactionUsecase ?? new VoidTransactionUsecase({ transactionService, userService });
 
 	const listTransactionItemsUsecase =
 		overrides.listTransactionItemsUsecase ?? new ListTransactionItemsUsecase({ transactionItemService });
@@ -124,6 +135,7 @@ export default function registerTransactionContainer({ container, overrides = {}
 			createTransactionUsecase,
 			updateTransactionUsecase,
 			deleteTransactionUsecase,
+			voidTransactionUsecase,
 			listTransactionItemsUsecase,
 			getTransactionItemUsecase,
 			createTransactionItemUsecase,
@@ -154,6 +166,7 @@ export default function registerTransactionContainer({ container, overrides = {}
 	container.set("createTransactionUsecase", createTransactionUsecase);
 	container.set("updateTransactionUsecase", updateTransactionUsecase);
 	container.set("deleteTransactionUsecase", deleteTransactionUsecase);
+	container.set("voidTransactionUsecase", voidTransactionUsecase);
 
 	container.set("listTransactionItemsUsecase", listTransactionItemsUsecase);
 	container.set("getTransactionItemUsecase", getTransactionItemUsecase);

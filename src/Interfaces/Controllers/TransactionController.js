@@ -14,6 +14,7 @@ export default class TransactionController {
 			["createTransactionUsecase", deps.createTransactionUsecase],
 			["updateTransactionUsecase", deps.updateTransactionUsecase],
 			["deleteTransactionUsecase", deps.deleteTransactionUsecase],
+			["voidTransactionUsecase", deps.voidTransactionUsecase],
 			// items
 			["listTransactionItemsUsecase", deps.listTransactionItemsUsecase],
 			["getTransactionItemUsecase", deps.getTransactionItemUsecase],
@@ -58,6 +59,10 @@ export default class TransactionController {
 	async deleteTransaction({ params }) {
 		await this.deleteTransactionUsecase.execute(params.id);
 		return { status: HttpStatus.NO_CONTENT };
+	}
+	async voidTransaction({ params, body, user }) {
+		const rec = await this.voidTransactionUsecase.execute(params.id, body, user);
+		return { status: HttpStatus.OK, data: this.transactionPresenter.present(rec) };
 	}
 
 	// Items

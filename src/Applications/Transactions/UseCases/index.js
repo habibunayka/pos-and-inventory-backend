@@ -3,6 +3,7 @@ export { default as GetTransactionUsecase } from "./transactions/GetTransactionU
 export { default as CreateTransactionUsecase } from "./transactions/CreateTransactionUsecase.js";
 export { default as UpdateTransactionUsecase } from "./transactions/UpdateTransactionUsecase.js";
 export { default as DeleteTransactionUsecase } from "./transactions/DeleteTransactionUsecase.js";
+export { default as VoidTransactionUsecase } from "./transactions/VoidTransactionUsecase.js";
 
 export { default as ListTransactionItemsUsecase } from "./transactionItems/ListTransactionItemsUsecase.js";
 export { default as GetTransactionItemUsecase } from "./transactionItems/GetTransactionItemUsecase.js";
