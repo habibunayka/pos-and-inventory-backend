@@ -224,7 +224,7 @@ const roleDefinitions = [
 	{
 		name: "cashier",
 		description: "Point of sale operator using PIN authentication.",
-		permissions: ["manage_orders", "manage_payments", "manage_customer_data","view_kitchen_operations","view_tables","view_menus","view_categories","view_promotions"]
+		permissions: ["manage_orders", "manage_payments", "manage_customer_data", "view_kitchen_operations", "view_tables", "view_menus", "view_categories", "view_promotions"]
 	},
 	{
 		name: "chef",
