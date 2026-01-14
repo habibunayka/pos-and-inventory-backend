@@ -1,6 +1,5 @@
 export default class UserPresenter {
 	present(user) {
-		// prettier-ignore
 		const role = user.role
 			? {
 				id: user.role.id,

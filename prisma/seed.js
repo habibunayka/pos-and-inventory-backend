@@ -986,7 +986,6 @@ async function main() {
 			const esTeh = menuRecords?.["Es Teh"];
 			const nasiGoreng = menuRecords?.["Nasi Goreng"];
 
-			/* prettier-ignore-start */
 			const item1 = esTeh
 				? await prisma.transactionItem.create({
 					data: { transactionId: trx1.id, menuId: esTeh.id, qty: 1, price: 8000, discount: 0 }
@@ -997,7 +996,6 @@ async function main() {
 					data: { transactionId: trx1.id, menuId: nasiGoreng.id, qty: 1, price: 22000, discount: 0 }
 				})
 				: null;
-			/* prettier-ignore-end */
 
 			// Variants (link to MenuVariant)
 			if (item1 && typeof variantRecords !== "undefined") {

@@ -32,9 +32,6 @@ jobs:
             - name: Lint
               run: npx eslint .
 
-            - name: Prettier check
-              run: npx prettier --check .
-
             - name: Run tests with coverage
               run: npm run test:coverage
 

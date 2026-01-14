@@ -13,12 +13,12 @@
 - `npm run prisma:generate` – rebuild the Prisma client after schema edits.
 - `npm run prisma:migrate` – push local migrations into the Postgres database.
 - `npm run prisma:seed` – execute `prisma/seed.js` to populate baseline RBAC accounts.
-- `npx eslint . && npx prettier --check .` – lint/format check prior to opening a PR.
+- `npx eslint .` – lint check prior to opening a PR.
 - `npm test` – reserve this script for your chosen runner (e.g., Jest/Vitest) and ensure it passes before requesting review.
 
 ## Coding Style & Naming Conventions
 
-ESLint enforces tabs with 4-wide indentation, double quotes, trailing semicolons, spaced braces, and `prefer-const`; Prettier mirrors those assumptions with a 120-character print width. Keep feature folders and presenters in PascalCase (e.g., `MenuPresenter.js`), but use `camelCase` for functions/variables and `UPPER_SNAKE_CASE` for constants or environment keys. Respect layer boundaries: controllers should defer to application services, which in turn compose domain entities rather than reading infrastructure modules directly.
+ESLint enforces tabs with 4-wide indentation, double quotes, trailing semicolons, spaced braces, and `prefer-const`. Keep feature folders and presenters in PascalCase (e.g., `MenuPresenter.js`), but use `camelCase` for functions/variables and `UPPER_SNAKE_CASE` for constants or environment keys. Respect layer boundaries: controllers should defer to application services, which in turn compose domain entities rather than reading infrastructure modules directly.
 
 ## Testing Guidelines
 
