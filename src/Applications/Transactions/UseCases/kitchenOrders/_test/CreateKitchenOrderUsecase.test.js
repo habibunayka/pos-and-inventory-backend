@@ -37,6 +37,12 @@ describe("CreateKitchenOrderUsecase", () => {
 		expect(result).toEqual({ id: 6 });
 	});
 
+	test("should throw when status is invalid", async () => {
+		await expect(usecase.execute({ transactionItemId: 1, status: "invalid" })).rejects.toThrow(
+			new ValidationError("status must be one of: queued, proses, done")
+		);
+	});
+
 	test("should create kitchen order with normalized payload", async () => {
 		const created = { id: 5 };
 		mockService.createKitchenOrder.mockResolvedValue(created);

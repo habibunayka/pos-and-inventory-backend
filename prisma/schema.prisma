@@ -377,6 +377,7 @@ model TransactionItem {
 
   variants      TransactionItemVariant[]
   kitchenOrders KitchenOrder[]
+  cost          TransactionItemCost?
 
   @@map("transaction_items")
 }
@@ -393,6 +394,19 @@ model TransactionItemVariant {
 
   @@unique([transactionItemId, menuVariantId])
   @@map("transaction_item_variants")
+}
+
+model TransactionItemCost {
+  id               Int     @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
+  transactionItemId Int    @map("transaction_item_id")
+  totalCost        Decimal @db.Decimal(12, 2) @map("total_cost")
+  calculatedAt     DateTime @default(now()) @map("calculated_at")
+
+  transactionItem TransactionItem @relation(fields: [transactionItemId], references: [id], onDelete: Cascade)
+
+  @@unique([transactionItemId])
+  @@map("transaction_item_costs")
 }
 
 

@@ -14,6 +14,10 @@ describe("TransactionItem", () => {
 			qty: "qty-value-4",
 			price: "price-value-5",
 			discount: "discount-value-6",
+			cost: {
+				totalCost: "total-cost-1",
+				calculatedAt: "2024-01-01"
+			},
 			menu: {
 				id: "menu-id-1",
 				placeId: "place-id-1",
@@ -47,6 +51,8 @@ describe("TransactionItem", () => {
 			qty: "qty-value-4",
 			price: "price-value-5",
 			discount: "discount-value-6",
+			totalCost: "total-cost-1",
+			costCalculatedAt: "2024-01-01",
 			menu: {
 				id: "menu-id-1",
 				placeId: "place-id-1",

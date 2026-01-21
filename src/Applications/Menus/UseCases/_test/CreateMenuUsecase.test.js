@@ -40,6 +40,16 @@ describe("CreateMenuUsecase", () => {
 		expect(result).toEqual(created);
 	});
 
+	test("should include sku when provided", async () => {
+		menuService.createMenu.mockResolvedValue({});
+
+		await usecase.execute({ name: "SkuMenu", sku: " SKU-1 " });
+		expect(menuService.createMenu).toHaveBeenLastCalledWith({ name: "SkuMenu", sku: " SKU-1 " });
+
+		await usecase.execute({ name: "SkuMenu", sku: null });
+		expect(menuService.createMenu).toHaveBeenLastCalledWith({ name: "SkuMenu", sku: null });
+	});
+
 	test("should allow optional fields to be skipped", async () => {
 		menuService.createMenu.mockResolvedValue({});
 

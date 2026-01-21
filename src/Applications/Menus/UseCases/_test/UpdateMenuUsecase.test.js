@@ -53,4 +53,14 @@ describe("UpdateMenuUsecase", () => {
 		});
 		expect(result).toEqual(updated);
 	});
+
+	test("should include sku when provided", async () => {
+		menuService.updateMenu.mockResolvedValue({ id: 3 });
+
+		await usecase.execute(3, { sku: "SKU-2" });
+		expect(menuService.updateMenu).toHaveBeenLastCalledWith({ id: 3, data: { sku: "SKU-2" } });
+
+		await usecase.execute(3, { sku: null });
+		expect(menuService.updateMenu).toHaveBeenLastCalledWith({ id: 3, data: { sku: null } });
+	});
 });

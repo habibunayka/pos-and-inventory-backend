@@ -23,4 +23,9 @@ describe("SystemRoles", () => {
 		expect(isValidSystemRole("manager")).toBe(true);
 		expect(isValidSystemRole("nope")).toBe(false);
 	});
+
+	it("handles undefined values", () => {
+		expect(isValidSystemRole()).toBe(false);
+		expect(() => assertValidSystemRole()).toThrow("Invalid system role: <empty>");
+	});
 });

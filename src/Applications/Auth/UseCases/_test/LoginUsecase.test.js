@@ -1,6 +1,8 @@
 import { jest } from "@jest/globals";
 import LoginUsecase from "../LoginUsecase.js";
 import AppError from "../../../../Commons/Errors/AppError.js";
+import ValidationError from "../../../../Commons/Errors/ValidationError.js";
+import User from "../../../../Domains/Users/Entities/User.js";
 
 describe("LoginUsecase", () => {
 	let mockUserService;
@@ -15,6 +17,10 @@ describe("LoginUsecase", () => {
 
 		mockTokenSigner = jest.fn(() => "signed.token.value");
 		mockVerifySecret = jest.fn();
+	});
+
+	afterEach(() => {
+		jest.restoreAllMocks();
 	});
 
 	test("should throw if userService is missing", () => {
@@ -87,6 +93,34 @@ describe("LoginUsecase", () => {
 
 		expect(mockUserService.findByName).toHaveBeenCalledWith("nano");
 		expect(result.token).toBe("signed.token.value");
+	});
+
+	test("should fallback to username lookup when email normalization returns null", async () => {
+		jest.spyOn(User, "normalizeEmail").mockReturnValue(null);
+		mockUserService.findByName.mockResolvedValue({
+			id: "777",
+			name: "Nano",
+			role: { name: "user" },
+			placeId: "P003",
+			passwordHash: "hashed",
+			status: "active"
+		});
+
+		mockVerifySecret.mockResolvedValue(true);
+
+		const usecase = new LoginUsecase({
+			userService: mockUserService,
+			tokenSigner: mockTokenSigner,
+			verifySecretFn: mockVerifySecret
+		});
+
+		await usecase.execute({
+			username: "nano",
+			password: "123"
+		});
+
+		expect(mockUserService.findByEmail).not.toHaveBeenCalled();
+		expect(mockUserService.findByName).toHaveBeenCalledWith("nano");
 	});
 
 	test("should throw if user not found", async () => {
@@ -173,5 +207,41 @@ describe("LoginUsecase", () => {
 		});
 
 		expect(mockTokenSigner).toHaveBeenCalledWith(expect.any(Object), { expiresIn: "2h" });
+	});
+
+	test("should omit expiresIn when tokenExpiresIn is null", async () => {
+		mockUserService.findByEmail.mockResolvedValue({
+			id: "10",
+			name: "Habib",
+			role: { name: "admin" },
+			placeId: "ABC",
+			passwordHash: "hashed",
+			status: "active"
+		});
+
+		mockVerifySecret.mockResolvedValue(true);
+
+		const usecase = new LoginUsecase({
+			userService: mockUserService,
+			tokenSigner: mockTokenSigner,
+			verifySecretFn: mockVerifySecret,
+			tokenExpiresIn: null
+		});
+
+		await usecase.execute({
+			username: "habib",
+			password: "pw"
+		});
+
+		expect(mockTokenSigner).toHaveBeenCalledWith(expect.any(Object), {});
+	});
+
+	test("should reject when payload missing", async () => {
+		const usecase = new LoginUsecase({
+			userService: mockUserService,
+			verifySecretFn: mockVerifySecret
+		});
+
+		await expect(usecase.execute()).rejects.toThrow(ValidationError);
 	});
 });

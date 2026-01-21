@@ -19,7 +19,9 @@ export default class TransactionItemPresenter {
 			price: Number(record.price),
 			discount: record.discount == null ? null : Number(record.discount),
 			menu,
-			variants: presentedVariants
+			variants: presentedVariants,
+			totalCost: record.totalCost == null ? null : Number(record.totalCost),
+			costCalculatedAt: record.costCalculatedAt ?? null
 		};
 	}
 

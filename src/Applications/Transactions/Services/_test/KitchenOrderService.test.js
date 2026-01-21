@@ -8,6 +8,7 @@ describe("KitchenOrderService", () => {
 		mockRepo = {
 			findAll: jest.fn(),
 			findById: jest.fn(),
+			findByTransactionId: jest.fn(),
 			createKitchenOrder: jest.fn(),
 			updateKitchenOrder: jest.fn(),
 			deleteKitchenOrder: jest.fn()
@@ -44,6 +45,16 @@ describe("KitchenOrderService", () => {
 
 		expect(mockRepo.findById).toHaveBeenCalledWith(2);
 		await expect(result).resolves.toEqual({ id: 2 });
+	});
+
+	test("listKitchenOrdersByTransactionId should delegate to repository", async () => {
+		mockRepo.findByTransactionId.mockResolvedValue([{ id: 9 }]);
+		const service = new KitchenOrderService({ kitchenOrderRepository: mockRepo });
+
+		const result = service.listKitchenOrdersByTransactionId(3);
+
+		expect(mockRepo.findByTransactionId).toHaveBeenCalledWith(3);
+		await expect(result).resolves.toEqual([{ id: 9 }]);
 	});
 
 	test("createKitchenOrder should delegate to repository", async () => {

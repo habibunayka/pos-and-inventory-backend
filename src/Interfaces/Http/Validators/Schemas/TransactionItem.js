@@ -7,7 +7,8 @@ export const createTransactionItemSchema = Joi.object({
 	menuId: posInt.required(),
 	qty: posInt.required(),
 	price: Joi.number().required(),
-	discount: Joi.number().allow(null)
+	discount: Joi.number().allow(null),
+	totalCost: Joi.number().allow(null)
 });
 
 export const updateTransactionItemSchema = Joi.object({
@@ -15,7 +16,8 @@ export const updateTransactionItemSchema = Joi.object({
 	menuId: posInt,
 	qty: posInt,
 	price: Joi.number(),
-	discount: Joi.number().allow(null)
+	discount: Joi.number().allow(null),
+	totalCost: Joi.number().allow(null)
 }).min(1);
 
 export default { create: createTransactionItemSchema, update: updateTransactionItemSchema };

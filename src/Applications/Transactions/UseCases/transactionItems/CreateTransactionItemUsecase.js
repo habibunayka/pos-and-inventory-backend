@@ -15,6 +15,7 @@ export default class CreateTransactionItemUsecase extends BaseTransactionUsecase
 			price: Number(payload.price)
 		};
 		if (payload.discount !== undefined) data.discount = payload.discount == null ? null : Number(payload.discount);
+		if (payload.totalCost !== undefined) data.totalCost = payload.totalCost == null ? null : Number(payload.totalCost);
 		return this.transactionItemService.createItem(data);
 	}
 }

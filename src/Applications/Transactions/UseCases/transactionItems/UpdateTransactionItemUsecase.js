@@ -16,6 +16,7 @@ export default class UpdateTransactionItemUsecase extends BaseTransactionUsecase
 		if (payload.qty !== undefined) data.qty = this._positiveInt(payload.qty, "qty");
 		if (payload.price !== undefined) data.price = Number(payload.price);
 		if (payload.discount !== undefined) data.discount = payload.discount == null ? null : Number(payload.discount);
+		if (payload.totalCost !== undefined) data.totalCost = payload.totalCost == null ? null : Number(payload.totalCost);
 		return this.transactionItemService.updateItem({ id: intId, data });
 	}
 }

@@ -141,6 +141,10 @@ export function createExpressApp({ container } = {}) {
 		res.type("html").send(createSwaggerHtml({ specUrl: "/api/docs.json" }));
 	});
 
+	app.get("/", (req, res) => {
+		res.json({ message: "Welcome to the API" });
+	});
+
 	app.use(errorHandler);
 
 	return app;

@@ -36,6 +36,15 @@ describe("OpenCashierShiftUsecase", () => {
 		).rejects.toThrow(new ValidationError("ipAddress is required"));
 	});
 
+	test("should throw validation error when user id missing", async () => {
+		await expect(
+			usecase.execute(
+				{ stationId: 2, shiftId: 3, ipAddress: "1.1.1.1" },
+				{ user: { placeId: 1 } }
+			)
+		).rejects.toThrow(new ValidationError("cashierId is required"));
+	});
+
 	test("should throw validation error when station place mismatch", async () => {
 		stationService.getStation.mockResolvedValue({ id: 2, placeId: 99 });
 

@@ -46,6 +46,12 @@ describe("UpdateKitchenOrderUsecase", () => {
 		await expect(usecase.execute(1, null)).rejects.toThrow(new ValidationError("Payload must be an object"));
 	});
 
+	test("should throw when status is invalid", async () => {
+		await expect(usecase.execute(1, { status: "invalid" })).rejects.toThrow(
+			new ValidationError("status must be one of: queued, proses, done")
+		);
+	});
+
 	test("should update kitchen order with normalized payload", async () => {
 		const updated = { id: 2, status: "done", transactionItemId: 3 };
 		kitchenOrderService.updateKitchenOrder.mockResolvedValue(updated);
@@ -102,6 +108,15 @@ describe("UpdateKitchenOrderUsecase", () => {
 		});
 	});
 
+	test("should return null when update returns null", async () => {
+		kitchenOrderService.updateKitchenOrder.mockResolvedValue(null);
+
+		const result = await usecase.execute(1, { status: "queued" });
+
+		expect(result).toBeNull();
+		expect(transactionService.updateTransaction).not.toHaveBeenCalled();
+	});
+
 	test("should update transaction when all kitchen orders done", async () => {
 		kitchenOrderService.updateKitchenOrder.mockResolvedValue({ id: 1, status: "done", transactionItemId: 11 });
 		transactionItemService.getItem.mockResolvedValue({ id: 11, transactionId: 22 });
@@ -127,6 +142,22 @@ describe("UpdateKitchenOrderUsecase", () => {
 		]);
 
 		await usecase.execute(1, { status: "done" });
+
+		expect(transactionService.updateTransaction).not.toHaveBeenCalled();
+	});
+
+	test("should skip transaction update when kitchen orders missing", async () => {
+		const updated = { id: 1, status: "done", transactionItemId: 11 };
+		kitchenOrderService.updateKitchenOrder.mockResolvedValue(updated);
+		transactionItemService.getItem.mockResolvedValue({ id: 11, transactionId: 22 });
+
+		kitchenOrderService.listKitchenOrdersByTransactionId.mockResolvedValue(null);
+		const resultMissing = await usecase.execute(1, { status: "done" });
+		expect(resultMissing).toEqual(updated);
+
+		kitchenOrderService.listKitchenOrdersByTransactionId.mockResolvedValue([]);
+		const resultEmpty = await usecase.execute(1, { status: "done" });
+		expect(resultEmpty).toEqual(updated);
 
 		expect(transactionService.updateTransaction).not.toHaveBeenCalled();
 	});

@@ -40,7 +40,7 @@ export default class BaseShiftUsecase {
 		if (typeof time !== "string") {
 			throw new ValidationError(`${fieldName} must be a string`);
 		}
-		const value = String(time ?? "").trim();
+		const value = time.trim();
 		if (!value) throw new ValidationError(`${fieldName} is required`);
 		const timePattern = /^([01]\d|2[0-3]):[0-5]\d(?::[0-5]\d)?$/;
 		if (!timePattern.test(value)) {

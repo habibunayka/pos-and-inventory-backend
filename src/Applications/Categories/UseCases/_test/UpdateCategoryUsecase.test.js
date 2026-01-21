@@ -28,6 +28,10 @@ describe("UpdateCategoryUsecase", () => {
 		await expect(usecase.execute(1, {})).rejects.toThrow(new ValidationError("No valid fields to update"));
 	});
 
+	test("should throw when payload omitted", async () => {
+		await expect(usecase.execute(1)).rejects.toThrow(new ValidationError("No valid fields to update"));
+	});
+
 	test("should throw when category not found", async () => {
 		mockService.getCategoryByName.mockResolvedValue(null);
 		mockService.updateCategory.mockResolvedValue(null);
