@@ -24,18 +24,22 @@ export default class VoidTransactionUsecase extends BaseTransactionUsecase {
 	async execute(id, payload = {}, user = null) {
 		const intId = this._positiveInt(id, "id");
 		this._ensureObject(payload);
-		if (!user || !user.id) {
-			throw new AppError("Authentication required", HttpStatus.UNAUTHORIZED);
-		}
+				if (!user || !user.id) {
+						throw new AppError("Authentication required", HttpStatus.UNAUTHORIZED);
+				}
 
-		const secret = String(payload.password ?? "").trim();
-		if (!secret) {
-			throw new ValidationError("password is required");
-		}
+				const secret = String(payload.password ?? "").trim();
+				const reason = String(payload.reason ?? "").trim();
+				if (!secret) {
+						throw new ValidationError("password is required");
+				}
+				if (!reason) {
+						throw new ValidationError("reason is required");
+				}
 
-		const authMethod = user.authenticationMethod === "pin" ? "pin" : "password";
-		const userId = this._positiveInt(user.id, "userId");
-		const record = await this.userService.getUser(userId);
+				const authMethod = user.authenticationMethod === "pin" ? "pin" : "password";
+				const userId = this._positiveInt(user.id, "userId");
+				const record = await this.userService.getUser(userId);
 
 		if (!record) {
 			throw new AppError("User not found", HttpStatus.UNAUTHORIZED);
@@ -52,10 +56,10 @@ export default class VoidTransactionUsecase extends BaseTransactionUsecase {
 			throw new AppError("Invalid pin or password", HttpStatus.UNAUTHORIZED);
 		}
 
-		const updated = await this.transactionService.updateTransaction({
-			id: intId,
-			data: { status: "cancelled" }
-		});
+				const updated = await this.transactionService.updateTransaction({
+						id: intId,
+						data: { status: "cancelled", voidReason: reason }
+				});
 
 		if (!updated) {
 			throw new AppError("Transaction not found", HttpStatus.NOT_FOUND);

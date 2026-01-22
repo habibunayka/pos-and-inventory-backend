@@ -40,9 +40,9 @@ describe("VoidTransactionUsecase", () => {
 			verifySecretFn: jest.fn()
 		});
 
-		await expect(usecase.execute(1, { password: "secret" })).rejects.toThrow(
-			new AppError("Authentication required", HttpStatus.UNAUTHORIZED)
-		);
+		await expect(
+			usecase.execute(1, { password: "secret", reason: "because" })
+		).rejects.toThrow(new AppError("Authentication required", HttpStatus.UNAUTHORIZED));
 	});
 
 	test("should require password when missing", async () => {
@@ -54,8 +54,22 @@ describe("VoidTransactionUsecase", () => {
 			verifySecretFn: jest.fn()
 		});
 
-		await expect(usecase.execute(1, undefined, { id: 1 })).rejects.toThrow(
+		await expect(usecase.execute(1, { reason: "because" }, { id: 1 })).rejects.toThrow(
 			new ValidationError("password is required")
+		);
+	});
+
+	test("should require reason when missing", async () => {
+		const transactionService = { updateTransaction: jest.fn() };
+		const userService = { getUser: jest.fn() };
+		const usecase = new VoidTransactionUsecase({
+			transactionService,
+			userService,
+			verifySecretFn: jest.fn()
+		});
+
+		await expect(usecase.execute(1, { password: "secret" }, { id: 1 })).rejects.toThrow(
+			new ValidationError("reason is required")
 		);
 	});
 
@@ -68,9 +82,9 @@ describe("VoidTransactionUsecase", () => {
 			verifySecretFn: jest.fn()
 		});
 
-		await expect(usecase.execute(1, { password: "secret" }, { id: 2 })).rejects.toThrow(
-			new AppError("User not found", HttpStatus.UNAUTHORIZED)
-		);
+		await expect(
+			usecase.execute(1, { password: "secret", reason: "because" }, { id: 2 })
+		).rejects.toThrow(new AppError("User not found", HttpStatus.UNAUTHORIZED));
 	});
 
 	test("should reject when stored secret missing", async () => {
@@ -82,9 +96,9 @@ describe("VoidTransactionUsecase", () => {
 			verifySecretFn: jest.fn()
 		});
 
-		await expect(usecase.execute(1, { password: "secret" }, { id: 3 })).rejects.toThrow(
-			new AppError("Invalid pin or password", HttpStatus.UNAUTHORIZED)
-		);
+		await expect(
+			usecase.execute(1, { password: "secret", reason: "because" }, { id: 3 })
+		).rejects.toThrow(new AppError("Invalid pin or password", HttpStatus.UNAUTHORIZED));
 	});
 
 	test("should reject when secret verification fails", async () => {
@@ -93,9 +107,9 @@ describe("VoidTransactionUsecase", () => {
 		const verifySecretFn = jest.fn().mockResolvedValue(false);
 		const usecase = new VoidTransactionUsecase({ transactionService, userService, verifySecretFn });
 
-		await expect(usecase.execute(1, { password: "secret" }, { id: 4 })).rejects.toThrow(
-			new AppError("Invalid pin or password", HttpStatus.UNAUTHORIZED)
-		);
+		await expect(
+			usecase.execute(1, { password: "secret", reason: "because" }, { id: 4 })
+		).rejects.toThrow(new AppError("Invalid pin or password", HttpStatus.UNAUTHORIZED));
 	});
 
 	test("should reject when transaction not found", async () => {
@@ -104,9 +118,9 @@ describe("VoidTransactionUsecase", () => {
 		const verifySecretFn = jest.fn().mockResolvedValue(true);
 		const usecase = new VoidTransactionUsecase({ transactionService, userService, verifySecretFn });
 
-		await expect(usecase.execute(1, { password: "secret" }, { id: 5 })).rejects.toThrow(
-			new AppError("Transaction not found", HttpStatus.NOT_FOUND)
-		);
+		await expect(
+			usecase.execute(1, { password: "secret", reason: "because" }, { id: 5 })
+		).rejects.toThrow(new AppError("Transaction not found", HttpStatus.NOT_FOUND));
 	});
 
 	test("should void transaction using pin auth", async () => {
@@ -116,12 +130,16 @@ describe("VoidTransactionUsecase", () => {
 		const verifySecretFn = jest.fn().mockResolvedValue(true);
 		const usecase = new VoidTransactionUsecase({ transactionService, userService, verifySecretFn });
 
-		const result = await usecase.execute(6, { password: "1234" }, { id: 6, authenticationMethod: "pin" });
+		const result = await usecase.execute(
+			6,
+			{ password: "1234", reason: "  customer cancelled  " },
+			{ id: 6, authenticationMethod: "pin" }
+		);
 
 		expect(verifySecretFn).toHaveBeenCalledWith("1234", "pinhash");
 		expect(transactionService.updateTransaction).toHaveBeenCalledWith({
 			id: 6,
-			data: { status: "cancelled" }
+			data: { status: "cancelled", voidReason: "customer cancelled" }
 		});
 		expect(result).toEqual(updated);
 	});

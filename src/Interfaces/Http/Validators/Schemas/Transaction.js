@@ -34,7 +34,8 @@ export const updateTransactionSchema = Joi.object({
 }).min(1);
 
 export const voidTransactionSchema = Joi.object({
-	password: Joi.string().trim().min(1).required()
+	password: Joi.string().trim().min(1).required(),
+	reason: Joi.string().trim().min(1).required()
 });
 
 export default { create: createTransactionSchema, update: updateTransactionSchema, void: voidTransactionSchema };

@@ -9,6 +9,7 @@ model Transaction {
   customerName    String?  @map("customer_name")
   status          String?
   note            String?
+  voidReason      String?  @map("void_reason")
   itemsJson       Json?    @map("items_json") @db.JsonB
   total           Decimal  @db.Decimal(12, 2)
   tax             Decimal? @db.Decimal(12, 2)

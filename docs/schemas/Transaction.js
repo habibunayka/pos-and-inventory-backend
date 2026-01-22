@@ -35,16 +35,21 @@ const Transaction = {
 			nullable: true,
 			example: "paid"
 		},
-		note: {
-			type: "string",
-			nullable: true,
-			example: "Customer requested split bills"
-		},
-		items: {
-			type: "array",
-			nullable: true,
-			items: {
-				$ref: "#/components/schemas/TransactionItem"
+				note: {
+						type: "string",
+						nullable: true,
+						example: "Customer requested split bills"
+				},
+				voidReason: {
+						type: "string",
+						nullable: true,
+						example: "Customer meminta batal"
+				},
+				items: {
+						type: "array",
+						nullable: true,
+						items: {
+								$ref: "#/components/schemas/TransactionItem"
 			}
 		},
 		total: {

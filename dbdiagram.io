@@ -176,10 +176,11 @@ Table recipes {
   deleted_at timestamp
   menu_id int [not null, ref: > menus.id]
   ingredient_id int [not null, ref: > ingredients.id]
+  menu_variant_item_id int [ref: > menu_variant_items.id]
   qty decimal(12,2) [not null]
 
   indexes {
-    (menu_id, ingredient_id) [unique]
+    (menu_id, menu_variant_item_id, ingredient_id) [unique]
   }
 }
 

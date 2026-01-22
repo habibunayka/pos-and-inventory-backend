@@ -15,14 +15,15 @@ export default class TransactionPresenter {
 			placeId: record.placeId,
 			tableId: record.tableId,
 			orderType: record.orderType,
-			customerName: record.customerName,
-			status: record.status,
-			note: record.note ?? null,
-			items: presentedItems,
-			total: Number(record.total),
-			tax: record.tax == null ? null : Number(record.tax),
-			discount: record.discount == null ? null : Number(record.discount),
-			paymentMethodId: record.paymentMethodId,
+					 customerName: record.customerName,
+					 status: record.status,
+					 note: record.note ?? null,
+					 voidReason: record.voidReason ?? null,
+					 items: presentedItems,
+					 total: Number(record.total),
+					 tax: record.tax == null ? null : Number(record.tax),
+					 discount: record.discount == null ? null : Number(record.discount),
+					 paymentMethodId: record.paymentMethodId,
 			createdAt: record.createdAt
 		};
 	}

@@ -15,6 +15,8 @@ describe("Transaction", () => {
 			orderType: "orderType-value-5",
 			customerName: "customerName-value-6",
 			status: "status-value-7",
+			note: "note-value-8",
+			voidReason: "void-reason-value-9",
 			itemsJson: [{ menuId: 1, qty: 2 }],
 			items: [
 				{
@@ -65,6 +67,8 @@ describe("Transaction", () => {
 			orderType: "orderType-value-5",
 			customerName: "customerName-value-6",
 			status: "status-value-7",
+			note: "note-value-8",
+			voidReason: "void-reason-value-9",
 			itemsSnapshot: [{ menuId: 1, qty: 2 }],
 			items: [
 				{

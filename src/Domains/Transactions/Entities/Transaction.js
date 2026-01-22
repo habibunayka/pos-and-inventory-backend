@@ -10,6 +10,7 @@ export default class Transaction {
 		customerName = null,
 		status = null,
 		note = null,
+		voidReason = null,
 		items = [],
 		itemsSnapshot = null,
 		total,
@@ -26,6 +27,7 @@ export default class Transaction {
 		this.customerName = customerName;
 		this.status = status;
 		this.note = note;
+		this.voidReason = voidReason;
 		this.items = items;
 		this.itemsSnapshot = itemsSnapshot;
 		this.total = total;
@@ -42,15 +44,16 @@ export default class Transaction {
 			cashierId: record.cashierId,
 			placeId: record.placeId ?? null,
 			tableId: record.tableId ?? null,
-			orderType: record.orderType ?? null,
-			customerName: record.customerName ?? null,
-			status: record.status ?? null,
-			note: record.note ?? null,
-			items: Array.isArray(record.items)
-				? record.items.map((item) => TransactionItem.fromPersistence(item))
-				: [],
-			itemsSnapshot: record.itemsJson ?? null,
-			total: record.total,
+					 orderType: record.orderType ?? null,
+					 customerName: record.customerName ?? null,
+					 status: record.status ?? null,
+					 note: record.note ?? null,
+					 voidReason: record.voidReason ?? null,
+					 items: Array.isArray(record.items)
+							? record.items.map((item) => TransactionItem.fromPersistence(item))
+							: [],
+					 itemsSnapshot: record.itemsJson ?? null,
+					 total: record.total,
 			tax: record.tax ?? null,
 			discount: record.discount ?? null,
 			paymentMethodId: record.paymentMethodId ?? null,
