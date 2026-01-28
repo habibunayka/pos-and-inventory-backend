@@ -463,28 +463,57 @@ async function main() {
 		unitRecords[u.name] = rec;
 	}
 
+	// Ingredient Categories
+	const ingredientCategoryDefs = [
+		{ name: "bumbu" },
+		{ name: "bahan_pokok" },
+		{ name: "protein" }
+	];
+
+	const ingredientCategoryRecords = {};
+	for (const c of ingredientCategoryDefs) {
+		const rec = await prisma.ingredientCategory.upsert({
+			where: { name: c.name },
+			update: { deletedAt: null },
+			create: c
+		});
+		ingredientCategoryRecords[c.name] = rec;
+	}
+
 	// Ingredients
 	const ingredientDefs = [
-		{ name: "Gula", unitName: "gram" },
-		{ name: "Tepung", unitName: "gram" },
-		{ name: "Minyak", unitName: "liter" },
-		{ name: "Telur", unitName: "piece" }
+		{ name: "Gula", unitName: "gram", categoryName: "bahan_pokok" },
+		{ name: "Tepung", unitName: "gram", categoryName: "bahan_pokok" },
+		{ name: "Minyak", unitName: "liter", categoryName: "bumbu" },
+		{ name: "Telur", unitName: "piece", categoryName: "protein" }
 	];
 
 	const ingredientRecords = {};
 	for (const ing of ingredientDefs) {
 		const unit = unitRecords[ing.unitName];
 		if (!unit) continue; // safety
+		const category = ing.categoryName ? ingredientCategoryRecords[ing.categoryName] : null;
 
 		const existing = await prisma.ingredient.findFirst({ where: { name: ing.name } });
+		const data = { unitId: unit.id };
+		if (category) {
+			data.category = { connect: { id: category.id } };
+		} else if (existing) {
+			data.category = { disconnect: true };
+		}
 		let rec;
 		if (existing) {
 			rec = await prisma.ingredient.update({
 				where: { id: existing.id },
-				data: { unitId: unit.id, deletedAt: null }
+				data: { ...data, deletedAt: null }
 			});
 		} else {
-			rec = await prisma.ingredient.create({ data: { name: ing.name, unitId: unit.id } });
+			rec = await prisma.ingredient.create({
+				data: {
+					name: ing.name,
+					...data
+				}
+			});
 		}
 		ingredientRecords[ing.name] = rec;
 	}
