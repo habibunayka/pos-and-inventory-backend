@@ -9,6 +9,8 @@ export default class CreateIngredientUsecase extends BaseIngredientUsecase {
 		const unitId = await this._validateUnitId(payload.unitId);
 		const name = String(payload.name ?? "").trim();
 		if (!name) throw new ValidationError("name is required");
-		return this.ingredientService.createIngredient({ name, unitId });
+		const data = { name, unitId };
+		if (typeof payload.sku !== "undefined") data.sku = payload.sku ?? null;
+		return this.ingredientService.createIngredient(data);
 	}
 }

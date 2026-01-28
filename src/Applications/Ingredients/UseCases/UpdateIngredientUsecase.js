@@ -17,6 +17,9 @@ export default class UpdateIngredientUsecase extends BaseIngredientUsecase {
 		if (Object.prototype.hasOwnProperty.call(payload, "unitId")) {
 			update.unitId = await this._validateUnitId(payload.unitId);
 		}
+		if (Object.prototype.hasOwnProperty.call(payload, "sku")) {
+			update.sku = payload.sku ?? null;
+		}
 		if (Object.keys(update).length === 0) throw new ValidationError("No updatable fields provided");
 		return this.ingredientService.updateIngredient({ id: numericId, ingredientData: update });
 	}

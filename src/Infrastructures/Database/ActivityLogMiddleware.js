@@ -1,6 +1,8 @@
 import { getRequestContext, runWithRequestContext, withActivityLoggingSuppressed } from "../Context/RequestContext.js";
 
 const CRUD_ACTIONS = new Set(["create", "update", "delete"]);
+const BULK_ACTIONS = new Set(["createmany", "updatemany", "deletemany"]);
+const UPSERT_ACTION = "upsert";
 const EXCLUDED_MODELS = new Set(["ActivityLog", "SystemLog"]);
 
 function buildModelTableMap(PrismaNamespace) {
@@ -63,6 +65,81 @@ function sanitizeRecord(record, DecimalClass) {
 	}
 
 	return sanitizeValue({ ...record }, DecimalClass);
+}
+
+function getPrismaDelegate(prisma, modelName) {
+	if (!prisma || !modelName) {
+		return null;
+	}
+
+	const delegateName = `${modelName.charAt(0).toLowerCase()}${modelName.slice(1)}`;
+	const delegate = prisma[delegateName];
+
+	if (!delegate || typeof delegate.findFirst !== "function") {
+		return null;
+	}
+
+	return delegate;
+}
+
+async function fetchSnapshotByWhere({ prisma, modelName, where, DecimalClass }) {
+	if (!where || typeof where !== "object") {
+		return null;
+	}
+
+	const delegate = getPrismaDelegate(prisma, modelName);
+	if (!delegate) {
+		return null;
+	}
+
+	const record = await withActivityLoggingSuppressed(() => delegate.findFirst({ where }));
+	return sanitizeRecord(record, DecimalClass);
+}
+
+async function fetchSnapshotsByWhere({ prisma, modelName, where, DecimalClass }) {
+	if (!where || typeof where !== "object") {
+		return [];
+	}
+
+	const delegate = getPrismaDelegate(prisma, modelName);
+	if (!delegate || typeof delegate.findMany !== "function") {
+		return [];
+	}
+
+	const records = await withActivityLoggingSuppressed(() => delegate.findMany({ where }));
+	if (!Array.isArray(records)) {
+		return [];
+	}
+
+	return records.map((record) => sanitizeRecord(record, DecimalClass));
+}
+
+async function fetchSnapshotsByIds({ prisma, modelName, ids, DecimalClass }) {
+	if (!Array.isArray(ids) || ids.length === 0) {
+		return [];
+	}
+
+	const delegate = getPrismaDelegate(prisma, modelName);
+	if (!delegate || typeof delegate.findMany !== "function") {
+		return [];
+	}
+
+	const uniqueIds = Array.from(new Set(ids));
+	const records = await withActivityLoggingSuppressed(() =>
+		delegate.findMany({
+			where: {
+				id: {
+					in: uniqueIds
+				}
+			}
+		})
+	);
+
+	if (!Array.isArray(records)) {
+		return [];
+	}
+
+	return records.map((record) => sanitizeRecord(record, DecimalClass));
 }
 
 function extractEntityId(source) {
@@ -132,6 +209,32 @@ function resolvesToSoftDelete(args) {
 	return true;
 }
 
+function normalizeAction(action, args) {
+	if (!action) {
+		return null;
+	}
+
+	if (action === "update" && resolvesToSoftDelete(args)) {
+		return "delete";
+	}
+
+	if (action === "updatemany" && resolvesToSoftDelete(args)) {
+		return "deletemany";
+	}
+
+	return action;
+}
+
+function extractEntityIds(records = []) {
+	if (!Array.isArray(records)) {
+		return [];
+	}
+
+	return records
+		.map((record) => extractEntityId(record))
+		.filter((entityId) => typeof entityId === "number" && Number.isFinite(entityId));
+}
+
 async function fetchSnapshot({ prisma, tableName, entityId, DecimalClass }) {
 	if (!tableName || !entityId) {
 		return null;
@@ -149,23 +252,32 @@ async function fetchSnapshot({ prisma, tableName, entityId, DecimalClass }) {
 	return sanitizeRecord(payload, DecimalClass);
 }
 
-function buildPayload({ action, tableName, entityId, before, after, context }) {
-	if (!entityId || !action || !tableName) {
+function buildPayload({ action, tableName, entityId, before, after, context, allowNullEntityId = false, meta }) {
+	if (!action || !tableName) {
+		return null;
+	}
+
+	if (!allowNullEntityId && !entityId) {
 		return null;
 	}
 
 	const actionLabel = `${action}_${tableName}`;
 	const userId = context?.userId ?? context?.user?.id ?? null;
+	const contextJson = {
+		before: before ?? null,
+		after: after ?? null
+	};
+
+	if (meta && typeof meta === "object") {
+		contextJson.meta = meta;
+	}
 
 	return {
 		userId,
 		action: actionLabel,
 		entityType: tableName,
-		entityId,
-		contextJson: {
-			before: before ?? null,
-			after: after ?? null
-		}
+		entityId: entityId ?? null,
+		contextJson
 	};
 }
 
@@ -188,19 +300,91 @@ async function handleActivityLogging({ prisma, params, next, tableNameMap, Decim
 	}
 
 	const modelName = params.model;
-	const action = params.action?.toLowerCase();
-	const normalizedAction = action === "update" && resolvesToSoftDelete(params.args) ? "delete" : action;
+	const rawAction = params.action?.toLowerCase();
+	const normalizedAction = normalizeAction(rawAction, params.args);
 
-	if (!modelName || !CRUD_ACTIONS.has(normalizedAction) || EXCLUDED_MODELS.has(modelName)) {
+	if (
+		!modelName ||
+		!normalizedAction ||
+		(!CRUD_ACTIONS.has(normalizedAction) &&
+			!BULK_ACTIONS.has(normalizedAction) &&
+			normalizedAction !== UPSERT_ACTION) ||
+		EXCLUDED_MODELS.has(modelName)
+	) {
 		return next(params);
 	}
 
 	const tableName = tableNameMap[modelName] ?? modelName;
+
+	if (BULK_ACTIONS.has(normalizedAction)) {
+		const baseAction = normalizedAction.replace("many", "");
+		const where = params.args?.where;
+		let beforeSnapshots = null;
+
+		if (baseAction !== "create") {
+			beforeSnapshots = await fetchSnapshotsByWhere({ prisma, modelName, where, DecimalClass });
+		}
+
+		const result = await next(params);
+		const meta = {
+			bulk: true,
+			operation: normalizedAction,
+			count: typeof result?.count === "number" ? result.count : null
+		};
+
+		let afterSnapshots = null;
+		if (baseAction === "create") {
+			afterSnapshots = sanitizeValue(params.args?.data ?? null, DecimalClass);
+		} else if (baseAction === "update") {
+			const ids = extractEntityIds(beforeSnapshots);
+			afterSnapshots = await fetchSnapshotsByIds({ prisma, modelName, ids, DecimalClass });
+			if (ids.length > 0) {
+				meta.entityIds = ids;
+			}
+		} else if (baseAction === "delete") {
+			const ids = extractEntityIds(beforeSnapshots);
+			if (ids.length > 0) {
+				meta.entityIds = ids;
+			}
+		}
+
+		const ids = extractEntityIds(beforeSnapshots);
+		const entityId = ids.length === 1 ? ids[0] : null;
+		const payload = buildPayload({
+			action: baseAction,
+			tableName,
+			entityId,
+			before: baseAction === "create" ? null : beforeSnapshots,
+			after: baseAction === "delete" ? null : afterSnapshots,
+			context,
+			allowNullEntityId: true,
+			meta
+		});
+
+		await persistActivityLog(prisma, payload);
+		return result;
+	}
+
 	let entityId = extractEntityId(params.args);
 	let beforeSnapshot = null;
 
-	if ((normalizedAction === "update" || normalizedAction === "delete") && entityId) {
+	if ((normalizedAction === "update" || normalizedAction === "delete" || normalizedAction === UPSERT_ACTION) && entityId) {
 		beforeSnapshot = await fetchSnapshot({ prisma, tableName, entityId, DecimalClass });
+	}
+
+	if ((normalizedAction === "update" || normalizedAction === "delete" || normalizedAction === UPSERT_ACTION) && !beforeSnapshot) {
+		const lookupSnapshot = await fetchSnapshotByWhere({
+			prisma,
+			modelName,
+			where: params.args?.where,
+			DecimalClass
+		});
+		if (lookupSnapshot) {
+			beforeSnapshot = lookupSnapshot;
+			if (!entityId) {
+				entityId = extractEntityId(lookupSnapshot);
+			}
+		}
 	}
 
 	const result = await next(params);
@@ -209,18 +393,22 @@ async function handleActivityLogging({ prisma, params, next, tableNameMap, Decim
 		entityId = extractEntityId(result);
 	}
 
-	if (!entityId) {
+	const resolvedAction =
+		normalizedAction === UPSERT_ACTION ? (beforeSnapshot ? "update" : "create") : normalizedAction;
+
+	if (!entityId && normalizedAction !== UPSERT_ACTION) {
 		return result;
 	}
 
-	const afterSnapshot = normalizedAction === "delete" ? null : sanitizeRecord(result, DecimalClass);
+	const afterSnapshot = resolvedAction === "delete" ? null : sanitizeRecord(result, DecimalClass);
 	const payload = buildPayload({
-		action: normalizedAction,
+		action: resolvedAction,
 		tableName,
 		entityId,
-		before: normalizedAction === "create" ? null : beforeSnapshot,
-		after: normalizedAction === "delete" ? null : afterSnapshot,
-		context
+		before: resolvedAction === "create" ? null : beforeSnapshot,
+		after: resolvedAction === "delete" ? null : afterSnapshot,
+		context,
+		allowNullEntityId: normalizedAction === UPSERT_ACTION
 	});
 
 	await persistActivityLog(prisma, payload);

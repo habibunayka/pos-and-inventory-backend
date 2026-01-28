@@ -302,6 +302,7 @@ model Ingredient {
   id    Int     @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
   name  String
+  sku   String?
   unitId Int    @map("unit_id")
   categoryId Int? @map("category_id")
 

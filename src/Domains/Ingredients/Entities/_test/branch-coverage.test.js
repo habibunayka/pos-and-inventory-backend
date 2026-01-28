@@ -9,7 +9,7 @@ describe("Ingredient entity branch coverage", () => {
 
 	it("Ingredient defaults optional fields", () => {
 		const entity = Ingredient.fromPersistence({ name: "Salt", unitId: 1 });
-		expect(entity).toMatchObject({ id: null, unitId: 1, categoryId: null });
+		expect(entity).toMatchObject({ id: null, unitId: 1, categoryId: null, sku: null });
 	});
 
 	it("IngredientPackage uses defaults", () => {
@@ -19,7 +19,11 @@ describe("Ingredient entity branch coverage", () => {
 
 	describe("constructor default branches", () => {
 		const cases = [
-			{ Entity: Ingredient, props: { name: "Salt", unitId: 1 }, expected: { id: null, categoryId: null } },
+			{
+				Entity: Ingredient,
+				props: { name: "Salt", unitId: 1 },
+				expected: { id: null, categoryId: null, sku: null }
+			},
 			{
 				Entity: IngredientPackage,
 				props: { ingredientId: 1, packageId: 2, qty: 3 },

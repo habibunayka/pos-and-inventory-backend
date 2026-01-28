@@ -10,6 +10,7 @@ describe("Ingredient", () => {
 		const record = {
 			id: "id-value-1",
 			name: "name-value-2",
+			sku: "sku-value-2",
 			unitId: "unitId-value-3",
 			categoryId: "categoryId-value-4"
 		};
@@ -20,6 +21,7 @@ describe("Ingredient", () => {
 		expect(entity).toMatchObject({
 			id: "id-value-1",
 			name: "name-value-2",
+			sku: "sku-value-2",
 			unitId: "unitId-value-3",
 			categoryId: "categoryId-value-4"
 		});

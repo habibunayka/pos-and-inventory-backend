@@ -4,6 +4,7 @@ export default class IngredientPresenter {
 		return {
 			id: ingredient.id,
 			name: ingredient.name,
+			sku: ingredient.sku ?? null,
 			unitId: ingredient.unitId,
 			categoryId: ingredient.categoryId ?? null
 		};

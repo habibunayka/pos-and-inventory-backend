@@ -40,11 +40,11 @@ describe("UpdateIngredientUsecase", () => {
 		const updated = { id: 1, name: "New", unitId: 2 };
 		ingredientService.updateIngredient.mockResolvedValue(updated);
 
-		const result = await usecase.execute("1", { name: " New ", unitId: "2" });
+		const result = await usecase.execute("1", { name: " New ", unitId: "2", sku: "ING-01" });
 
 		expect(ingredientService.updateIngredient).toHaveBeenCalledWith({
 			id: 1,
-			ingredientData: { name: "New", unitId: 2 }
+			ingredientData: { name: "New", unitId: 2, sku: "ING-01" }
 		});
 		expect(result).toEqual(updated);
 	});

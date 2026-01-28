@@ -37,4 +37,13 @@ describe("CreateIngredientUsecase", () => {
 		expect(ingredientService.createIngredient).toHaveBeenCalledWith({ name: "Sugar", unitId: 1 });
 		expect(result).toEqual(created);
 	});
+
+	test("should include sku when provided", async () => {
+		const created = { id: 6 };
+		ingredientService.createIngredient.mockResolvedValue(created);
+
+		await usecase.execute({ name: "Salt", unitId: 1, sku: "ING-001" });
+
+		expect(ingredientService.createIngredient).toHaveBeenCalledWith({ name: "Salt", unitId: 1, sku: "ING-001" });
+	});
 });
