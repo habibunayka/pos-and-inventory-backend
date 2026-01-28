@@ -8,11 +8,15 @@ describe("User entity branch coverage", () => {
 			name: "NoRole",
 			email: "user@example.test",
 			status: "active",
+			createdAt: "2024-01-05T00:00:00.000Z",
+			updatedAt: "2024-01-06T00:00:00.000Z",
 			userRoles: []
 		});
 		expect(user.role).toBeNull();
 		expect(user.authenticationMethod).toBe("password");
 		expect(user.placeId).toBeNull();
+		expect(user.createdAt).toBe("2024-01-05T00:00:00.000Z");
+		expect(user.updatedAt).toBe("2024-01-06T00:00:00.000Z");
 	});
 
 	it("User picks the first role assignment and pin auth", () => {
@@ -21,6 +25,8 @@ describe("User entity branch coverage", () => {
 			name: "RoleUser",
 			email: "role@example.test",
 			status: "inactive",
+			createdAt: "2024-01-07T00:00:00.000Z",
+			updatedAt: "2024-01-08T00:00:00.000Z",
 			pinCodeHash: "hashed",
 			userRoles: [
 				{ id: 20, placeId: 88, role: { id: 7, name: "Admin" } },
@@ -31,6 +37,8 @@ describe("User entity branch coverage", () => {
 		expect(user.authenticationMethod).toBe("pin");
 		expect(user.role?.name).toBe("Manager");
 		expect(user.placeId).toBe(77);
+		expect(user.createdAt).toBe("2024-01-07T00:00:00.000Z");
+		expect(user.updatedAt).toBe("2024-01-08T00:00:00.000Z");
 	});
 
 	it("User sorts assignments with missing ids", () => {
@@ -39,6 +47,8 @@ describe("User entity branch coverage", () => {
 			name: "SortUser",
 			email: "sort@example.test",
 			status: "active",
+			createdAt: "2024-01-09T00:00:00.000Z",
+			updatedAt: "2024-01-10T00:00:00.000Z",
 			userRoles: [
 				{ id: null, placeId: 10, role: { id: 1, name: "Cashier" } },
 				{ id: 2, placeId: 20, role: { id: 2, name: "Manager" } }
@@ -47,6 +57,8 @@ describe("User entity branch coverage", () => {
 
 		expect(user.role?.name).toBe("Manager");
 		expect(user.placeId).toBe(20);
+		expect(user.createdAt).toBe("2024-01-09T00:00:00.000Z");
+		expect(user.updatedAt).toBe("2024-01-10T00:00:00.000Z");
 	});
 
 	describe("constructor default branches", () => {
@@ -57,7 +69,9 @@ describe("User entity branch coverage", () => {
 				email: null,
 				status: "active",
 				authenticationMethod: "password",
-				placeId: null
+				placeId: null,
+				createdAt: null,
+				updatedAt: null
 			});
 		});
 	});

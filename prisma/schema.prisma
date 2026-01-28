@@ -29,6 +29,8 @@ model User {
   pinCodeHash   String?   @map("pin_code_hash")
   avatarUrl     String?   @map("avatar_url")
   status        String    @default("active")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
 
   // relations
   userRoles     UserRole[]
@@ -203,6 +205,11 @@ model Shift {
 
 // ===== 04-menus.prisma =====
 /// ========== MENUS ==========
+enum CategoryType {
+  menu
+  ingredient
+}
+
 model Menu {
   id          Int      @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
@@ -227,10 +234,13 @@ model Menu {
 model Category {
   id   Int    @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
-  name String @unique
+  name String
+  type CategoryType @default(menu)
 
   menus Menu[]
+  ingredients Ingredient[]
 
+  @@unique([name, type])
   @@map("categories")
 }
 
@@ -288,16 +298,6 @@ model Unit {
   @@map("units")
 }
 
-model IngredientCategory {
-  id        Int      @id @default(autoincrement())
-  deletedAt DateTime? @map("deleted_at")
-  name      String   @unique
-
-  ingredients Ingredient[]
-
-  @@map("ingredient_categories")
-}
-
 model Ingredient {
   id    Int     @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
@@ -307,7 +307,7 @@ model Ingredient {
   categoryId Int? @map("category_id")
 
   unit               Unit              @relation(fields: [unitId], references: [id], onDelete: Restrict)
-  category           IngredientCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  category           Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   recipes            Recipe[]
   placeStocks        PlaceStock[]
   supplierProducts   SupplierProduct[]

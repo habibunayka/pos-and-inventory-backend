@@ -10,14 +10,14 @@ export default class CategoryService {
 		}
 		this._repo = categoryRepository;
 	}
-	listCategories() {
-		return this._repo.findAll();
+	listCategories({ type } = {}) {
+		return this._repo.findAll({ type });
 	}
 	getCategory(id) {
 		return this._repo.findById(id);
 	}
-	getCategoryByName(name) {
-		return this._repo.findByName(name);
+	getCategoryByName(name, type = null) {
+		return this._repo.findByName(name, type);
 	}
 	createCategory(data) {
 		return this._repo.createCategory(data);

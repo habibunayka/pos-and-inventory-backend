@@ -38,7 +38,7 @@ describe("CategoryService", () => {
 		const service = new CategoryService({ categoryRepository: mockRepo });
 		const result = service.listCategories();
 
-		expect(mockRepo.findAll).toHaveBeenCalled();
+		expect(mockRepo.findAll).toHaveBeenCalledWith({ type: undefined });
 		expect(result).resolves.toEqual(["a", "b"]);
 	});
 
@@ -56,9 +56,9 @@ describe("CategoryService", () => {
 		mockRepo.findByName.mockResolvedValue({ id: "1", name: "Food" });
 
 		const service = new CategoryService({ categoryRepository: mockRepo });
-		const result = service.getCategoryByName("Food");
+		const result = service.getCategoryByName("Food", "menu");
 
-		expect(mockRepo.findByName).toHaveBeenCalledWith("Food");
+		expect(mockRepo.findByName).toHaveBeenCalledWith("Food", "menu");
 		expect(result).resolves.toEqual({ id: "1", name: "Food" });
 	});
 

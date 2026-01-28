@@ -9,7 +9,8 @@ describe("UpdateCategoryUsecase", () => {
 	beforeEach(() => {
 		mockService = {
 			updateCategory: jest.fn(),
-			getCategoryByName: jest.fn()
+			getCategoryByName: jest.fn(),
+			getCategory: jest.fn()
 		};
 		usecase = new UpdateCategoryUsecase({ categoryService: mockService });
 	});
@@ -34,6 +35,7 @@ describe("UpdateCategoryUsecase", () => {
 
 	test("should throw when category not found", async () => {
 		mockService.getCategoryByName.mockResolvedValue(null);
+		mockService.getCategory.mockResolvedValue(null);
 		mockService.updateCategory.mockResolvedValue(null);
 
 		await expect(usecase.execute(1, { name: "Food" })).rejects.toThrow(new ValidationError("Category not found"));
@@ -41,12 +43,21 @@ describe("UpdateCategoryUsecase", () => {
 
 	test("should update category with normalized name", async () => {
 		mockService.getCategoryByName.mockResolvedValue(null);
-		const updated = { id: 1, name: "food" };
+		mockService.getCategory.mockResolvedValue({ id: 1, name: "food", type: "menu" });
+		const updated = { id: 1, name: "food", type: "menu" };
 		mockService.updateCategory.mockResolvedValue(updated);
 
 		const result = await usecase.execute("1", { name: " Food " });
 
 		expect(mockService.updateCategory).toHaveBeenCalledWith({ id: 1, data: { name: "food" } });
 		expect(result).toEqual(updated);
+	});
+
+	test("should update category type when provided", async () => {
+		mockService.updateCategory.mockResolvedValue({ id: 2, name: "bumbu", type: "ingredient" });
+
+		await usecase.execute(2, { type: "ingredient" });
+
+		expect(mockService.updateCategory).toHaveBeenCalledWith({ id: 2, data: { type: "ingredient" } });
 	});
 });

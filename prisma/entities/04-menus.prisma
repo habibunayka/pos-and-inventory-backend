@@ -1,4 +1,9 @@
 /// ========== MENUS ==========
+enum CategoryType {
+  menu
+  ingredient
+}
+
 model Menu {
   id          Int      @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
@@ -23,10 +28,13 @@ model Menu {
 model Category {
   id   Int    @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
-  name String @unique
+  name String
+  type CategoryType @default(menu)
 
   menus Menu[]
+  ingredients Ingredient[]
 
+  @@unique([name, type])
   @@map("categories")
 }
 

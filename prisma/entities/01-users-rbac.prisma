@@ -8,6 +8,8 @@ model User {
   pinCodeHash   String?   @map("pin_code_hash")
   avatarUrl     String?   @map("avatar_url")
   status        String    @default("active")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
 
   // relations
   userRoles     UserRole[]

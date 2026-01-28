@@ -11,7 +11,9 @@ describe("UserPresenter", () => {
 			status: "active",
 			role: { id: 2, name: "manager", description: "desc" },
 			placeId: 10,
-			authenticationMethod: "password"
+			authenticationMethod: "password",
+			createdAt: "2024-01-01T00:00:00.000Z",
+			updatedAt: "2024-01-02T00:00:00.000Z"
 		});
 
 		expect(presented).toEqual({
@@ -21,7 +23,9 @@ describe("UserPresenter", () => {
 			status: "active",
 			role: { id: 2, name: "manager", description: "desc" },
 			placeId: 10,
-			authenticationMethod: "password"
+			authenticationMethod: "password",
+			createdAt: "2024-01-01T00:00:00.000Z",
+			updatedAt: "2024-01-02T00:00:00.000Z"
 		});
 	});
 
@@ -34,7 +38,9 @@ describe("UserPresenter", () => {
 				status: "inactive",
 				role: null,
 				placeId: null,
-				authenticationMethod: "pin"
+				authenticationMethod: "pin",
+				createdAt: "2024-01-03T00:00:00.000Z",
+				updatedAt: "2024-01-04T00:00:00.000Z"
 			}
 		]);
 
@@ -46,7 +52,9 @@ describe("UserPresenter", () => {
 				status: "inactive",
 				role: null,
 				placeId: null,
-				authenticationMethod: "pin"
+				authenticationMethod: "pin",
+				createdAt: "2024-01-03T00:00:00.000Z",
+				updatedAt: "2024-01-04T00:00:00.000Z"
 			}
 		]);
 	});

@@ -3,7 +3,8 @@ export default class CategoryPresenter {
 		if (!model) return null;
 		return {
 			id: model.id,
-			name: model.name
+			name: model.name,
+			type: model.type ?? "menu"
 		};
 	}
 	presentCollection(records = []) {

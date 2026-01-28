@@ -28,8 +28,16 @@ describe("BaseCategoryUsecase", () => {
 		expect(usecase._normalize(undefined)).toBe("");
 	});
 
+	test("_normalizeType should default to menu and validate", () => {
+		expect(usecase._normalizeType()).toBe("menu");
+		expect(usecase._normalizeType("ingredient")).toBe("ingredient");
+		expect(() => usecase._normalizeType("invalid")).toThrow(
+			new ValidationError("Category type must be menu or ingredient")
+		);
+	});
+
 	test("_assertNameAvailable should throw if name empty", async () => {
-		await expect(usecase._assertNameAvailable("   ")).rejects.toThrow(
+		await expect(usecase._assertNameAvailable("   ", "menu")).rejects.toThrow(
 			new ValidationError("Category name is required")
 		);
 	});
@@ -37,7 +45,7 @@ describe("BaseCategoryUsecase", () => {
 	test("_assertNameAvailable should throw if category already exists", async () => {
 		mockService.getCategoryByName.mockResolvedValue({ id: "123", name: "food" });
 
-		await expect(usecase._assertNameAvailable("Food")).rejects.toThrow(
+		await expect(usecase._assertNameAvailable("Food", "menu")).rejects.toThrow(
 			new ValidationError("Category food already exists")
 		);
 	});
@@ -45,7 +53,7 @@ describe("BaseCategoryUsecase", () => {
 	test("_assertNameAvailable should pass when existing category is same as ignoreId", async () => {
 		mockService.getCategoryByName.mockResolvedValue({ id: "10", name: "food" });
 
-		const result = await usecase._assertNameAvailable("FOOD", "10");
+		const result = await usecase._assertNameAvailable("FOOD", "menu", "10");
 
 		expect(result).toBe("food");
 	});
@@ -53,7 +61,7 @@ describe("BaseCategoryUsecase", () => {
 	test("_assertNameAvailable should return normalized name when available", async () => {
 		mockService.getCategoryByName.mockResolvedValue(null);
 
-		const result = await usecase._assertNameAvailable("  BeaVerAge  ");
+		const result = await usecase._assertNameAvailable("  BeaVerAge  ", "menu");
 
 		expect(result).toBe("beaverage");
 	});

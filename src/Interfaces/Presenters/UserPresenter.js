@@ -15,7 +15,9 @@ export default class UserPresenter {
 			status: user.status,
 			role,
 			placeId: user.placeId,
-			authenticationMethod: user.authenticationMethod
+			authenticationMethod: user.authenticationMethod,
+			createdAt: user.createdAt ? new Date(user.createdAt).toISOString() : undefined,
+			updatedAt: user.updatedAt ? new Date(user.updatedAt).toISOString() : undefined
 		};
 	}
 

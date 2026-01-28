@@ -33,6 +33,14 @@ const User = {
 		role: {
 			nullable: true,
 			$ref: "#/components/schemas/Role"
+		},
+		createdAt: {
+			type: "string",
+			format: "date-time"
+		},
+		updatedAt: {
+			type: "string",
+			format: "date-time"
 		}
 	}
 };

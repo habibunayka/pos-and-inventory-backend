@@ -463,17 +463,17 @@ async function main() {
 		unitRecords[u.name] = rec;
 	}
 
-	// Ingredient Categories
+	// Ingredient Categories (Category type: ingredient)
 	const ingredientCategoryDefs = [
-		{ name: "bumbu" },
-		{ name: "bahan_pokok" },
-		{ name: "protein" }
+		{ name: "bumbu", type: "ingredient" },
+		{ name: "bahan_pokok", type: "ingredient" },
+		{ name: "protein", type: "ingredient" }
 	];
 
 	const ingredientCategoryRecords = {};
 	for (const c of ingredientCategoryDefs) {
-		const rec = await prisma.ingredientCategory.upsert({
-			where: { name: c.name },
+		const rec = await prisma.category.upsert({
+			where: { name_type: { name: c.name, type: c.type } },
 			update: { deletedAt: null },
 			create: c
 		});
@@ -724,13 +724,16 @@ async function main() {
 	}
 
 	// ==== Menu master seeds (Categories, Menus, MenuPrices, MenuVariants, MenuVariantItems, Recipes)
-	// Categories
-	const categoryDefs = [{ name: "beverages" }, { name: "food" }];
+	// Categories (Category type: menu)
+	const categoryDefs = [
+		{ name: "beverages", type: "menu" },
+		{ name: "food", type: "menu" }
+	];
 
 	const categoryRecords = {};
 	for (const c of categoryDefs) {
 		const rec = await prisma.category.upsert({
-			where: { name: c.name },
+			where: { name_type: { name: c.name, type: c.type } },
 			update: { deletedAt: null },
 			create: c
 		});

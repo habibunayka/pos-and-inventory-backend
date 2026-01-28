@@ -43,8 +43,8 @@ describe("CreateCategoryUsecase", () => {
 
 		const result = await usecase.execute({ name: "  FOOD  " });
 
-		expect(mockService.getCategoryByName).toHaveBeenCalledWith("food");
-		expect(mockService.createCategory).toHaveBeenCalledWith({ name: "food" });
+		expect(mockService.getCategoryByName).toHaveBeenCalledWith("food", "menu");
+		expect(mockService.createCategory).toHaveBeenCalledWith({ name: "food", type: "menu" });
 		expect(result).toEqual({ id: "10", name: "food" });
 	});
 
@@ -54,6 +54,16 @@ describe("CreateCategoryUsecase", () => {
 
 		await usecase.execute({ name: "  BeVerAge  " });
 
-		expect(mockService.createCategory).toHaveBeenCalledWith({ name: "beverage" });
+		expect(mockService.createCategory).toHaveBeenCalledWith({ name: "beverage", type: "menu" });
+	});
+
+	test("should allow ingredient type categories", async () => {
+		mockService.getCategoryByName.mockResolvedValue(null);
+		mockService.createCategory.mockResolvedValue({ id: "11", name: "bumbu", type: "ingredient" });
+
+		await usecase.execute({ name: "Bumbu", type: "ingredient" });
+
+		expect(mockService.getCategoryByName).toHaveBeenCalledWith("bumbu", "ingredient");
+		expect(mockService.createCategory).toHaveBeenCalledWith({ name: "bumbu", type: "ingredient" });
 	});
 });

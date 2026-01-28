@@ -9,7 +9,8 @@ describe("Category", () => {
 	it("maps persistence record to entity", () => {
 		const record = {
 			id: "id-value-1",
-			name: "name-value-2"
+			name: "name-value-2",
+			type: "ingredient"
 		};
 
 		const entity = Category.fromPersistence(record);
@@ -17,7 +18,8 @@ describe("Category", () => {
 		expect(entity).toBeInstanceOf(Category);
 		expect(entity).toMatchObject({
 			id: "id-value-1",
-			name: "name-value-2"
+			name: "name-value-2",
+			type: "ingredient"
 		});
 	});
 });

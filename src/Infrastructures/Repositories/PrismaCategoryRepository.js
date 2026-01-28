@@ -8,9 +8,13 @@ export default class PrismaCategoryRepository extends CategoryRepository {
 		this._prisma = prisma;
 	}
 
-	async findAll() {
+	async findAll({ type } = {}) {
+		const where = { deletedAt: null };
+		if (type) {
+			where.type = type;
+		}
 		const records = await this._prisma.category.findMany({
-			where: { deletedAt: null },
+			where,
 			orderBy: { id: "asc" }
 		});
 		return records.map((record) => Category.fromPersistence(record));
@@ -21,9 +25,13 @@ export default class PrismaCategoryRepository extends CategoryRepository {
 		return Category.fromPersistence(record);
 	}
 
-	async findByName(name) {
+	async findByName(name, type = null) {
 		if (!name) return null;
-		const record = await this._prisma.category.findFirst({ where: { name, deletedAt: null } });
+		const where = { name, deletedAt: null };
+		if (type) {
+			where.type = type;
+		}
+		const record = await this._prisma.category.findFirst({ where });
 		return Category.fromPersistence(record);
 	}
 
