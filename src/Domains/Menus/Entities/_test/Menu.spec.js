@@ -13,7 +13,9 @@ describe("Menu", () => {
 			name: "name-value-3",
 			categoryId: "categoryId-value-4",
 			description: "description-value-5",
-			isActive: "isActive-value-6"
+			sku: "sku-value-6",
+			isActive: "isActive-value-7",
+			createdAt: "createdAt-value-8"
 		};
 
 		const entity = Menu.fromPersistence(record);
@@ -25,7 +27,9 @@ describe("Menu", () => {
 			name: "name-value-3",
 			categoryId: "categoryId-value-4",
 			description: "description-value-5",
-			isActive: "isActive-value-6"
+			sku: "sku-value-6",
+			isActive: "isActive-value-7",
+			createdAt: "createdAt-value-8"
 		});
 	});
 });

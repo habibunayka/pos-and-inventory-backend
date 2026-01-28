@@ -10,7 +10,8 @@ describe("Ingredient", () => {
 		const record = {
 			id: "id-value-1",
 			name: "name-value-2",
-			unitId: "unitId-value-3"
+			unitId: "unitId-value-3",
+			categoryId: "categoryId-value-4"
 		};
 
 		const entity = Ingredient.fromPersistence(record);
@@ -19,7 +20,8 @@ describe("Ingredient", () => {
 		expect(entity).toMatchObject({
 			id: "id-value-1",
 			name: "name-value-2",
-			unitId: "unitId-value-3"
+			unitId: "unitId-value-3",
+			categoryId: "categoryId-value-4"
 		});
 	});
 });

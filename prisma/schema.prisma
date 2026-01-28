@@ -212,6 +212,7 @@ model Menu {
   description String?
   sku         String?
   isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
 
   place     Place?    @relation(fields: [placeId], references: [id], onDelete: SetNull)
   category  Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
@@ -287,13 +288,25 @@ model Unit {
   @@map("units")
 }
 
+model IngredientCategory {
+  id        Int      @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
+  name      String   @unique
+
+  ingredients Ingredient[]
+
+  @@map("ingredient_categories")
+}
+
 model Ingredient {
   id    Int     @id @default(autoincrement())
   deletedAt DateTime? @map("deleted_at")
   name  String
   unitId Int    @map("unit_id")
+  categoryId Int? @map("category_id")
 
   unit               Unit              @relation(fields: [unitId], references: [id], onDelete: Restrict)
+  category           IngredientCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   recipes            Recipe[]
   placeStocks        PlaceStock[]
   supplierProducts   SupplierProduct[]

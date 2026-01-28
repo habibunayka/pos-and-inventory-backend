@@ -33,6 +33,10 @@ const Menu = {
 		isActive: {
 			type: "boolean",
 			example: true
+		},
+		createdAt: {
+			type: "string",
+			format: "date-time"
 		}
 	}
 };

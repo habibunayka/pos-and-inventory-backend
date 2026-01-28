@@ -8,6 +8,7 @@ model Menu {
   description String?
   sku         String?
   isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
 
   place     Place?    @relation(fields: [placeId], references: [id], onDelete: SetNull)
   category  Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)

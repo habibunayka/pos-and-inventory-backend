@@ -8,7 +8,8 @@ export default class MenuPresenter {
 			categoryId: model.categoryId ?? null,
 			description: model.description ?? null,
 			sku: model.sku ?? null,
-			isActive: model.isActive
+			isActive: model.isActive,
+			createdAt: model.createdAt
 		};
 	}
 	presentCollection(records = []) {

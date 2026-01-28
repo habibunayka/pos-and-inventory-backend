@@ -14,6 +14,11 @@ const CreateIngredientRequest = {
 		unitId: {
 			type: "integer",
 			example: 1
+		},
+		categoryId: {
+			type: "integer",
+			nullable: true,
+			example: 2
 		}
 	}
 };

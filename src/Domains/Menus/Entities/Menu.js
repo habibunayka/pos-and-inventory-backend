@@ -1,5 +1,14 @@
 export default class Menu {
-	constructor({ id = null, placeId = null, name, categoryId = null, description = null, sku = null, isActive = true }) {
+	constructor({
+		id = null,
+		placeId = null,
+		name,
+		categoryId = null,
+		description = null,
+		sku = null,
+		isActive = true,
+		createdAt
+	}) {
 		this.id = id;
 		this.placeId = placeId;
 		this.name = name;
@@ -7,6 +16,7 @@ export default class Menu {
 		this.description = description;
 		this.sku = sku;
 		this.isActive = isActive;
+		this.createdAt = createdAt;
 	}
 
 	static fromPersistence(record) {
@@ -18,7 +28,8 @@ export default class Menu {
 			categoryId: record.categoryId ?? null,
 			description: record.description ?? null,
 			sku: record.sku ?? null,
-			isActive: record.isActive ?? true
+			isActive: record.isActive ?? true,
+			createdAt: record.createdAt
 		});
 	}
 }
