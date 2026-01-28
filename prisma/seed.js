@@ -482,10 +482,10 @@ async function main() {
 
 	// Ingredients
 	const ingredientDefs = [
-		{ name: "Gula", unitName: "gram", categoryName: "bahan_pokok" },
-		{ name: "Tepung", unitName: "gram", categoryName: "bahan_pokok" },
-		{ name: "Minyak", unitName: "liter", categoryName: "bumbu" },
-		{ name: "Telur", unitName: "piece", categoryName: "protein" }
+		{ name: "Gula", sku: "ING-GULA-001", unitName: "gram", categoryName: "bahan_pokok" },
+		{ name: "Tepung", sku: "ING-TEPUNG-001", unitName: "gram", categoryName: "bahan_pokok" },
+		{ name: "Minyak", sku: "ING-MINYAK-001", unitName: "liter", categoryName: "bumbu" },
+		{ name: "Telur", sku: "ING-TELUR-001", unitName: "piece", categoryName: "protein" }
 	];
 
 	const ingredientRecords = {};
@@ -495,7 +495,7 @@ async function main() {
 		const category = ing.categoryName ? ingredientCategoryRecords[ing.categoryName] : null;
 
 		const existing = await prisma.ingredient.findFirst({ where: { name: ing.name } });
-		const data = { unitId: unit.id };
+		const data = { unitId: unit.id, sku: ing.sku ?? null };
 		if (category) {
 			data.category = { connect: { id: category.id } };
 		} else if (existing) {
