@@ -3,6 +3,17 @@ export default class TransactionPresenter {
 		this.transactionItemPresenter = transactionItemPresenter ?? null;
 	}
 
+	_formatTransactionCode(value) {
+		if (value == null) return value;
+		const raw = String(value).trim();
+		if (raw === "") return raw;
+		const digits = raw.replace(/[^0-9]/g, "");
+		if (digits === "") return raw;
+		const numberValue = Number(digits);
+		if (!Number.isFinite(numberValue)) return raw;
+		return `#TRX${numberValue}`;
+	}
+
 	present(record) {
 		if (!record) return null;
 		const items = Array.isArray(record.items) ? record.items : [];
@@ -10,7 +21,7 @@ export default class TransactionPresenter {
 			? this.transactionItemPresenter.presentCollection(items)
 			: items;
 		return {
-			id: record.id,
+			id: this._formatTransactionCode(record.id),
 			cashierId: record.cashierId,
 			placeId: record.placeId,
 			tableId: record.tableId,

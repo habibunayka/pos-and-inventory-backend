@@ -212,7 +212,6 @@ const roleDefinitions = [
 			"manage_orders",
 			"manage_payments",
 			"manage_tables",
-			"manage_kitchen_operations",
 			"manage_menus",
 			"manage_categories",
 			"manage_inventory",
@@ -224,7 +223,19 @@ const roleDefinitions = [
 	{
 		name: "cashier",
 		description: "Point of sale operator using PIN authentication.",
+<<<<<<< Updated upstream
 		permissions: ["manage_orders", "manage_payments", "manage_customer_data", "view_kitchen_operations", "view_tables", "view_menus", "view_categories", "view_promotions"]
+=======
+		permissions: [
+			"manage_orders",
+			"manage_payments",
+			"manage_customer_data",
+			"view_tables",
+			"view_menus",
+			"view_categories",
+			"view_promotions"
+		]
+>>>>>>> Stashed changes
 	},
 	{
 		name: "chef",
@@ -258,17 +269,23 @@ const placeSeeds = [...defaultPlaceSeeds, ...parseAdditionalPlaceSeeds()];
 
 const defaultAccountSeeds = [
 	normalizeAccountSeed({
-		name: envOrDefault("SEED_BRAND_OWNER_NAME", envOrDefault("SEED_OWNER_NAME", "Brand Owner")),
+		name: envOrDefault("SEED_BRAND_OWNER_NAME", envOrDefault("SEED_OWNER_NAME", "Brand Owner A")),
 		role: "brand_owner",
-		email: envOrDefault("SEED_BRAND_OWNER_EMAIL", envOrDefault("SEED_OWNER_EMAIL", "brand.owner@example.com")),
+		email: envOrDefault("SEED_BRAND_OWNER_EMAIL", envOrDefault("SEED_OWNER_EMAIL", "brand.owner.a@example.com")),
 		password: envOrDefault("SEED_BRAND_OWNER_PASSWORD", envOrDefault("SEED_OWNER_PASSWORD", "BrandOwnerPass123!"))
 	}),
 	normalizeAccountSeed({
-		name: envOrDefault("SEED_LOCATION_OWNER_NAME", envOrDefault("SEED_MANAGER_NAME", "Location Owner")),
+		name: "Brand Owner B",
+		role: "brand_owner",
+		email: "brand.owner.b@example.com",
+		password: "BrandOwnerPass124!"
+	}),
+	normalizeAccountSeed({
+		name: envOrDefault("SEED_LOCATION_OWNER_NAME", envOrDefault("SEED_MANAGER_NAME", "Location Owner A")),
 		role: "location_owner",
 		email: envOrDefault(
 			"SEED_LOCATION_OWNER_EMAIL",
-			envOrDefault("SEED_MANAGER_EMAIL", "location.owner@example.com")
+			envOrDefault("SEED_MANAGER_EMAIL", "location.owner.a@example.com")
 		),
 		password: envOrDefault(
 			"SEED_LOCATION_OWNER_PASSWORD",
@@ -276,16 +293,34 @@ const defaultAccountSeeds = [
 		)
 	}),
 	normalizeAccountSeed({
-		name: envOrDefault("SEED_ADMIN_NAME", "Administrator"),
+		name: "Location Owner B",
+		role: "location_owner",
+		email: "location.owner.b@example.com",
+		password: "LocationOwnerPass124!"
+	}),
+	normalizeAccountSeed({
+		name: envOrDefault("SEED_ADMIN_NAME", "Administrator A"),
 		role: "admin",
-		email: envOrDefault("SEED_ADMIN_EMAIL", "admin@example.com"),
+		email: envOrDefault("SEED_ADMIN_EMAIL", "admin.a@example.com"),
 		password: envOrDefault("SEED_ADMIN_PASSWORD", "AdminPass123!")
 	}),
 	normalizeAccountSeed({
-		name: envOrDefault("SEED_STORE_MANAGER_NAME", "Store Manager"),
+		name: "Administrator B",
+		role: "admin",
+		email: "admin.b@example.com",
+		password: "AdminPass124!"
+	}),
+	normalizeAccountSeed({
+		name: envOrDefault("SEED_STORE_MANAGER_NAME", "Store Manager A"),
 		role: "store_manager",
-		email: envOrDefault("SEED_STORE_MANAGER_EMAIL", "store.manager@example.com"),
+		email: envOrDefault("SEED_STORE_MANAGER_EMAIL", "store.manager.a@example.com"),
 		password: envOrDefault("SEED_STORE_MANAGER_PASSWORD", "StoreManagerPass123!")
+	}),
+	normalizeAccountSeed({
+		name: "Store Manager B",
+		role: "store_manager",
+		email: "store.manager.b@example.com",
+		password: "StoreManagerPass124!"
 	}),
 	normalizeAccountSeed({
 		name: envOrDefault("SEED_CASHIER_NAME", "Cashier A"),
@@ -293,22 +328,45 @@ const defaultAccountSeeds = [
 		pin: envOrDefault("SEED_CASHIER_PIN", "123456")
 	}),
 	normalizeAccountSeed({
-		name: envOrDefault("SEED_CHEF_NAME", "Kitchen Chef"),
+		name: "Cashier B",
+		role: "cashier",
+		pin: "654321"
+	}),
+	normalizeAccountSeed({
+		name: envOrDefault("SEED_CHEF_NAME", "Kitchen Chef A"),
 		role: "chef",
-		email: envOrDefault("SEED_CHEF_EMAIL", "chef@example.com"),
+		email: envOrDefault("SEED_CHEF_EMAIL", "chef.a@example.com"),
 		password: envOrDefault("SEED_CHEF_PASSWORD", "ChefPass123!")
 	}),
 	normalizeAccountSeed({
-		name: envOrDefault("SEED_PURCHAISING_NAME", "Purchaising Staff"),
+		name: "Kitchen Chef B",
+		role: "chef",
+		email: "chef.b@example.com",
+		password: "ChefPass124!"
+	}),
+	normalizeAccountSeed({
+		name: envOrDefault("SEED_PURCHAISING_NAME", "Purchaising Staff A"),
 		role: "purchaising",
-		email: envOrDefault("SEED_PURCHAISING_EMAIL", "purchaising@example.com"),
+		email: envOrDefault("SEED_PURCHAISING_EMAIL", "purchaising.a@example.com"),
 		password: envOrDefault("SEED_PURCHAISING_PASSWORD", "PurchaisingPass123!")
 	}),
 	normalizeAccountSeed({
-		name: envOrDefault("SEED_WAITERS_NAME", "Head Waiter"),
+		name: "Purchaising Staff B",
+		role: "purchaising",
+		email: "purchaising.b@example.com",
+		password: "PurchaisingPass124!"
+	}),
+	normalizeAccountSeed({
+		name: envOrDefault("SEED_WAITERS_NAME", "Head Waiter A"),
 		role: "waiters",
-		email: envOrDefault("SEED_WAITERS_EMAIL", "waiters@example.com"),
+		email: envOrDefault("SEED_WAITERS_EMAIL", "waiters.a@example.com"),
 		password: envOrDefault("SEED_WAITERS_PASSWORD", "WaitersPass123!")
+	}),
+	normalizeAccountSeed({
+		name: "Head Waiter B",
+		role: "waiters",
+		email: "waiters.b@example.com",
+		password: "WaitersPass124!"
 	})
 ].filter(Boolean);
 
@@ -640,23 +698,46 @@ async function main() {
 	const stationRecords = {};
 	const shiftRecords = {};
 	if (mainPlace) {
-		const tableDefs = [
-			{ placeId: mainPlace.id, name: "T-01", status: "available" },
-			{ placeId: mainPlace.id, name: "T-02", status: "available" },
-			{ placeId: mainPlace.id, name: "T-03", status: "available" }
-		];
+		const tableDefs = Array.from({ length: 16 }, (_, idx) => {
+			const number = idx + 1;
+			const padded = String(number).padStart(2, "0");
+			let capacity = 2;
+			if (number >= 4 && number <= 7) {
+				capacity = 4;
+			} else if (number >= 8 && number <= 10) {
+				capacity = 6;
+			} else if (number >= 11 && number <= 13) {
+				capacity = 8;
+			} else if (number >= 14 && number <= 16) {
+				capacity = 10;
+			}
+
+			return {
+				placeId: mainPlace.id,
+				name: `T-${padded}`,
+				capacity,
+				status: "available"
+			};
+		});
 
 		for (const t of tableDefs) {
 			const existing = await prisma.table.findFirst({ where: { placeId: t.placeId, name: t.name } });
 			if (existing) {
 				await prisma.table.update({
 					where: { id: existing.id },
-					data: { status: t.status, deletedAt: null }
+					data: { status: t.status, capacity: t.capacity, deletedAt: null }
 				});
 			} else {
 				await prisma.table.create({ data: t });
 			}
 		}
+		const allowedTableNames = tableDefs.map((t) => t.name);
+		await prisma.table.deleteMany({
+			where: {
+				placeId: mainPlace.id,
+				name: { notIn: allowedTableNames }
+			}
+		});
 
 		const stationDefs = [
 			{ placeId: mainPlace.id, name: "Front Counter", description: "Default POS station", isActive: true },

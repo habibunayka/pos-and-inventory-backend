@@ -3,8 +3,8 @@ const Transaction = {
 	required: ["id", "cashierId", "total"],
 	properties: {
 		id: {
-			type: "integer",
-			example: 1
+			type: "string",
+			example: "#TRX32"
 		},
 		cashierId: {
 			type: "integer",
