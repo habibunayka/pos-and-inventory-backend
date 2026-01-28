@@ -45,7 +45,7 @@ export default class UpdateKitchenOrderUsecase extends BaseTransactionUsecase {
 		if (payload.note !== undefined) data.note = payload.note == null ? null : String(payload.note).trim() || null;
 		const updated = await this.kitchenOrderService.updateKitchenOrder({ id: intId, data });
 		if (!updated) return updated;
-		if (data.status !== "done") return updated;
+		if (updated.status !== "done") return updated;
 
 		const item = await this.transactionItemService.getItem(updated.transactionItemId);
 		if (!item || !item.transactionId) return updated;
@@ -55,10 +55,13 @@ export default class UpdateKitchenOrderUsecase extends BaseTransactionUsecase {
 
 		const allDone = kitchenOrders.every((order) => order?.status === "done");
 		if (allDone) {
-			await this.transactionService.updateTransaction({
-				id: item.transactionId,
-				data: { status: "ready_to_pickup" }
-			});
+			const transaction = await this.transactionService.getTransaction(item.transactionId);
+			if (transaction?.status !== "done") {
+				await this.transactionService.updateTransaction({
+					id: item.transactionId,
+					data: { status: "ready_to_pickup" }
+				});
+			}
 		}
 
 		return updated;
