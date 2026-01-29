@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { execSync } from "node:child_process";
 import { PrismaClient } from "@prisma/client";
 import { buildPermissionCatalog } from "../src/Commons/Constants/PermissionMatrix.js";
 import { hashSecret } from "../src/Commons/Utils/HashPassword.js";
@@ -13,6 +14,72 @@ function envOrDefault(key, fallback) {
 
 	const trimmed = raw.trim();
 	return trimmed === "" ? fallback : trimmed;
+}
+
+function normalizeBoolean(value, fallback = false) {
+	if (typeof value !== "string") {
+		return fallback;
+	}
+
+	const normalized = value.trim().toLowerCase();
+	if (normalized === "true" || normalized === "1" || normalized === "yes" || normalized === "y") {
+		return true;
+	}
+
+	if (normalized === "false" || normalized === "0" || normalized === "no" || normalized === "n") {
+		return false;
+	}
+
+	return fallback;
+}
+
+async function tableExists(tableName) {
+	const rows = await prisma.$queryRaw`
+		SELECT EXISTS (
+			SELECT 1
+			FROM information_schema.tables
+			WHERE table_schema = 'public' AND table_name = ${tableName}
+		) AS table_exists
+	`;
+
+	if (!Array.isArray(rows) || rows.length === 0) {
+		return false;
+	}
+
+	return rows[0]?.table_exists === true;
+}
+
+async function ensureSchemaReady() {
+	const hasPlacesTable = await tableExists("places");
+	if (hasPlacesTable) {
+		return;
+	}
+
+	const autoDbPush = normalizeBoolean(process.env.SEED_AUTO_DB_PUSH, process.env.NODE_ENV !== "production");
+	if (!autoDbPush) {
+		throw new Error(
+			"Database schema is missing (public.places not found). Run `npm run prisma:migrate` or " +
+				"`npm run build:schema && npx prisma db push`, or set SEED_AUTO_DB_PUSH=true to auto-sync."
+		);
+	}
+
+	console.warn("Database schema is missing. Running Prisma db push to create tables before seeding.");
+	try {
+		execSync("npx prisma db push --skip-generate", { stdio: "inherit" });
+	} catch (error) {
+		const message = error?.message ? error.message : String(error);
+		throw new Error(
+			"Failed to sync schema with Prisma. Run `npm run prisma:migrate` or " +
+				"`npm run build:schema && npx prisma db push` manually. " +
+				`Original error: ${message}`
+		);
+	}
+
+	if (!(await tableExists("places"))) {
+		throw new Error(
+			"Database schema is still missing after Prisma db push. Run `npm run prisma:migrate` then retry."
+		);
+	}
 }
 
 function normalizeAccountSeed(account) {
@@ -361,6 +428,8 @@ const defaultAccountSeeds = [
 const accountSeeds = [...defaultAccountSeeds, ...parseAdditionalAccountSeeds()];
 
 async function main() {
+	await ensureSchemaReady();
+
 	for (const place of placeSeeds) {
 		const existing = await prisma.place.findFirst({
 			where: { name: place.name }
@@ -541,12 +610,11 @@ async function main() {
 		const category = ing.categoryName ? ingredientCategoryRecords[ing.categoryName] : null;
 
 		const existing = await prisma.ingredient.findFirst({ where: { name: ing.name } });
-		const data = { unitId: unit.id, sku: ing.sku ?? null };
-		if (category) {
-			data.category = { connect: { id: category.id } };
-		} else if (existing) {
-			data.category = { disconnect: true };
-		}
+		const data = {
+			unitId: unit.id,
+			sku: ing.sku ?? null,
+			categoryId: category?.id ?? null
+		};
 		let rec;
 		if (existing) {
 			rec = await prisma.ingredient.update({
@@ -886,8 +954,8 @@ async function main() {
 
 	// MenuVariants and Items
 	const variantDefs = [
-		{ menuName: "Es Teh", name: "Sugar" },
-		{ menuName: "Nasi Goreng", name: "Spicy" }
+		{ menuName: "Es Teh", name: "Packaging" },
+		{ menuName: "Nasi Goreng", name: "Packaging" }
 	];
 
 	const variantRecords = {};
@@ -908,11 +976,10 @@ async function main() {
 	}
 
 	const variantItemDefs = [
-		{ variantKey: "Es Teh:Sugar", name: "Normal", additionalPrice: 0 },
-		{ variantKey: "Es Teh:Sugar", name: "Less", additionalPrice: 0 },
-		{ variantKey: "Es Teh:Sugar", name: "No Sugar", additionalPrice: 0 },
-		{ variantKey: "Nasi Goreng:Spicy", name: "Normal", additionalPrice: 0 },
-		{ variantKey: "Nasi Goreng:Spicy", name: "Hot", additionalPrice: 3000 }
+		{ variantKey: "Es Teh:Packaging", name: "Cup", additionalPrice: 0 },
+		{ variantKey: "Es Teh:Packaging", name: "Bottle", additionalPrice: 3000 },
+		{ variantKey: "Nasi Goreng:Packaging", name: "Box", additionalPrice: 0 },
+		{ variantKey: "Nasi Goreng:Packaging", name: "Paper Bowl", additionalPrice: 2000 }
 	];
 
 	for (const vi of variantItemDefs) {
@@ -1100,18 +1167,18 @@ async function main() {
 
 			// Variants (link to MenuVariant)
 			if (item1 && typeof variantRecords !== "undefined") {
-				const sugarVariant = variantRecords["Es Teh:Sugar"];
-				if (sugarVariant) {
+				const packagingVariant = variantRecords["Es Teh:Packaging"];
+				if (packagingVariant) {
 					await prisma.transactionItemVariant.create({
-						data: { transactionItemId: item1.id, menuVariantId: sugarVariant.id, extraPrice: 0 }
+						data: { transactionItemId: item1.id, menuVariantId: packagingVariant.id, extraPrice: 0 }
 					});
 				}
 			}
 			if (item2 && typeof variantRecords !== "undefined") {
-				const spicyVariant = variantRecords["Nasi Goreng:Spicy"];
-				if (spicyVariant) {
+				const packagingVariant = variantRecords["Nasi Goreng:Packaging"];
+				if (packagingVariant) {
 					await prisma.transactionItemVariant.create({
-						data: { transactionItemId: item2.id, menuVariantId: spicyVariant.id, extraPrice: 3000 }
+						data: { transactionItemId: item2.id, menuVariantId: packagingVariant.id, extraPrice: 0 }
 					});
 				}
 			}
