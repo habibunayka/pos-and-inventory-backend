@@ -74,10 +74,10 @@ describe("Transactions entity branch coverage", () => {
 		expect(entity).toMatchObject({ id: null, startedAt: null, finishedAt: null, note: null });
 	});
 
-		it("TransactionItem nulls optionals", () => {
-			const entity = TransactionItem.fromPersistence({ transactionId: 1, menuId: 2, qty: 1, price: 100 });
-			expect(entity).toMatchObject({ id: null, discount: null, menu: null, variants: [], totalCost: null, costCalculatedAt: null });
-		});
+	it("TransactionItem nulls optionals", () => {
+		const entity = TransactionItem.fromPersistence({ transactionId: 1, menuId: 2, qty: 1, price: 100 });
+		expect(entity).toMatchObject({ id: null, discount: null, menu: null, variants: [], totalCost: null, costCalculatedAt: null });
+	});
 
 	it("TransactionItemVariant nulls note", () => {
 		const entity = TransactionItemVariant.fromPersistence({ transactionItemId: 1, menuVariantId: 2 });
@@ -104,11 +104,11 @@ describe("Transactions entity branch coverage", () => {
 				props: { transactionItemId: 1, status: "new" },
 				expected: { startedAt: null, finishedAt: null, note: null }
 			},
-						{
-							Entity: TransactionItem,
-							props: { transactionId: 1, menuId: 2, qty: 1, price: 10 },
-							expected: { discount: null, menu: null, variants: [], totalCost: null, costCalculatedAt: null }
-						},
+			{
+				Entity: TransactionItem,
+				props: { transactionId: 1, menuId: 2, qty: 1, price: 10 },
+				expected: { discount: null, menu: null, variants: [], totalCost: null, costCalculatedAt: null }
+			},
 			{
 				Entity: TransactionItemVariant,
 				props: { transactionItemId: 1, menuVariantId: 2, extraPrice: 1 },

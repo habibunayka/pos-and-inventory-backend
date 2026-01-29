@@ -50,8 +50,8 @@ export default class Transaction {
 					 note: record.note ?? null,
 					 voidReason: record.voidReason ?? null,
 					 items: Array.isArray(record.items)
-							? record.items.map((item) => TransactionItem.fromPersistence(item))
-							: [],
+				? record.items.map((item) => TransactionItem.fromPersistence(item))
+				: [],
 					 itemsSnapshot: record.itemsJson ?? null,
 					 total: record.total,
 			tax: record.tax ?? null,

@@ -167,17 +167,17 @@ const transactionsPaths = {
 			tags: ["Transactions"],
 			summary: "Batalkan transaksi",
 			operationId: "voidTransaction",
-						requestBody: {
-								required: true,
-								content: {
-										"application/json": {
-												schema: {
-														$ref: "#/components/schemas/VoidTransactionRequest"
-												}
-										}
-								},
-								description: "Isi alasan pembatalan beserta password atau PIN pengguna yang sedang login."
-						},
+			requestBody: {
+				required: true,
+				content: {
+					"application/json": {
+						schema: {
+							$ref: "#/components/schemas/VoidTransactionRequest"
+						}
+					}
+				},
+				description: "Isi alasan pembatalan beserta password atau PIN pengguna yang sedang login."
+			},
 			responses: {
 				200: {
 					description: "Transaksi dibatalkan",
